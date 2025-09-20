@@ -3,351 +3,488 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Member Panel</title>
+<title>Club Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+/* ---------------- RESET ---------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #111;
-  color: #eee;
+    background: #f4f7fb;
+    color: #333;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
 }
-.app {
-  display: flex;
-  min-height: 100vh;
+
+button {
+    cursor: pointer;
+    transition: 0.3s;
 }
+
+button:hover {
+    opacity: 0.85;
+}
+
+/* ---------------- SIDEBAR ---------------- */
 .sidebar {
-  width: 260px;
-  background: #222;
-  padding: 20px;
+    width: 250px;
+    background: #1e1e2f;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
 }
+
+.sidebar h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #0ff;
+}
+
 .sidebar button {
-  display: block;
-  width: 100%;
-  margin: 6px 0;
-  padding: 10px;
-  background: #333;
-  color: #eee;
-  border: none;
-  cursor: pointer;
+    background: #2a2a40;
+    color: #fff;
+    border: none;
+    padding: 12px 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    text-align: left;
+    font-weight: 500;
 }
+
+.sidebar button.logout {
+    margin-top: auto;
+    background: #ff3864;
+    color: #fff;
+    font-weight: 700;
+}
+
+.sidebar button.logout:hover {
+    background: #ff1f4b;
+}
+
+/* ---------------- MAIN CONTENT ---------------- */
 .main {
-  flex: 1;
-  padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+    padding: 25px;
+    background: #f4f7fb;
 }
+
+.main h1 {
+    margin-bottom: 20px;
+    color: #1e1e2f;
+}
+
+.section {
+    display: none;
+}
+
+/* ---------------- CARDS ---------------- */
 .card {
-  background: #222;
-  padding: 12px;
-  margin-bottom: 12px;
-  border-radius: 8px;
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
 }
+
 .card h3 {
-  margin: 0 0 8px 0;
-  color: #0ff;
+    margin-bottom: 15px;
+    color: #0aa;
 }
+
+/* ---------------- LISTS ---------------- */
 .item-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+    list-style: none;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 5px;
 }
+
 .item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px 0;
-  border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
 }
+
+.item span {
+    flex: 1;
+    word-break: break-word;
+}
+
+.item a {
+    margin-left: 10px;
+    color: #0aa;
+    text-decoration: none;
+}
+
+.item a:hover {
+    text-decoration: underline;
+}
+
+/* ---------------- BUTTONS ---------------- */
+.icon-btn {
+    background: #ff3864;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.icon-btn:hover {
+    background: #ff1f4b;
+}
+
+.add-btn {
+    background: #0aa;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-top: 5px;
+}
+
+.add-btn:hover {
+    background: #078;
+}
+
+/* ---------------- FORMS ---------------- */
 input, textarea {
-  width: 100%;
-  margin: 6px 0;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #444;
-  background: #111;
-  color: #eee;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
 }
-button.icon-btn {
-  background: #0ff;
-  border: none;
-  padding: 6px 10px;
-  cursor: pointer;
-  color: #000;
-  border-radius: 6px;
-  margin-left: 6px;
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #0aa;
+    box-shadow: 0 0 5px rgba(0,170,255,0.3);
 }
 </style>
 </head>
 <body>
 
-<div class="app">
-
-<!-- Sidebar -->
+<!-- ---------------- SIDEBAR ---------------- -->
 <div class="sidebar">
-  <h2>Menu</h2>
-  <button onclick="showSection('dashboard')">Dashboard</button>
-  <button onclick="showSection('meetings')">Meetings</button>
-  <button onclick="showSection('sessions')">Sessions</button>
-  <button onclick="showSection('resources')">Documents</button>
-  <button onclick="showSection('recent')">Recent Activity</button>
-  <button onclick="showSection('other')">Other Info</button>
-  <button onclick="showSection('members')">Add Members</button>
-  <button onclick="logout()">Logout</button>
+    <h2>Club Panel</h2>
+    <button onclick="showSection('dashboard')">Dashboard</button>
+    <button onclick="showSection('meetings')">Meetings</button>
+    <button onclick="showSection('sessions')">Sessions</button>
+    <button onclick="showSection('documents')">Documents</button>
+    <button onclick="showSection('recent')">Recent Activity</button>
+    <button onclick="showSection('other')">Other Info</button>
+    <button onclick="showSection('members')">Add Members</button>
+    <button class="logout" onclick="logout()">Logout</button>
 </div>
 
-<!-- Main Content -->
+<!-- ---------------- MAIN CONTENT ---------------- -->
 <div class="main">
 
-  <h1>Welcome, <span id="userName">Member</span></h1>
+    <h1>Welcome, <span id="userName">Member</span>!</h1>
 
-  <!-- Dashboard -->
-  <div id="dashboard" class="section">
-    <div class="card">
-      <h3>Dashboard</h3>
-      <p>Quick overview of club activities.</p>
+    <!-- ---------------- DASHBOARD ---------------- -->
+    <div class="section" id="dashboard">
+        <div class="card">
+            <h3>Quick Stats</h3>
+            <p>Total Members: <span id="totalMembers">0</span></p>
+            <p>Upcoming Meetings: <span id="totalMeetings">0</span></p>
+            <p>Active Sessions: <span id="totalSessions">0</span></p>
+        </div>
     </div>
-  </div>
 
-  <!-- Meetings -->
-  <div id="meetings" class="section" style="display:none;">
-    <div class="card">
-      <h3>Meetings</h3>
-      <ul class="item-list" id="meetingList"></ul>
+    <!-- ---------------- MEETINGS ---------------- -->
+    <div class="section" id="meetings">
+        <div class="card">
+            <h3>Meetings</h3>
+            <ul class="item-list" id="meetingsList">
+                <!-- Injected meeting items -->
+            </ul>
 
-      <!-- Admin Form -->
-      <div id="adminMeetingForm" style="display:none;">
-        <input type="text" id="meetingTitle" placeholder="Meeting Title">
-        <input type="url" id="meetingLink" placeholder="Meeting Link">
-        <button onclick="addMeeting()">Add Meeting</button>
-      </div>
+            <!-- Admin create meeting -->
+            <div id="adminMeetingForm">
+                <input type="text" id="meetingTitle" placeholder="Meeting Title">
+                <input type="date" id="meetingDate">
+                <input type="time" id="meetingTime">
+                <input type="text" id="meetingLocation" placeholder="Location">
+                <input type="text" id="meetingLink" placeholder="Meeting Link">
+                <textarea id="meetingDesc" placeholder="Description"></textarea>
+                <button class="add-btn" onclick="addMeeting()">Add Meeting</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- Sessions -->
-  <div id="sessions" class="section" style="display:none;">
-    <div class="card">
-      <h3>Sessions</h3>
-      <ul class="item-list" id="sessionList"></ul>
+    <!-- ---------------- SESSIONS ---------------- -->
+    <div class="section" id="sessions">
+        <div class="card">
+            <h3>Sessions</h3>
+            <ul class="item-list" id="sessionsList">
+                <!-- Injected sessions -->
+            </ul>
 
-      <!-- Admin Form -->
-      <div id="adminSessionForm" style="display:none;">
-        <input type="text" id="sessionTitle" placeholder="Session Title">
-        <input type="text" id="sessionHost" placeholder="Host Name">
-        <button onclick="addSession()">Add Session</button>
-      </div>
+            <!-- Admin create session -->
+            <div id="adminSessionForm">
+                <input type="text" id="sessionName" placeholder="Session Name">
+                <input type="date" id="sessionDate">
+                <input type="text" id="sessionHost" placeholder="Host">
+                <button class="add-btn" onclick="addSession()">Add Session</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- Resources/Documents -->
-  <div id="resources" class="section" style="display:none;">
-    <div class="card">
-      <h3>Documents / Resources</h3>
-      <ul class="item-list" id="resourceList"></ul>
+    <!-- ---------------- DOCUMENTS ---------------- -->
+    <div class="section" id="documents">
+        <div class="card">
+            <h3>Documents</h3>
+            <ul class="item-list" id="documentsList">
+                <!-- Injected documents -->
+            </ul>
 
-      <!-- Admin Form -->
-      <div id="adminResourceForm" style="display:none;">
-        <input type="text" id="resourceTitle" placeholder="Document Title">
-        <input type="url" id="resourceLink" placeholder="Document Link">
-        <button onclick="addResource()">Add Document</button>
-      </div>
+            <!-- Admin post document -->
+            <div id="adminDocForm">
+                <input type="text" id="docTitle" placeholder="Document Title">
+                <input type="url" id="docLink" placeholder="Document Link">
+                <button class="add-btn" onclick="addDocument()">Post Document</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- Recent Activity -->
-  <div id="recent" class="section" style="display:none;">
-    <div class="card">
-      <h3>Recent Activity</h3>
-      <ul class="item-list" id="recentList"></ul>
+    <!-- ---------------- RECENT ACTIVITY ---------------- -->
+    <div class="section" id="recent">
+        <div class="card">
+            <h3>Recent Activity</h3>
+            <ul class="item-list" id="recentList">
+                <!-- Injected recent activity -->
+            </ul>
 
-      <!-- Admin Form -->
-      <div id="adminRecentForm" style="display:none;">
-        <input type="text" id="recentText" placeholder="Activity Description">
-        <button onclick="addRecent()">Add Activity</button>
-      </div>
+            <div id="adminRecentForm">
+                <input type="text" id="recentText" placeholder="Activity text">
+                <button class="add-btn" onclick="addRecent()">Add Activity</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- Other Info -->
-  <div id="other" class="section" style="display:none;">
-    <div class="card">
-      <h3>Other Information</h3>
-      <ul class="item-list" id="otherList"></ul>
+    <!-- ---------------- OTHER INFO ---------------- -->
+    <div class="section" id="other">
+        <div class="card">
+            <h3>Other Information</h3>
+            <ul class="item-list" id="otherList">
+                <!-- Injected items -->
+            </ul>
 
-      <!-- Admin Form -->
-      <div id="adminOtherForm" style="display:none;">
-        <input type="text" id="otherText" placeholder="Other Info">
-        <button onclick="addOther()">Add Info</button>
-      </div>
+            <div id="adminOtherForm">
+                <input type="text" id="otherText" placeholder="Info text">
+                <button class="add-btn" onclick="addOther()">Post Info</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- Add Members -->
-  <div id="members" class="section" style="display:none;">
-    <div class="card">
-      <h3>Add New Member</h3>
-      <div id="adminMemberForm" style="display:none;">
-        <input type="text" id="newMemberName" placeholder="Member Name">
-        <input type="text" id="newMemberPhone" placeholder="Phone Number">
-        <button onclick="addMember()">Add Member</button>
-      </div>
+    <!-- ---------------- MEMBERS ---------------- -->
+    <div class="section" id="members">
+        <div class="card">
+            <h3>Add Members (Admin Only)</h3>
+            <input type="text" id="newMemberName" placeholder="Member Name">
+            <input type="text" id="newMemberPhone" placeholder="Phone Number">
+            <button class="add-btn" onclick="addMember()">Add Member</button>
+        </div>
     </div>
-  </div>
 
-</div>
 </div>
 
 <script>
-// ----- Users -----
-const admins = ["Dhruv","Harshit Panwar","Shahil Shivam"];
+/* ---------------- USERS ---------------- */
+const users = [
+    {username:"9818523773", password:"69125", name:"Dhruv"},
+    {username:"9461738616", password:"10382", name:"Harshit Panwar"},
+    {username:"8368992775", password:"93517", name:"Shahil Shivam"},
+    {username:"9654579176", password:"37591", name:"Nirvan Sharma"},
+];
+
 let currentUser = sessionStorage.getItem('name') || "Guest";
+const admins = ["Dhruv","Harshit Panwar","Shahil Shivam"];
 
-// ----- Initialize -----
-document.getElementById('userName').textContent = currentUser;
+/* ---------------- INIT ---------------- */
+document.getElementById('userName').innerText = currentUser;
 
-// Show admin forms if current user is admin
-if(admins.includes(currentUser)){
-  document.getElementById('adminMeetingForm').style.display = "block";
-  document.getElementById('adminSessionForm').style.display = "block";
-  document.getElementById('adminResourceForm').style.display = "block";
-  document.getElementById('adminRecentForm').style.display = "block";
-  document.getElementById('adminOtherForm').style.display = "block";
-  document.getElementById('adminMemberForm').style.display = "block";
-}
-
-// ----- Sections -----
+/* ---------------- SECTIONS ---------------- */
 function showSection(id){
-  document.querySelectorAll('.section').forEach(sec=>sec.style.display="none");
-  document.getElementById(id).style.display = "block";
+    document.querySelectorAll('.section').forEach(sec => sec.style.display='none');
+    document.getElementById(id).style.display='block';
+
+    // Admin forms visibility
+    const isAdmin = admins.includes(currentUser);
+    document.querySelectorAll('#adminMeetingForm, #adminSessionForm, #adminDocForm, #adminRecentForm, #adminOtherForm, #members').forEach(f=>{
+        f.style.display = isAdmin ? 'block' : 'none';
+    });
 }
 
-// ----- Storage -----
+/* ---------------- LOGOUT ---------------- */
+function logout(){
+    sessionStorage.removeItem('loggedIn');
+    sessionStorage.removeItem('name');
+    window.location.href = 'login.html';
+}
+
+/* ---------------- DUMMY DATA ---------------- */
 let meetings = [];
 let sessions = [];
-let resources = [];
-let recent = [];
+let documents = [];
+let recentActivity = [];
 let otherInfo = [];
 let members = [];
 
-// ----- Add Functions -----
+/* ---------------- ADD FUNCTIONS ---------------- */
 function addMeeting(){
-  const title = document.getElementById('meetingTitle').value;
-  const link = document.getElementById('meetingLink').value;
-  if(!title || !link) return alert("Enter title and link");
-  meetings.push({title, link});
-  renderMeetings();
+    const title = document.getElementById('meetingTitle').value;
+    const date = document.getElementById('meetingDate').value;
+    const time = document.getElementById('meetingTime').value;
+    const loc = document.getElementById('meetingLocation').value;
+    const link = document.getElementById('meetingLink').value;
+    const desc = document.getElementById('meetingDesc').value;
+
+    meetings.push({title,date,time,loc,link,desc});
+    renderMeetings();
 }
 
-function addSession(){
-  const title = document.getElementById('sessionTitle').value;
-  const host = document.getElementById('sessionHost').value;
-  if(!title || !host) return alert("Enter title and host");
-  sessions.push({title, host});
-  renderSessions();
-}
-
-function addResource(){
-  const title = document.getElementById('resourceTitle').value;
-  const link = document.getElementById('resourceLink').value;
-  if(!title || !link) return alert("Enter title and link");
-  resources.push({title, link});
-  renderResources();
-}
-
-function addRecent(){
-  const text = document.getElementById('recentText').value;
-  if(!text) return alert("Enter text");
-  recent.push({text});
-  renderRecent();
-}
-
-function addOther(){
-  const text = document.getElementById('otherText').value;
-  if(!text) return alert("Enter text");
-  otherInfo.push({text});
-  renderOther();
-}
-
-function addMember(){
-  if(!admins.includes(currentUser)) return alert("Only admins can add members");
-  const name = document.getElementById('newMemberName').value;
-  const phone = document.getElementById('newMemberPhone').value;
-  if(!name || !phone) return alert("Enter name and phone");
-  members.push({name, phone});
-  alert(`Member ${name} added`);
-}
-
-// ----- Render Functions -----
 function renderMeetings(){
-  const ul = document.getElementById('meetingList');
-  ul.innerHTML = "";
-  meetings.forEach((m,i)=>{
-    const li = document.createElement('li');
-    li.innerHTML = `<span>${m.title}</span> 
-                    <a href="${m.link}" target="_blank">Link</a>` +
-                    (admins.includes(currentUser) ? 
-                      `<button class="icon-btn" onclick="deleteMeeting(${i})">Delete</button>` : "");
-    ul.appendChild(li);
-  });
+    const list = document.getElementById('meetingsList');
+    list.innerHTML = "";
+    meetings.forEach((m,i)=>{
+        const li = document.createElement('li');
+        li.className="item";
+        li.innerHTML = `<span>${m.title} (${m.date} ${m.time}) - <a href="${m.link}" target="_blank">${m.link}</a></span>`;
+        if(admins.includes(currentUser)){
+            const delBtn = document.createElement('button');
+            delBtn.className="icon-btn";
+            delBtn.innerText="Delete";
+            delBtn.onclick = ()=>{ meetings.splice(i,1); renderMeetings(); };
+            li.appendChild(delBtn);
+        }
+        list.appendChild(li);
+    });
 }
 
-function deleteMeeting(index){
-  meetings.splice(index,1);
-  renderMeetings();
+/* ---------------- SIMILAR FUNCTIONS FOR SESSIONS, DOCUMENTS, RECENT, OTHER, MEMBERS ---------------- */
+function addSession(){
+    const name = document.getElementById('sessionName').value;
+    const date = document.getElementById('sessionDate').value;
+    const host = document.getElementById('sessionHost').value;
+    sessions.push({name,date,host});
+    renderSessions();
 }
 
 function renderSessions(){
-  const ul = document.getElementById('sessionList');
-  ul.innerHTML = "";
-  sessions.forEach((s,i)=>{
-    const li = document.createElement('li');
-    li.innerHTML = `<span>${s.title} (Host: ${s.host})</span>` +
-      (admins.includes(currentUser) ? `<button class="icon-btn" onclick="deleteSession(${i})">Delete</button>` : "");
-    ul.appendChild(li);
-  });
+    const list = document.getElementById('sessionsList');
+    list.innerHTML="";
+    sessions.forEach((s,i)=>{
+        const li = document.createElement('li');
+        li.className="item";
+        li.innerText = `${s.name} (${s.date}) by ${s.host}`;
+        if(admins.includes(currentUser)){
+            const delBtn = document.createElement('button');
+            delBtn.className="icon-btn";
+            delBtn.innerText="Delete";
+            delBtn.onclick = ()=>{ sessions.splice(i,1); renderSessions(); };
+            li.appendChild(delBtn);
+        }
+        list.appendChild(li);
+    });
 }
 
-function deleteSession(index){ sessions.splice(index,1); renderSessions(); }
-
-function renderResources(){
-  const ul = document.getElementById('resourceList');
-  ul.innerHTML = "";
-  resources.forEach((r,i)=>{
-    const li = document.createElement('li');
-    li.innerHTML = `<span>${r.title}</span> <a href="${r.link}" target="_blank">Link</a>` +
-      (admins.includes(currentUser) ? `<button class="icon-btn" onclick="deleteResource(${i})">Delete</button>` : "");
-    ul.appendChild(li);
-  });
+function addDocument(){
+    const title = document.getElementById('docTitle').value;
+    const link = document.getElementById('docLink').value;
+    documents.push({title,link});
+    renderDocuments();
 }
 
-function deleteResource(index){ resources.splice(index,1); renderResources(); }
+function renderDocuments(){
+    const list = document.getElementById('documentsList');
+    list.innerHTML="";
+    documents.forEach((d,i)=>{
+        const li = document.createElement('li');
+        li.className="item";
+        li.innerHTML=`<a href="${d.link}" target="_blank">${d.title}</a>`;
+        if(admins.includes(currentUser)){
+            const delBtn = document.createElement('button');
+            delBtn.className="icon-btn";
+            delBtn.innerText="Delete";
+            delBtn.onclick = ()=>{ documents.splice(i,1); renderDocuments(); };
+            li.appendChild(delBtn);
+        }
+        list.appendChild(li);
+    });
+}
+
+function addRecent(){
+    const text = document.getElementById('recentText').value;
+    recentActivity.push(text);
+    renderRecent();
+}
 
 function renderRecent(){
-  const ul = document.getElementById('recentList');
-  ul.innerHTML = "";
-  recent.forEach((r,i)=>{
-    const li = document.createElement('li');
-    li.innerHTML = `<span>${r.text}</span>` +
-      (admins.includes(currentUser) ? `<button class="icon-btn" onclick="deleteRecent(${i})">Delete</button>` : "");
-    ul.appendChild(li);
-  });
+    const list = document.getElementById('recentList');
+    list.innerHTML="";
+    recentActivity.forEach((r,i)=>{
+        const li=document.createElement('li');
+        li.className="item";
+        li.innerText = r;
+        if(admins.includes(currentUser)){
+            const delBtn = document.createElement('button');
+            delBtn.className="icon-btn";
+            delBtn.innerText="Delete";
+            delBtn.onclick = ()=>{ recentActivity.splice(i,1); renderRecent(); };
+            li.appendChild(delBtn);
+        }
+        list.appendChild(li);
+    });
 }
 
-function deleteRecent(index){ recent.splice(index,1); renderRecent(); }
+function addOther(){
+    const text = document.getElementById('otherText').value;
+    otherInfo.push(text);
+    renderOther();
+}
 
 function renderOther(){
-  const ul = document.getElementById('otherList');
-  ul.innerHTML = "";
-  otherInfo.forEach((r,i)=>{
-    const li = document.createElement('li');
-    li.innerHTML = `<span>${r.text}</span>` +
-      (admins.includes(currentUser) ? `<button class="icon-btn" onclick="deleteOther(${i})">Delete</button>` : "");
-    ul.appendChild(li);
-  });
+    const list = document.getElementById('otherList');
+    list.innerHTML="";
+    otherInfo.forEach((o,i)=>{
+        const li=document.createElement('li');
+        li.className="item";
+        li.innerText=o;
+        if(admins.includes(currentUser)){
+            const delBtn=document.createElement('button');
+            delBtn.className="icon-btn";
+            delBtn.innerText="Delete";
+            delBtn.onclick=()=>{otherInfo.splice(i,1);renderOther();}
+            li.appendChild(delBtn);
+        }
+        list.appendChild(li);
+    });
 }
 
-function deleteOther(index){ otherInfo.splice(index,1); renderOther(); }
+function addMember(){
+    const name = document.getElementById('newMemberName').value;
+    const phone = document.getElementById('newMemberPhone').value;
+    members.push({name,phone});
+    alert(`Member ${name} added!`);
+}
 
-// ----- Logout -----
-function logout(){ sessionStorage.clear(); location.reload(); }
+/* ---------------- INITIAL DISPLAY ---------------- */
+showSection('dashboard');
+
 </script>
-
 </body>
 </html>
