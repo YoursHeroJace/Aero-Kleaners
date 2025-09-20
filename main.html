@@ -1,190 +1,927 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Club Panel</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Club Panel — Members</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ---------- Layout ---------- */
-body{
-  margin:0;
-  font-family:'Inter',sans-serif;
-  display:flex;
-  height:100vh;
-  background:#0c0e16;
-  color:#e4e4e4;
+/* =====================================================================
+   Theme variables
+   ===================================================================== */
+:root{
+  --bg-0: #070707;
+  --bg-1: #0d1116;
+  --panel: #0f151a;
+  --muted: #9aa7b2;
+  --glass: rgba(255,255,255,0.03);
+  --accent: #00e0ff;
+  --accent-2: #0066ff;
+  --accent-3: #00b3d8;
+  --card: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  --radius: 14px;
+  --shadow-1: 0 6px 20px rgba(0,0,0,0.6);
+  --shadow-2: 0 10px 40px rgba(0,0,0,0.5);
+  --glass-border: rgba(0,224,255,0.08);
+  --success: #10b981;
+  --danger: #ff6b6b;
+  --warning: #ffb020;
+  --glass-strong: rgba(255,255,255,0.04);
 }
-.sidebar{
-  width:230px;
-  background:#0f121b;
-  border-right:1px solid rgba(255,255,255,0.07);
-  padding:30px 20px;
+
+/* =====================================================================
+   Reset + friendly defaults
+   ===================================================================== */
+* { box-sizing: border-box; }
+html,body { height: 100%; }
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background:
+    radial-gradient(1200px 600px at 10% 10%, rgba(0, 224, 255, 0.03), transparent 6%),
+    linear-gradient(180deg, var(--bg-0), var(--bg-1) 60%);
+  color: #e6eef3;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  -webkit-touch-callout:none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* =====================================================================
+   Layout: sidebar + main
+   ===================================================================== */
+.app {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  gap: 26px;
+  padding: 28px;
+  align-items: stretch;
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+  width: 260px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.008));
+  border-radius: calc(var(--radius) + 6px);
+  padding: 22px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-1);
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(100vh - 56px);
+}
+
+/* Branding */
+.brand {
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin-bottom: 18px;
+}
+.logo {
+  width:44px;
+  height:44px;
+  border-radius:10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  color:#002;
+  box-shadow: 0 6px 18px rgba(0,224,255,0.06), inset 0 -6px 10px rgba(0,0,0,0.25);
+}
+.brand h3 {
+  margin:0;
+  font-size:1.05rem;
+  color: var(--accent);
+  letter-spacing:0.2px;
+}
+.brand p { margin:0; font-size:0.78rem; color:var(--muted); }
+
+/* profile */
+.profile {
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin-bottom: 18px;
+}
+.avatar {
+  width:56px;
+  height:56px;
+  border-radius:12px;
+  background: linear-gradient(135deg,#062026, #002b3a);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--accent);
+  font-weight:700;
+  font-size:1rem;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+.profile .meta { font-size:0.92rem; }
+.profile .meta .name { color:#fff; font-weight:600; }
+.profile .meta .small { color:var(--muted); font-size:0.8rem; }
+
+/* search */
+.search {
+  margin: 12px 0 20px;
+}
+.search input {
+  width:100%;
+  padding:10px 12px;
+  background: transparent;
+  border:1px solid rgba(255,255,255,0.04);
+  border-radius:10px;
+  color: #e9f5ff;
+  outline:none;
+  font-size:0.95rem;
+  box-shadow: inset 0 -4px 20px rgba(0,0,0,0.3);
+}
+.search input::placeholder { color: rgba(230,238,243,0.25); }
+
+/* nav */
+.nav {
   display:flex;
   flex-direction:column;
-  justify-content:space-between;
+  gap:6px;
 }
-.sidebar h2{
-  color:#00e0ff;
-  font-size:1.4rem;
-  margin-bottom:40px;
-}
-.sidebar a{
-  display:block;
-  color:#e4e4e4;
-  text-decoration:none;
-  padding:12px 0;
-  font-weight:500;
-  border-left:3px solid transparent;
-  transition:0.2s;
+.nav button {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  text-align: left;
+  padding: 10px;
+  border-radius:8px;
   cursor:pointer;
+  font-weight:600;
+  font-size:0.95rem;
+  transition: all 180ms ease;
 }
-.sidebar a:hover,
-.sidebar a.active{
-  color:#00e0ff;
-  border-left:3px solid #00e0ff;
-  padding-left:8px;
+.nav button:hover {
+  color: #fff;
+  transform: translateX(6px);
 }
-.logout-btn{
-  background:#00e0ff;
-  border:none;
-  color:#000;
+.nav button.active {
+  background: linear-gradient(90deg, rgba(0,224,255,0.06), rgba(0,102,255,0.03));
+  color: var(--accent);
+  box-shadow: 0 6px 20px rgba(0,224,255,0.04);
+  transform:none;
+}
+
+/* sidebar footer */
+.side-footer {
+  margin-top:12px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.btn-ghost {
+  border: 1px dashed rgba(255,255,255,0.04);
   padding:10px;
-  border-radius:6px;
+  border-radius:10px;
+  background:transparent;
+  color:var(--muted);
   font-weight:600;
   cursor:pointer;
-  transition:background 0.2s;
 }
-.logout-btn:hover{background:#00aacc;}
 
-.main{
+/* =====================================================================
+   Main area
+   ===================================================================== */
+.main {
   flex:1;
-  padding:40px;
-  overflow-y:auto;
+  min-width:0;
+  display:flex;
+  flex-direction: column;
+  gap:18px;
 }
-.main h1{
-  color:#00e0ff;
-  margin-top:0;
+
+/* top bar */
+.topbar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
 }
-.cards{
+.top-left {
+  display:flex;
+  gap:14px;
+  align-items:center;
+}
+.page-title { margin:0; font-size:1.45rem; color:var(--accent); font-weight:700; }
+.page-sub { font-size:0.9rem; color:var(--muted); margin-top:2px; }
+
+/* utility buttons */
+.controls { display:flex; gap:12px; align-items:center; }
+.icon-btn {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.006));
+  border: 1px solid rgba(255,255,255,0.03);
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor:pointer;
+  color:var(--muted);
+  font-weight:700;
+}
+
+/* content grid */
+.content {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 20px;
+  align-items: start;
+}
+
+/* left column (primary) */
+.primary {
+  display:flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* cards grid */
+.card-row {
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-  gap:20px;
-  margin-top:20px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
 }
-.card{
-  background:#161b26;
-  border-radius:10px;
-  padding:20px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.25);
+
+/* card */
+.card {
+  background: var(--card);
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.02);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.45);
+  transition: transform .18s ease, box-shadow .18s ease;
 }
-.card h3{
-  margin-top:0;
-  color:#00e0ff;
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-2);
 }
-.tab-content{display:none;}
-.tab-content.active{display:block;}
+.card h3 { margin: 0 0 8px 0; color: var(--accent); font-size:1.05rem; }
+.card p { margin:0; color:var(--muted); font-size:0.92rem; line-height:1.45; }
+
+/* larger panel for lists/tables */
+.panel {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius: 12px;
+  padding: 16px;
+  height: 100%;
+  border: 1px solid rgba(255,255,255,0.02);
+}
+
+/* small components */
+.kv {
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+}
+.kv .label { color:var(--muted); font-size:0.85rem; }
+.kv .value { color:#fff; font-weight:700; }
+
+/* list */
+.item-list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+.item {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  padding:10px;
+  background: rgba(255,255,255,0.02);
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.01);
+}
+.item .left { display:flex; gap:10px; align-items:center; }
+.dot { width:10px; height:10px; border-radius:50%; background:var(--accent); box-shadow: 0 3px 8px rgba(0,224,255,0.06); }
+
+/* right column (secondary) */
+.secondary { display:flex; flex-direction: column; gap:14px; min-height: 240px; }
+
+/* small stat */
+.stat {
+  background: rgba(255,255,255,0.02);
+  padding: 16px;
+  border-radius:12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+/* table */
+table {
+  width:100%;
+  border-collapse: collapse;
+  font-size:0.92rem;
+}
+thead th {
+  text-align:left;
+  color:var(--muted);
+  font-weight:600;
+  padding:10px 8px;
+  font-size:0.82rem;
+}
+tbody td {
+  padding:10px 8px;
+  border-top:1px solid rgba(255,255,255,0.02);
+}
+
+/* badges / pills */
+.badge {
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:0.78rem;
+  color:#001;
+  background: linear-gradient(90deg, #bff7ff, #80d3ff);
+}
+
+/* modal */
+.modal-backdrop {
+  position:fixed;
+  inset:0;
+  background: rgba(2,6,10,0.6);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+.modal {
+  width: 720px;
+  max-width: 95%;
+  background: #071018;
+  border-radius:12px;
+  padding:18px;
+  border:1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 20px 45px rgba(0,0,0,0.7);
+}
+
+/* small helpers */
+.small { font-size:0.85rem; color:var(--muted); }
+.hint { color: rgba(255,255,255,0.45); font-size:0.85rem; }
+.empty { text-align:center; padding:40px; color:var(--muted); }
+
+/* responsive */
+@media (max-width: 980px){
+  .content{ grid-template-columns: 1fr; }
+  .sidebar { display:none; }
+  .app { padding: 14px; }
+  .main { padding: 0; }
+}
 </style>
 </head>
 <body>
+<div class="app">
 
-<!-- Sidebar -->
-<div class="sidebar">
-  <div>
-    <h2>Club Panel</h2>
-    <a class="tab-link active" data-target="dashboard">Dashboard</a>
-    <a class="tab-link" data-target="meetings">Meetings</a>
-    <a class="tab-link" data-target="recent">Recent Activity</a>
-    <a class="tab-link" data-target="sessions">Sessions</a>
-    <a class="tab-link" data-target="resources">Resources</a>
-    <a class="tab-link" data-target="other">Other Info</a>
-  </div>
-  <button class="logout-btn" onclick="logout()">Logout</button>
-</div>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" aria-label="Main sidebar">
+    <div>
+      <div class="brand" role="img" aria-hidden="true">
+        <div class="logo">AK</div>
+        <div>
+          <h3>Aero Kleaners</h3>
+          <p class="small">Member portal</p>
+        </div>
+      </div>
 
-<!-- Main Content -->
-<div class="main">
-  <h1>Welcome, <span id="user-name"></span>!</h1>
-  <p id="sub-text">Here’s what’s happening in your club right now.</p>
+      <div class="profile" title="Logged in user">
+        <div class="avatar" id="avatar">SS</div>
+        <div class="meta">
+          <div class="name" id="profileName">Shahil Shivam</div>
+          <div class="small">Member since 2023</div>
+        </div>
+      </div>
 
-  <!-- Dashboard -->
-  <div id="dashboard" class="tab-content active">
-    <div class="cards">
-      <div class="card">
-        <h3>Meetings</h3>
-        <p>Stay tuned for upcoming schedules.<br><strong>Coming Soon…</strong></p>
+      <div class="search">
+        <input id="searchInput" placeholder="Search meetings, sessions..." aria-label="search">
       </div>
-      <div class="card">
-        <h3>Recent Activity</h3>
-        <p>No new updates yet. Check back later.</p>
+
+      <nav class="nav" aria-label="Main navigation">
+        <button class="active" data-target="dashboard">Dashboard</button>
+        <button data-target="meetings">Meetings</button>
+        <button data-target="recent">Recent Activity</button>
+        <button data-target="sessions">Sessions</button>
+        <button data-target="resources">Resources</button>
+        <button data-target="other">Other Info</button>
+      </nav>
+    </div>
+
+    <div class="side-footer">
+      <button class="btn-ghost" onclick="openHelp()">Help & Support</button>
+      <button class="btn-ghost" onclick="openSettings()">Settings</button>
+      <button class="btn-ghost" onclick="logout()" style="background: linear-gradient(90deg, var(--accent), var(--accent-2)); color:#001;">Logout</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main" role="main">
+    <div class="topbar">
+      <div class="top-left">
+        <div>
+          <div class="page-title">Welcome, <span id="user-name">Shahil Shivam</span>!</div>
+          <div class="page-sub">Refresh or click Logout to end your session</div>
+        </div>
       </div>
-      <div class="card">
-        <h3>Sessions</h3>
-        <p>Track all previous and upcoming sessions from here.</p>
-      </div>
-      <div class="card">
-        <h3>Resources</h3>
-        <p>Access guides, documentation and club assets anytime.</p>
+
+      <div class="controls">
+        <button class="icon-btn" title="Notifications" onclick="showToast('No new notifications')">🔔</button>
+        <button class="icon-btn" title="Profile" onclick="openProfile()">👤</button>
       </div>
     </div>
-  </div>
 
-  <!-- Meetings -->
-  <div id="meetings" class="tab-content">
-    <h2>Meetings</h2>
-    <p>All meeting schedules will appear here.</p>
-  </div>
+    <section class="content" aria-label="Main content area">
+      <!-- PRIMARY -->
+      <div class="primary">
+        <!-- quick cards -->
+        <div class="card-row">
+          <div class="card" id="cardMeetings" role="button" onclick="navigate('meetings')">
+            <h3>Meetings</h3>
+            <p>Upcoming meeting dates, agenda and links. Click to view the schedule and join session links.</p>
+            <div style="margin-top:12px;">
+              <span class="small">Next:</span> <strong>26 Sep 2025 — Club Meetup</strong>
+            </div>
+          </div>
 
-  <!-- Recent -->
-  <div id="recent" class="tab-content">
-    <h2>Recent Activity</h2>
-    <p>No new activity right now.</p>
-  </div>
+          <div class="card" id="cardRecent" role="button" onclick="navigate('recent')">
+            <h3>Recent Activity</h3>
+            <p>Latest updates and changes surfaced here. Keep an eye on announcements.</p>
+            <div style="margin-top:12px;">
+              <span class="badge">New</span>
+            </div>
+          </div>
 
-  <!-- Sessions -->
-  <div id="sessions" class="tab-content">
-    <h2>Sessions</h2>
-    <p>List of upcoming and past sessions.</p>
-  </div>
+          <div class="card" id="cardSessions" role="button" onclick="navigate('sessions')">
+            <h3>Sessions</h3>
+            <p>Record of sessions and resources. Click to view session details, join or download notes.</p>
+          </div>
 
-  <!-- Resources -->
-  <div id="resources" class="tab-content">
-    <h2>Resources</h2>
-    <p>Guides, documentation and other assets.</p>
-  </div>
+          <div class="card" id="cardResources" role="button" onclick="navigate('resources')">
+            <h3>Resources</h3>
+            <p>Guides, documents and reports for club members. Browse, search and download what you need.</p>
+          </div>
+        </div>
 
-  <!-- Other Info -->
-  <div id="other" class="tab-content">
-    <h2>Other Info</h2>
-    <p>Extra club details and announcements.</p>
-  </div>
+        <!-- meetings panel -->
+        <div class="panel" id="dashboardPanel">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <div>
+              <h3 style="margin:0;color:var(--accent)">Meetings Schedule</h3>
+              <div class="small">Upcoming and recent meeting details</div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="icon-btn" onclick="openCreateMeeting()">+ New</button>
+              <button class="icon-btn" onclick="downloadSchedule()">⤓ Export</button>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 220px; gap:16px;">
+            <div>
+              <ul class="item-list" id="meetingsList">
+                <!-- meetings injected here -->
+              </ul>
+            </div>
+
+            <aside style="display:flex;flex-direction:column;gap:12px;">
+              <div class="stat">
+                <div class="kv"><div class="label">Total Members</div><div class="value">124</div></div>
+                <div class="kv"><div class="label">Active Sessions</div><div class="value">3</div></div>
+                <div class="kv"><div class="label">Upcoming Meetings</div><div class="value">2</div></div>
+              </div>
+
+              <div class="stat">
+                <div class="small">Quick Links</div>
+                <div style="display:flex;gap:8px;margin-top:8px;">
+                  <button class="icon-btn" onclick="navigate('resources')">Resources</button>
+                  <button class="icon-btn" onclick="navigate('sessions')">Sessions</button>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+
+        <!-- dynamic sections: meetings / recent / sessions / resources / other -->
+        <div id="meetings" class="panel" style="display:none">
+          <h3 style="color:var(--accent);margin-top:0">Meetings</h3>
+          <div class="small">All planned meetings and details — click an item to open more options</div>
+          <div style="margin-top:12px">
+            <table aria-label="Meetings table">
+              <thead><tr><th>Date</th><th>Title</th><th>Location</th><th></th></tr></thead>
+              <tbody id="meetingsTable">
+                <!-- table rows injected -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="recent" class="panel" style="display:none">
+          <h3 style="color:var(--accent);margin-top:0">Recent Activity</h3>
+          <div id="recentList" style="margin-top:10px">
+            <!-- activity items injected -->
+          </div>
+        </div>
+
+        <div id="sessions" class="panel" style="display:none">
+          <h3 style="color:var(--accent);margin-top:0">Sessions</h3>
+          <div style="margin-top:12px">
+            <p class="small">Session library and links to recordings (coming soon).</p>
+            <div style="margin-top:12px">
+              <table>
+                <thead><tr><th>Session</th><th>Date</th><th>Host</th></tr></thead>
+                <tbody id="sessionsTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="resources" class="panel" style="display:none">
+          <h3 style="color:var(--accent);margin-top:0">Resources</h3>
+          <p class="small">Downloadable files, guides and links for members.</p>
+          <div style="margin-top:12px">
+            <ul class="item-list" id="resourcesList"></ul>
+          </div>
+        </div>
+
+        <div id="other" class="panel" style="display:none">
+          <h3 style="color:var(--accent);margin-top:0">Other Information</h3>
+          <p class="small">Announcements, contact information and policies.</p>
+          <div style="margin-top:12px" id="otherContent">
+            <p class="hint">No additional information at this time.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <aside class="secondary">
+        <div class="card panel">
+          <h3 style="margin:0;color:var(--accent)">Notifications</h3>
+          <p class="small" style="margin-top:8px">Recent notifications for your account.</p>
+          <div style="margin-top:12px">
+            <ul class="item-list" id="notifications">
+              <!-- notifications injected -->
+            </ul>
+          </div>
+        </div>
+
+        <div class="card panel">
+          <h3 style="margin:0;color:var(--accent)">Quick Actions</h3>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+            <button class="icon-btn" onclick="openCreateMeeting()">Create Meeting</button>
+            <button class="icon-btn" onclick="openCreateSession()">Create Session</button>
+            <button class="icon-btn" onclick="navigate('resources')">Upload Resource</button>
+          </div>
+        </div>
+
+        <div class="card panel">
+          <h3 style="margin:0;color:var(--accent)">Attendance Snapshot</h3>
+          <div style="margin-top:12px">
+            <div class="kv"><div class="label">This month</div><div class="value">78%</div></div>
+            <div class="kv" style="margin-top:8px"><div class="label">Average</div><div class="value">72%</div></div>
+            <div style="margin-top:10px" class="small">View full attendance report in Resources → Reports</div>
+          </div>
+        </div>
+      </aside>
+
+    </section>
+  </main>
+</div>
+
+<!-- Modal templates (hidden by default) -->
+<div id="modalRoot" style="display:none"></div>
+
+<!-- Toast -->
+<div id="toast" style="position:fixed;right:20px;bottom:20px;z-index:9999;display:none">
+  <div style="background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#001;padding:12px 16px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.6);font-weight:700">Hello</div>
 </div>
 
 <script>
-// login guard
-if(sessionStorage.getItem("loggedIn")!=="true"){
-  alert("Please log in first.");
-  window.location.href="login.html";
-}else{
-  document.getElementById("user-name").textContent=sessionStorage.getItem("name");
+/* ==========================================================================
+   Basic client-side "router" and data injection
+   ========================================================================== */
+
+const STATE = {
+  meetings: [
+    { id:1, date:'2025-09-26', title:'Club Meetup', location:'Main Hall', time:'18:00', desc:'Monthly meetup & planning.' },
+    { id:2, date:'2025-10-10', title:'Workshop: AI Basics', location:'Room 12', time:'17:00', desc:'Hands-on beginner workshop.' }
+  ],
+  recent: [
+    { when:'2h ago', text:'Session recording uploaded: "Intro to Drones".' },
+    { when:'1d ago', text:'New member approved: Ananya Sharma.' }
+  ],
+  sessions: [
+    { name:'Intro to Drones', date:'2025-08-10', host:'Dhruv' },
+    { name:'Safety Workshop', date:'2025-06-04', host:'Harshit' }
+  ],
+  resources: [
+    { name:'Member Handbook.pdf', size:'1.2 MB', link:'#' },
+    { name:'Meeting Notes Aug 2025.docx', size:'45 KB', link:'#' }
+  ],
+  notifications:[
+    { text:'Welcome back — session expires in 8 hours.' },
+    { text:'New resource added: Member Handbook' }
+  ]
+};
+
+/* simple DOM helpers */
+const qs = (s, el=document) => el.querySelector(s);
+const qsa = (s, el=document) => Array.from(el.querySelectorAll(s));
+
+/* populate lists */
+function renderMeetings(){
+  const ul = qs('#meetingsList');
+  ul.innerHTML = '';
+  if(STATE.meetings.length===0){
+    ul.innerHTML = '<div class="empty">No meetings scheduled.</div>';
+    return;
+  }
+  STATE.meetings.forEach(m=>{
+    const li = document.createElement('li');
+    li.className = 'item';
+    li.innerHTML = `
+      <div class="left">
+        <div style="display:flex;flex-direction:column">
+          <strong style="font-size:0.96rem">${m.title}</strong>
+          <span class="small">${m.date} • ${m.time} • ${m.location}</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button class="icon-btn" onclick="viewMeeting(${m.id})">View</button>
+        <button class="icon-btn" onclick="copyText('${m.title} - ${m.date}')">Copy</button>
+      </div>
+    `;
+    ul.appendChild(li);
+  });
 }
 
-// tab switching
-document.querySelectorAll('.tab-link').forEach(link=>{
-  link.addEventListener('click',()=>{
-    document.querySelectorAll('.tab-link').forEach(l=>l.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-    link.classList.add('active');
-    document.getElementById(link.dataset.target).classList.add('active');
+function renderMeetingsTable(){
+  const tbody = qs('#meetingsTable');
+  tbody.innerHTML = '';
+  STATE.meetings.forEach(m=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${m.date}</td><td>${m.title}</td><td>${m.location}</td><td><button class="icon-btn" onclick="viewMeeting(${m.id})">Open</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderRecent(){
+  const el = qs('#recentList');
+  el.innerHTML = '';
+  if(STATE.recent.length===0) el.innerHTML = '<div class="empty">No recent activity.</div>';
+  STATE.recent.forEach(r=>{
+    const d = document.createElement('div');
+    d.className = 'item';
+    d.style.padding='12px';
+    d.innerHTML = `<div style="display:flex;gap:12px;align-items:center"><div style="width:8px;height:8px;background:var(--accent);border-radius:50%"></div><div><strong>${r.text}</strong><div class="small" style="margin-top:6px">${r.when}</div></div></div>`;
+    el.appendChild(d);
+  });
+}
+
+function renderSessions(){
+  const tbody = qs('#sessionsTable');
+  tbody.innerHTML = '';
+  STATE.sessions.forEach(s=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${s.name}</td><td>${s.date}</td><td>${s.host}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderResources(){
+  const ul = qs('#resourcesList');
+  ul.innerHTML = '';
+  if(STATE.resources.length===0) ul.innerHTML = '<div class="empty">No resources available.</div>';
+  STATE.resources.forEach(r=>{
+    const li = document.createElement('li');
+    li.className = 'item';
+    li.innerHTML = `<div class="left"><div style="display:flex;flex-direction:column"><strong>${r.name}</strong><span class="small">${r.size}</span></div></div><div><a class="badge" href="${r.link}" onclick="showToast('Starting download...')">Download</a></div>`;
+    ul.appendChild(li);
+  });
+}
+
+function renderNotifications(){
+  const ul = qs('#notifications');
+  ul.innerHTML = '';
+  STATE.notifications.forEach(n=>{
+    const li = document.createElement('li');
+    li.className = 'item';
+    li.innerHTML = `<div class="left"><div class="dot"></div><div>${n.text}</div></div>`;
+    ul.appendChild(li);
+  });
+}
+
+/* navigation (single-file pages) */
+function hideAllSections(){
+  ['dashboardPanel','meetings','recent','sessions','resources','other'].forEach(id=>{
+    const el = qs('#'+id);
+    if(el) el.style.display = 'none';
+  });
+  qsa('.nav button').forEach(b=>b.classList.remove('active'));
+}
+function navigate(target){
+  hideAllSections();
+  if(target==='dashboard') qs('#dashboardPanel').style.display = '';
+  if(target==='meetings') qs('#meetings').style.display = '';
+  if(target==='recent') qs('#recent').style.display = '';
+  if(target==='sessions') qs('#sessions').style.display = '';
+  if(target==='resources') qs('#resources').style.display = '';
+  if(target==='other') qs('#other').style.display = '';
+  // highlight nav if matching
+  qsa('.nav button').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.target===target);
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* event hooks for sidebar nav buttons */
+qsa('.nav button').forEach(btn=>{
+  btn.addEventListener('click', ()=> navigate(btn.dataset.target));
+});
+
+/* helper actions */
+function openCreateMeeting(){
+  showModal('Create Meeting', `<div style="display:flex;flex-direction:column;gap:8px">
+    <input id="m_title" placeholder="Title" style="padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);">
+    <input id="m_date" type="date" style="padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);">
+    <input id="m_time" type="time" style="padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);">
+    <input id="m_loc" placeholder="Location" style="padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);">
+    <textarea id="m_desc" rows="4" placeholder="Description" style="padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);"></textarea>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:6px">
+      <button class="icon-btn" onclick="closeModal()">Cancel</button>
+      <button class="icon-btn" onclick="createMeeting()">Create</button>
+    </div>
+  </div>`);
+}
+
+function createMeeting(){
+  const title = qs('#m_title').value || 'Untitled';
+  const date = qs('#m_date').value || 'TBD';
+  const time = qs('#m_time').value || 'TBD';
+  const loc = qs('#m_loc').value || 'Online';
+  const desc = qs('#m_desc').value || '';
+  const id = (STATE.meetings.length?STATE.meetings[STATE.meetings.length-1].id+1:1);
+  STATE.meetings.push({id, date, title, location:loc, time, desc});
+  closeModal();
+  renderMeetings();
+  renderMeetingsTable();
+  showToast('Meeting created');
+}
+
+function downloadSchedule(){
+  showToast('Export not yet implemented — coming soon');
+}
+
+function copyText(txt){
+  navigator.clipboard && navigator.clipboard.writeText(txt).then(()=> showToast('Copied to clipboard'));
+}
+
+function viewMeeting(id){
+  const m = STATE.meetings.find(x=>x.id===id);
+  if(!m) return;
+  showModal(m.title || 'Meeting', `<div>
+    <div class="small" style="margin-bottom:8px">${m.date} • ${m.time} • ${m.location}</div>
+    <div style="margin-bottom:12px">${m.desc || '<span class="hint">No description provided</span>'}</div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="icon-btn" onclick="closeModal()">Close</button>
+      <button class="icon-btn" onclick="showToast('Joining ${m.title}...')">Join</button>
+    </div>
+  </div>`);
+}
+
+/* notifications and utilities */
+function showToast(message, ms=2200){
+  const root = qs('#toast');
+  root.style.display = 'block';
+  root.firstElementChild.textContent = message;
+  clearTimeout(root._t);
+  root._t = setTimeout(()=> root.style.display = 'none', ms);
+}
+
+/* profile/settings/help */
+function openProfile(){
+  showModal('Profile', `<div style="display:flex;gap:12px">
+    <div style="width:80px"><div style="width:80px;height:80px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700">SS</div></div>
+    <div>
+      <div style="font-weight:700">Shahil Shivam</div>
+      <div class="small">Phone: 8368992775</div>
+      <div class="small" style="margin-top:8px">Email: shahil@example.com</div>
+      <div style="margin-top:12px;display:flex;gap:8px"><button class="icon-btn" onclick="closeModal()">Close</button></div>
+    </div>
+  </div>`);
+}
+
+function openHelp(){
+  showModal('Help & Support', `<div>
+    <p class="small">If you need assistance, contact the club admin or open a support ticket.</p>
+    <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
+      <button class="icon-btn" onclick="closeModal()">Close</button>
+    </div>
+  </div>`);
+}
+function openSettings(){
+  showModal('Settings', `<div>
+    <label class="small">Notifications <input type="checkbox" id="chk" style="margin-left:8px"></label>
+    <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
+      <button class="icon-btn" onclick="closeModal()">Close</button>
+    </div>
+  </div>`);
+}
+
+/* modal rendering */
+function showModal(title, html){
+  const root = qs('#modalRoot');
+  root.innerHTML = `
+    <div class="modal-backdrop" id="backdrop" role="dialog" aria-modal="true">
+      <div class="modal" role="document" aria-label="${title}">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div style="font-weight:800;color:var(--accent)">${title}</div>
+          <div><button class="icon-btn" onclick="closeModal()">✕</button></div>
+        </div>
+        <div>${html}</div>
+      </div>
+    </div>
+  `;
+  root.style.display = '';
+}
+function closeModal(){
+  const root = qs('#modalRoot');
+  root.innerHTML = '';
+  root.style.display = 'none';
+}
+
+/* other small flows */
+function createDemoData(){
+  renderMeetings();
+  renderMeetingsTable();
+  renderRecent();
+  renderSessions();
+  renderResources();
+  renderNotifications();
+}
+
+/* logout guard */
+function logout(){
+  sessionStorage.removeItem('loggedIn');
+  sessionStorage.removeItem('name');
+  // for demo purposes, we simulate going to login page.
+  showToast('Logged out — returning to login');
+  setTimeout(()=> window.location.href = 'login.html', 800);
+}
+
+/* search */
+qs('#searchInput').addEventListener('input', e=>{
+  const q = e.target.value.toLowerCase().trim();
+  if(!q){ // restore
+    renderMeetings();
+    renderResources();
+    return;
+  }
+  // simple filter in meetings + resources
+  const filteredMeetings = STATE.meetings.filter(m=> (m.title + ' ' + m.desc + ' ' + m.date).toLowerCase().includes(q));
+  const filteredResources = STATE.resources.filter(r=> r.name.toLowerCase().includes(q));
+  // render
+  const ul = qs('#meetingsList');
+  ul.innerHTML = '';
+  filteredMeetings.forEach(m=>{
+    const li = document.createElement('li');
+    li.className = 'item';
+    li.innerHTML = `<div><strong>${m.title}</strong><div class="small">${m.date} • ${m.location}</div></div><div><button class="icon-btn" onclick="viewMeeting(${m.id})">Open</button></div>`;
+    ul.appendChild(li);
+  });
+  const rul = qs('#resourcesList');
+  rul.innerHTML = '';
+  filteredResources.forEach(r=>{
+    const li = document.createElement('li');
+    li.className = 'item';
+    li.innerHTML = `<div><strong>${r.name}</strong><div class="small">${r.size}</div></div><div><a class="badge" href="${r.link}" onclick="showToast('Downloading...')">Download</a></div>`;
+    rul.appendChild(li);
   });
 });
 
-function logout(){
-  sessionStorage.removeItem("loggedIn");
-  sessionStorage.removeItem("name");
-  window.location.href="login.html";
-}
-</script>
+/* init */
+(function init(){
+  // if not logged in, force to login.html (demo guard)
+  if(sessionStorage.getItem('loggedIn') !== 'true'){
+    // we set it for demo to show content if not present
+    // remove these two lines in production to enforce login
+    sessionStorage.setItem('loggedIn', 'true');
+    sessionStorage.setItem('name', 'Shahil Shivam');
+  }
 
+  // set profile name + avatar
+  const name = sessionStorage.getItem('name') || 'Member';
+  qs('#user-name').textContent = name;
+  qs('#profileName').textContent = name;
+  const initials = name.split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase();
+  qs('#avatar').textContent = initials;
+
+  createDemoData();
+  navigate('dashboard'); // start on dashboard
+})();
+</script>
 </body>
 </html>
