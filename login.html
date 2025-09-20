@@ -1,155 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-    /* ---------- Page Background ---------- */
-    body {
-        margin: 0;
-        height: 100vh;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(135deg, #3d3d0f, #000000);
-    }
+  :root{
+    --gold:#ffcc00;
+    --gold-dark:#ff9900;
+    --card-bg: rgba(255,255,255,0.04);
+  }
 
-    /* ---------- Login Card ---------- */
-    .login-container {
-        width: 350px;
-        padding: 35px 30px;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 204, 0, 0.4);
-        border-radius: 16px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-        text-align: center;
-        backdrop-filter: blur(8px);
-        animation: fadeIn 0.7s ease-in-out;
-    }
+  * { box-sizing: border-box; } /* ensure padding included in width calculations */
 
-    .login-container h2 {
-        color: #ffcc00;
-        margin-bottom: 25px;
-        letter-spacing: 1px;
-    }
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #3d3d0f, #0f0f05);
+    color: #fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
 
-    /* ---------- Inputs ---------- */
-    input {
-        width: 100%;
-        padding: 12px 14px;
-        margin: 10px 0;
-        border: 1px solid #ffcc00;
-        border-radius: 8px;
-        background-color: rgba(255, 255, 255, 0.1);
-        color: #ffcc00;
-        font-size: 15px;
-        outline: none;
-        transition: border-color 0.3s, background-color 0.3s;
-    }
+  .login-container{
+    width: 360px;
+    padding: 34px 28px;
+    border-radius: 14px;
+    background: var(--card-bg);
+    border: 1px solid rgba(255,204,0,0.35);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    text-align:center;
+    backdrop-filter: blur(6px);
+  }
 
-    input:focus {
-        border-color: #ffd633;
-        background-color: rgba(255, 255, 255, 0.2);
-    }
+  .login-container h2{
+    margin:0 0 18px;
+    color: var(--gold);
+    letter-spacing: .6px;
+  }
 
-    /* ---------- Button ---------- */
-    button {
-        width: 100%;
-        padding: 12px;
-        margin-top: 10px;
-        background: linear-gradient(90deg, #ffcc00, #ff9900);
-        color: #333;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
+  form { margin: 0; }
 
-    button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
+  /* INPUT FIX: full width, border-box, comfortable padding on right */
+  input[type="text"],
+  input[type="password"]{
+    width: 100%;              /* full width */
+    padding: 12px 14px;       /* inside padding (left+right) */
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 1px solid rgba(255,204,0,0.6);
+    background: rgba(255,255,255,0.06);
+    color: var(--gold);
+    font-size: 15px;
+    outline: none;
+    transition: background .18s, border-color .18s, transform .08s;
+  }
 
-    /* ---------- Links ---------- */
-    a {
-        display: block;
-        margin-top: 15px;
-        color: #ffd633;
-        text-decoration: none;
-        font-size: 14px;
-        transition: color 0.2s;
-    }
+  input::placeholder{
+    color: rgba(255,204,0,0.7);
+  }
 
-    a:hover {
-        color: #ffffff;
-        text-decoration: underline;
-    }
+  input:focus{
+    border-color: var(--gold);
+    background: rgba(255,255,255,0.09);
+  }
 
-    /* ---------- Popup ---------- */
-    #popup {
-        display: none;
-        margin-top: 15px;
-        color: #ff6666;
-        background: rgba(0,0,0,0.3);
-        padding: 8px 12px;
-        border-radius: 6px;
-        font-size: 14px;
-        animation: fadeIn 0.3s ease-in-out;
-    }
+  /* Button uses full width too, matches inputs */
+  button[type="submit"]{
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+    color: #222;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s;
+  }
+  button[type="submit"]:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+  }
 
-    /* ---------- Animation ---------- */
-    @keyframes fadeIn {
-        from { opacity: 0; transform: scale(0.95); }
-        to   { opacity: 1; transform: scale(1); }
-    }
+  .links{
+    margin-top:12px;
+    display:flex;
+    justify-content: center;
+    gap: 10px;
+    font-size: 14px;
+  }
+  .links a{
+    color: var(--gold);
+    text-decoration:none;
+  }
+  .popup {
+    margin-top:12px;
+    display:none;
+    background: rgba(0,0,0,0.5);
+    color: #ffdddd;
+    padding:8px 12px;
+    border-radius:8px;
+    font-size:14px;
+  }
+
+  /* small screens */
+  @media (max-width:420px){
+    .login-container{ width: 92%; padding: 26px; }
+  }
 </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <form onsubmit="event.preventDefault(); login();">
-            <input type="text" id="username" placeholder="Phone Number" />
-            <input type="password" id="password" placeholder="Password" />
-            <button type="submit">Login</button>
-        </form>
-        <a href="forgot-password.html">Forgot Password?</a>
-        <div id="popup">Incorrect username or password.</div>
+  <div class="login-container">
+    <h2>Login</h2>
+    <form onsubmit="event.preventDefault(); login();">
+      <input type="text" id="username" placeholder="Phone Number" inputmode="numeric" />
+      <input type="password" id="password" placeholder="Password" />
+      <button type="submit">Login</button>
+    </form>
+
+    <div class="links">
+      <a href="forgot-password.html">Forgot Password?</a>
     </div>
 
-    <script>
-        const users = [
-            { username: "9818523773", password: "69125", name: "Dhruv" },
-            { username: "9461738616", password: "10382", name: "Harshit Panwar" },
-            { username: "8368992775", password: "93517", name: "Shahil Shivam" },
-            { username: "9654579176", password: "37591", name: "Nirvan Sharma" },
-            { username: "8521883562", password: "81320", name: "Vivek Kumar" },
-            { username: "8882583977", password: "33864", name: "Piyush Kumar Sah" },
-            { username: "7678629433", password: "11847", name: "Shivkant" },
-            { username: "9953539648", password: "29101", name: "Naitik Shekhar Mahajan" },
-            { username: "", password: "48357", name: "Monu Rekrot" },
-            { username: "8826584503", password: "62389", name: "Prabhesh Swesh" },
-            { username: "9971890335", password: "19291", name: "Kushant Kumar" },
-        ];
+    <div id="popup" class="popup">Incorrect phone number or password.</div>
+  </div>
 
-        function login() {
-            const username = document.getElementById("username").value.trim();
-            const password = document.getElementById("password").value.trim();
-            const user = users.find(u => u.username === username && u.password === password);
+<script>
+  const users = [
+    { username: "9818523773", password: "69125", name: "Dhruv" },
+    { username: "9461738616", password: "10382", name: "Harshit Panwar" },
+    { username: "8368992775", password: "93517", name: "Shahil Shivam" },
+    { username: "9654579176", password: "37591", name: "Nirvan Sharma" },
+    { username: "8521883562", password: "81320", name: "Vivek Kumar" },
+    { username: "8521883562", password: "33864", name: "Piyush Kumar Sah" },
+    { username: "7678629433", password: "11847", name: "Shivkant" },
+    { username: "9953539648", password: "29101", name: "Naitik Shekhar Mahajan" },
+    { username: "", password: "48357", name: "Monu Rekrot" },
+    { username: "8826584503", password: "62389", name: "Prabhesh Swesh" },
+    { username: "9971890335", password: "19291", name: "Kushant Kumar" },
+  ];
 
-            if (user) {
-                sessionStorage.setItem("loggedIn", "true");
-                sessionStorage.setItem("name", user.name);
-                window.location.href = "main.html";
-            } else {
-                const popup = document.getElementById("popup");
-                popup.style.display = "block";
-                setTimeout(() => { popup.style.display = "none"; }, 4000);
-            }
-        }
-    </script>
+  function login(){
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const user = users.find(u => u.username === username && u.password === password);
+    const popup = document.getElementById('popup');
+
+    if(user){
+      sessionStorage.setItem('loggedIn','true');
+      sessionStorage.setItem('name', user.name);
+      window.location.href = 'main.html';
+    } else {
+      popup.style.display = 'block';
+      setTimeout(()=> popup.style.display = 'none', 4000);
+    }
+  }
+</script>
 </body>
 </html>
