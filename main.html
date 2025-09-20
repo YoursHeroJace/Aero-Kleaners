@@ -1,388 +1,353 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Club Panel — Members</title>
-  
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  
-  <style>
-    :root {
-      --accent: #00e0ff;
-      --accent-2: #0072ff;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
-
-    body {
-      background: #111;
-      color: #e0e0e0;
-      min-height: 100vh;
-      display: flex;
-    }
-
-    .app {
-      display: flex;
-      width: 100%;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      width: 280px;
-      background: #1a1a1a;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      margin-bottom: 30px;
-    }
-
-    .brand .logo {
-      width: 50px;
-      height: 50px;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 12px;
-      font-weight: 700;
-      color: #001;
-      margin-right: 12px;
-    }
-
-    .brand h3 {
-      font-size: 1.2rem;
-      font-weight: 700;
-    }
-
-    .profile {
-      display: flex;
-      align-items: center;
-      margin-bottom: 25px;
-    }
-
-    .avatar {
-      width: 48px;
-      height: 48px;
-      background: #333;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 12px;
-      font-weight: 700;
-    }
-
-    .nav button {
-      display: block;
-      width: 100%;
-      padding: 10px 12px;
-      margin: 6px 0;
-      border: none;
-      background: none;
-      color: #ccc;
-      text-align: left;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .nav button.active,
-    .nav button:hover {
-      background: rgba(0, 224, 255, 0.2);
-      color: #00e0ff;
-    }
-
-    .side-footer button {
-      width: 100%;
-      padding: 10px;
-      margin: 4px 0;
-      border: none;
-      border-radius: 8px;
-      background: #222;
-      color: #ccc;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .side-footer button:hover {
-      background: rgba(0, 224, 255, 0.2);
-      color: #00e0ff;
-    }
-
-    /* Main content */
-    .main {
-      flex: 1;
-      padding: 25px;
-      overflow-y: auto;
-    }
-
-    section {
-      display: none;
-    }
-
-    section.active {
-      display: block;
-    }
-
-    h1 {
-      font-size: 1.5rem;
-      margin-bottom: 20px;
-    }
-
-    button.primary {
-      padding: 8px 14px;
-      background: var(--accent);
-      color: #001;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    button.primary:hover {
-      background: var(--accent-2);
-    }
-
-    .card {
-      background: #222;
-      padding: 16px;
-      border-radius: 12px;
-      margin-bottom: 16px;
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      padding: 10px;
-      margin: 6px 0;
-      border: none;
-      border-radius: 8px;
-      background: #1f1f1f;
-      color: #eee;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 12px 16px;
-      border-radius: 10px;
-      background: var(--accent);
-      color: #001;
-      font-weight: 700;
-      display: none;
-      z-index: 999;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Member Panel</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: #eee;
+}
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+.sidebar {
+  width: 260px;
+  background: #222;
+  padding: 20px;
+}
+.sidebar button {
+  display: block;
+  width: 100%;
+  margin: 6px 0;
+  padding: 10px;
+  background: #333;
+  color: #eee;
+  border: none;
+  cursor: pointer;
+}
+.main {
+  flex: 1;
+  padding: 20px;
+}
+.card {
+  background: #222;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+}
+.card h3 {
+  margin: 0 0 8px 0;
+  color: #0ff;
+}
+.item-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #333;
+}
+input, textarea {
+  width: 100%;
+  margin: 6px 0;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #111;
+  color: #eee;
+}
+button.icon-btn {
+  background: #0ff;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  color: #000;
+  border-radius: 6px;
+  margin-left: 6px;
+}
+</style>
 </head>
-
 <body>
-  <div class="app">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div>
-        <!-- Brand -->
-        <div class="brand">
-          <div class="logo">AK</div>
-          <div>
-            <h3>Aero Kleaners</h3>
-            <p class="small">Member portal</p>
-          </div>
-        </div>
+<div class="app">
 
-        <!-- Profile -->
-        <div class="profile">
-          <div class="avatar" id="avatar">SS</div>
-          <div class="meta">
-            <div class="name" id="profileName">Member</div>
-            <div class="small">Member since 2023</div>
-          </div>
-        </div>
+<!-- Sidebar -->
+<div class="sidebar">
+  <h2>Menu</h2>
+  <button onclick="showSection('dashboard')">Dashboard</button>
+  <button onclick="showSection('meetings')">Meetings</button>
+  <button onclick="showSection('sessions')">Sessions</button>
+  <button onclick="showSection('resources')">Documents</button>
+  <button onclick="showSection('recent')">Recent Activity</button>
+  <button onclick="showSection('other')">Other Info</button>
+  <button onclick="showSection('members')">Add Members</button>
+  <button onclick="logout()">Logout</button>
+</div>
 
-        <!-- Navigation -->
-        <nav class="nav">
-          <button class="active" data-target="dashboard">Dashboard</button>
-          <button data-target="meetings">Meetings</button>
-          <button data-target="recent">Recent Activity</button>
-          <button data-target="sessions">Sessions</button>
-          <button data-target="resources">Resources</button>
-          <button data-target="other">Other Info</button>
-        </nav>
-      </div>
+<!-- Main Content -->
+<div class="main">
 
-      <!-- Footer -->
-      <div class="side-footer">
-        <button onclick="showToast('Help & Support clicked')">Help & Support</button>
-        <button onclick="showToast('Settings clicked')">Settings</button>
-        <button onclick="logout()">Logout</button>
-      </div>
-    </aside>
+  <h1>Welcome, <span id="userName">Member</span></h1>
 
-    <!-- Main Content -->
-    <main class="main">
-
-      <!-- Dashboard -->
-      <section id="dashboard" class="active">
-        <h1>Dashboard</h1>
-        <div class="card">Welcome, <span id="user-name">Member</span>!</div>
-        <div class="card">Quick Stats (Demo)</div>
-      </section>
-
-      <!-- Meetings -->
-      <section id="meetings">
-        <h1>Meetings</h1>
-        <button class="primary" onclick="openCreateMeeting()">Create Meeting</button>
-        <div id="meetingsList"></div>
-      </section>
-
-      <!-- Recent Activity -->
-      <section id="recent">
-        <h1>Recent Activity</h1>
-        <div class="card">No recent activity yet.</div>
-      </section>
-
-      <!-- Sessions -->
-      <section id="sessions">
-        <h1>Sessions</h1>
-        <button class="primary" onclick="openCreateSession()">Create Session</button>
-        <div id="sessionsList"></div>
-      </section>
-
-      <!-- Resources -->
-      <section id="resources">
-        <h1>Resources</h1>
-        <button class="primary" onclick="uploadResource()">Upload Resource</button>
-        <div id="resourcesList"></div>
-      </section>
-
-      <!-- Other Info -->
-      <section id="other">
-        <h1>Other Info</h1>
-        <div class="card">Miscellaneous info goes here.</div>
-      </section>
-
-    </main>
-
+  <!-- Dashboard -->
+  <div id="dashboard" class="section">
+    <div class="card">
+      <h3>Dashboard</h3>
+      <p>Quick overview of club activities.</p>
+    </div>
   </div>
 
-  <!-- Toast Notification -->
-  <div id="toast" class="toast"></div>
+  <!-- Meetings -->
+  <div id="meetings" class="section" style="display:none;">
+    <div class="card">
+      <h3>Meetings</h3>
+      <ul class="item-list" id="meetingList"></ul>
 
-  <!-- Script -->
-  <script>
-    // Admin users list
-    const ADMIN_USERS = ["Dhruv", "Harshit Panwar", "Shahil Shivam"];
+      <!-- Admin Form -->
+      <div id="adminMeetingForm" style="display:none;">
+        <input type="text" id="meetingTitle" placeholder="Meeting Title">
+        <input type="url" id="meetingLink" placeholder="Meeting Link">
+        <button onclick="addMeeting()">Add Meeting</button>
+      </div>
+    </div>
+  </div>
 
-    // Check if logged-in user is admin
-    function isAdmin() {
-      return sessionStorage.getItem('isAdmin') === 'true';
-    }
+  <!-- Sessions -->
+  <div id="sessions" class="section" style="display:none;">
+    <div class="card">
+      <h3>Sessions</h3>
+      <ul class="item-list" id="sessionList"></ul>
 
-    // Toast message function
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.style.display = 'block';
-      setTimeout(() => t.style.display = 'none', 3000);
-    }
+      <!-- Admin Form -->
+      <div id="adminSessionForm" style="display:none;">
+        <input type="text" id="sessionTitle" placeholder="Session Title">
+        <input type="text" id="sessionHost" placeholder="Host Name">
+        <button onclick="addSession()">Add Session</button>
+      </div>
+    </div>
+  </div>
 
-    // Logout function
-    function logout() {
-      sessionStorage.clear();
-      window.location.href = 'login.html';
-    }
+  <!-- Resources/Documents -->
+  <div id="resources" class="section" style="display:none;">
+    <div class="card">
+      <h3>Documents / Resources</h3>
+      <ul class="item-list" id="resourceList"></ul>
 
-    // Sidebar navigation
-    function navigate(target) {
-      document.querySelectorAll('main section').forEach(s => s.classList.remove('active'));
-      document.getElementById(target).classList.add('active');
-    }
+      <!-- Admin Form -->
+      <div id="adminResourceForm" style="display:none;">
+        <input type="text" id="resourceTitle" placeholder="Document Title">
+        <input type="url" id="resourceLink" placeholder="Document Link">
+        <button onclick="addResource()">Add Document</button>
+      </div>
+    </div>
+  </div>
 
-    document.querySelectorAll('.nav button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        navigate(btn.dataset.target);
-        document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      });
-    });
+  <!-- Recent Activity -->
+  <div id="recent" class="section" style="display:none;">
+    <div class="card">
+      <h3>Recent Activity</h3>
+      <ul class="item-list" id="recentList"></ul>
 
-    // Demo data
-    let meetings = [], sessions = [], resources = [];
+      <!-- Admin Form -->
+      <div id="adminRecentForm" style="display:none;">
+        <input type="text" id="recentText" placeholder="Activity Description">
+        <button onclick="addRecent()">Add Activity</button>
+      </div>
+    </div>
+  </div>
 
-    function createDemoData() {
-      meetings = [{ title: "Team Meeting 1", date: "2025-09-25" }];
-      sessions = [{ title: "Session A", date: "2025-09-26" }];
-      resources = [{ title: "Resource PDF", link: "#" }];
-      renderMeetings();
-      renderSessions();
-      renderResources();
-    }
+  <!-- Other Info -->
+  <div id="other" class="section" style="display:none;">
+    <div class="card">
+      <h3>Other Information</h3>
+      <ul class="item-list" id="otherList"></ul>
 
-    // Admin-only actions
-    function openCreateMeeting() {
-      if (!isAdmin()) { showToast('Access denied: Admins only'); return; }
-      const title = prompt("Meeting Title:");
-      if (title) { meetings.push({ title, date: new Date().toLocaleDateString() }); renderMeetings(); }
-    }
+      <!-- Admin Form -->
+      <div id="adminOtherForm" style="display:none;">
+        <input type="text" id="otherText" placeholder="Other Info">
+        <button onclick="addOther()">Add Info</button>
+      </div>
+    </div>
+  </div>
 
-    function openCreateSession() {
-      if (!isAdmin()) { showToast('Access denied: Admins only'); return; }
-      const title = prompt("Session Title:");
-      if (title) { sessions.push({ title, date: new Date().toLocaleDateString() }); renderSessions(); }
-    }
+  <!-- Add Members -->
+  <div id="members" class="section" style="display:none;">
+    <div class="card">
+      <h3>Add New Member</h3>
+      <div id="adminMemberForm" style="display:none;">
+        <input type="text" id="newMemberName" placeholder="Member Name">
+        <input type="text" id="newMemberPhone" placeholder="Phone Number">
+        <button onclick="addMember()">Add Member</button>
+      </div>
+    </div>
+  </div>
 
-    function uploadResource() {
-      if (!isAdmin()) { showToast('Access denied: Admins only'); return; }
-      const title = prompt("Resource Name:");
-      if (title) { resources.push({ title, link: '#' }); renderResources(); }
-    }
+</div>
+</div>
 
-    // Render lists
-    function renderMeetings() {
-      const el = document.getElementById('meetingsList');
-      el.innerHTML = meetings.map(m => `<div class="card">${m.title} — ${m.date}</div>`).join('');
-    }
+<script>
+// ----- Users -----
+const admins = ["Dhruv","Harshit Panwar","Shahil Shivam"];
+let currentUser = sessionStorage.getItem('name') || "Guest";
 
-    function renderSessions() {
-      const el = document.getElementById('sessionsList');
-      el.innerHTML = sessions.map(s => `<div class="card">${s.title} — ${s.date}</div>`).join('');
-    }
+// ----- Initialize -----
+document.getElementById('userName').textContent = currentUser;
 
-    function renderResources() {
-      const el = document.getElementById('resourcesList');
-      el.innerHTML = resources.map(r => `<div class="card"><a href="${r.link}" style="color:#00e0ff">${r.title}</a></div>`).join('');
-    }
+// Show admin forms if current user is admin
+if(admins.includes(currentUser)){
+  document.getElementById('adminMeetingForm').style.display = "block";
+  document.getElementById('adminSessionForm').style.display = "block";
+  document.getElementById('adminResourceForm').style.display = "block";
+  document.getElementById('adminRecentForm').style.display = "block";
+  document.getElementById('adminOtherForm').style.display = "block";
+  document.getElementById('adminMemberForm').style.display = "block";
+}
 
-    // Initialize page
-    (function init() {
-      if (sessionStorage.getItem('loggedIn') !== 'true') { window.location.href = 'login.html'; return; }
+// ----- Sections -----
+function showSection(id){
+  document.querySelectorAll('.section').forEach(sec=>sec.style.display="none");
+  document.getElementById(id).style.display = "block";
+}
 
-      const name = sessionStorage.getItem('name') || 'Member';
-      document.getElementById('user-name').textContent = name;
-      document.getElementById('profileName').textContent = name;
+// ----- Storage -----
+let meetings = [];
+let sessions = [];
+let resources = [];
+let recent = [];
+let otherInfo = [];
+let members = [];
 
-      document.getElementById('avatar').textContent =
-        name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
+// ----- Add Functions -----
+function addMeeting(){
+  const title = document.getElementById('meetingTitle').value;
+  const link = document.getElementById('meetingLink').value;
+  if(!title || !link) return alert("Enter title and link");
+  meetings.push({title, link});
+  renderMeetings();
+}
 
-      createDemoData();
-    })();
-  </script>
+function addSession(){
+  const title = document.getElementById('sessionTitle').value;
+  const host = document.getElementById('sessionHost').value;
+  if(!title || !host) return alert("Enter title and host");
+  sessions.push({title, host});
+  renderSessions();
+}
+
+function addResource(){
+  const title = document.getElementById('resourceTitle').value;
+  const link = document.getElementById('resourceLink').value;
+  if(!title || !link) return alert("Enter title and link");
+  resources.push({title, link});
+  renderResources();
+}
+
+function addRecent(){
+  const text = document.getElementById('recentText').value;
+  if(!text) return alert("Enter text");
+  recent.push({text});
+  renderRecent();
+}
+
+function addOther(){
+  const text = document.getElementById('otherText').value;
+  if(!text) return alert("Enter text");
+  otherInfo.push({text});
+  renderOther();
+}
+
+function addMember(){
+  if(!admins.includes(currentUser)) return alert("Only admins can add members");
+  const name = document.getElementById('newMemberName').value;
+  const phone = document.getElementById('newMemberPhone').value;
+  if(!name || !phone) return alert("Enter name and phone");
+  members.push({name, phone});
+  alert(`Member ${name} added`);
+}
+
+// ----- Render Functions -----
+function renderMeetings(){
+  const ul = document.getElementById('meetingList');
+  ul.innerHTML = "";
+  meetings.forEach((m,i)=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${m.title}</span> 
+                    <a href="${m.link}" target="_blank">Link</a>` +
+                    (admins.includes(currentUser) ? 
+                      `<button class="icon-btn" onclick="deleteMeeting(${i})">Delete</button>` : "");
+    ul.appendChild(li);
+  });
+}
+
+function deleteMeeting(index){
+  meetings.splice(index,1);
+  renderMeetings();
+}
+
+function renderSessions(){
+  const ul = document.getElementById('sessionList');
+  ul.innerHTML = "";
+  sessions.forEach((s,i)=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${s.title} (Host: ${s.host})</span>` +
+      (admins.includes(currentUser) ? `<button class="icon-btn" onclick="deleteSession(${i})">Delete</button>` : "");
+    ul.appendChild(li);
+  });
+}
+
+function deleteSession(index){ sessions.splice(index,1); renderSessions(); }
+
+function renderResources(){
+  const ul = document.getElementById('resourceList');
+  ul.innerHTML = "";
+  resources.forEach((r,i)=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${r.title}</span> <a href="${r.link}" target="_blank">Link</a>` +
+      (admins.includes(currentUser) ? `<button class="icon-btn" onclick="deleteResource(${i})">Delete</button>` : "");
+    ul.appendChild(li);
+  });
+}
+
+function deleteResource(index){ resources.splice(index,1); renderResources(); }
+
+function renderRecent(){
+  const ul = document.getElementById('recentList');
+  ul.innerHTML = "";
+  recent.forEach((r,i)=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${r.text}</span>` +
+      (admins.includes(currentUser) ? `<button class="icon-btn" onclick="deleteRecent(${i})">Delete</button>` : "");
+    ul.appendChild(li);
+  });
+}
+
+function deleteRecent(index){ recent.splice(index,1); renderRecent(); }
+
+function renderOther(){
+  const ul = document.getElementById('otherList');
+  ul.innerHTML = "";
+  otherInfo.forEach((r,i)=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${r.text}</span>` +
+      (admins.includes(currentUser) ? `<button class="icon-btn" onclick="deleteOther(${i})">Delete</button>` : "");
+    ul.appendChild(li);
+  });
+}
+
+function deleteOther(index){ otherInfo.splice(index,1); renderOther(); }
+
+// ----- Logout -----
+function logout(){ sessionStorage.clear(); location.reload(); }
+</script>
 
 </body>
-
 </html>
