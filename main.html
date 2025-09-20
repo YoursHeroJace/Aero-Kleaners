@@ -2,120 +2,110 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Member Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg-dark: #0c0e16;
-  --bg-card: #141822;
-  --neon: #00e0ff;
-  --neon-dark: #0088aa;
-  --text: #e4e4e4;
+  --bg-dark:#0c0e16;
+  --bg-card:#141822;
+  --neon:#00e0ff;
+  --text:#e4e4e4;
 }
-* { box-sizing: border-box; margin:0; padding:0; }
-
-body {
-  font-family: 'Inter', sans-serif;
-  background: var(--bg-dark);
-  color: var(--text);
-  display: flex;
-  height: 100vh;
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg-dark);
+  color:var(--text);
+  display:flex;
+  height:100vh;
 }
 
 /* SIDEBAR */
-.sidebar {
-  width: 230px;
-  background: #0f121b;
-  border-right: 1px solid rgba(255,255,255,0.07);
-  padding: 30px 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.sidebar{
+  width:230px;
+  background:#0f121b;
+  border-right:1px solid rgba(255,255,255,0.07);
+  padding:30px 20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
 }
-.sidebar h2 {
-  color: var(--neon);
-  font-size: 1.4rem;
-  margin-bottom: 40px;
+.sidebar h2{
+  color:var(--neon);
+  font-size:1.4rem;
+  margin-bottom:40px;
 }
-.nav-links a {
-  display: block;
-  color: var(--text);
-  text-decoration: none;
-  padding: 12px 0;
-  font-weight: 500;
-  border-left: 3px solid transparent;
-  transition: 0.2s;
+.nav-links a{
+  display:block;
+  color:var(--text);
+  text-decoration:none;
+  padding:12px 0;
+  font-weight:500;
+  border-left:3px solid transparent;
+  transition:.2s;
+  cursor:pointer;
 }
-.nav-links a:hover {
-  color: var(--neon);
-  border-left: 3px solid var(--neon);
-  padding-left: 8px;
+.nav-links a:hover,
+.nav-links a.active{
+  color:var(--neon);
+  border-left:3px solid var(--neon);
+  padding-left:8px;
 }
-.logout-btn {
-  background: var(--neon);
-  border: none;
-  color: #000;
-  padding: 10px;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background .2s;
+.logout-btn{
+  background:var(--neon);
+  border:none;
+  color:#000;
+  padding:10px;
+  border-radius:6px;
+  font-weight:600;
+  cursor:pointer;
+  transition:background .2s;
 }
-.logout-btn:hover {
-  background: var(--neon-dark);
-}
+.logout-btn:hover{background:#00aacc;}
 
 /* MAIN CONTENT */
-.main {
-  flex: 1;
-  padding: 40px;
-  overflow-y: auto;
+.main{
+  flex:1;
+  padding:40px;
+  overflow-y:auto;
 }
-.main-header {
-  margin-bottom: 30px;
+.main-header h1{
+  font-size:1.8rem;
+  color:var(--neon);
+  margin-bottom:10px;
 }
-.main-header h1 {
-  font-size: 1.8rem;
-  color: var(--neon);
-}
-.main-header p {
-  font-size: 0.95rem;
-  color: #aaa;
-  margin-top: 4px;
-}
+.main-header p{color:#aaa;margin-bottom:25px;}
 
 /* CARDS */
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
-  gap: 20px;
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:20px;
 }
-.card {
-  background: var(--bg-card);
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0,224,255,0.1);
-  transition: transform .2s;
+.card{
+  background:var(--bg-card);
+  border-radius:12px;
+  padding:20px;
+  box-shadow:0 0 10px rgba(0,224,255,0.1);
+  transition:transform .2s;
+  cursor:pointer;
 }
-.card:hover {
-  transform: translateY(-4px);
+.card:hover{transform:translateY(-4px);}
+.card h3{
+  color:var(--neon);
+  margin-bottom:10px;
+  font-size:1.2rem;
 }
-.card h3 {
-  color: var(--neon);
-  margin-bottom: 10px;
-  font-size: 1.2rem;
-}
-.card p {
-  font-size: 0.9rem;
-  line-height: 1.4;
-}
+.card p{font-size:.9rem;line-height:1.4;}
 
-/* Responsive */
-@media(max-width:700px){
-  .sidebar { display:none; }
-  body { flex-direction: column; }
-  .main { padding:20px; }
+/* Content Section */
+#dynamic-content{
+  margin-top:20px;
+  background:var(--bg-card);
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 0 10px rgba(0,224,255,0.1);
 }
 </style>
 </head>
@@ -124,10 +114,10 @@ body {
     <div>
       <h2>Club Panel</h2>
       <div class="nav-links">
-        <a href="#">Dashboard</a>
-        <a href="#">Recent</a>
-        <a href="#">Sessions</a>
-        <a href="#">Other Info</a>
+        <a class="active" onclick="showSection('dashboard')">Dashboard</a>
+        <a onclick="showSection('recent')">Recent</a>
+        <a onclick="showSection('sessions')">Sessions</a>
+        <a onclick="showSection('other')">Other Info</a>
       </div>
     </div>
     <button class="logout-btn" onclick="logout()">Logout</button>
@@ -139,34 +129,63 @@ body {
       <p>Here’s what’s happening in your club right now.</p>
     </div>
 
+    <!-- Cards -->
     <div class="cards">
-      <div class="card">
+      <div class="card" onclick="showSection('meetings')">
         <h3>Meetings</h3>
         <p>Stay tuned for upcoming schedules.<br><strong>Coming Soon…</strong></p>
       </div>
-      <div class="card">
+      <div class="card" onclick="showSection('recent')">
         <h3>Recent Activity</h3>
         <p>No new updates yet. Check back later.</p>
       </div>
-      <div class="card">
+      <div class="card" onclick="showSection('sessions')">
         <h3>Sessions</h3>
         <p>Track all previous and upcoming sessions from here.</p>
       </div>
-      <div class="card">
+      <div class="card" onclick="showSection('resources')">
         <h3>Resources</h3>
         <p>Access guides, documentation and club assets anytime.</p>
       </div>
     </div>
+
+    <!-- Dynamic content changes here -->
+    <div id="dynamic-content"></div>
   </div>
 
 <script>
-  // load member name from session
-  document.getElementById('memberName').textContent = sessionStorage.getItem('name') || 'Member';
+const member = sessionStorage.getItem('name') || 'Member';
+document.getElementById('memberName').textContent = member;
 
-  function logout(){
-    sessionStorage.clear();
-    window.location.href = 'login.html';
-  }
+function logout(){
+  sessionStorage.clear();
+  window.location.href='login.html';
+}
+
+// Sections content
+const content = {
+  dashboard:`<h2 style="color:var(--neon)">Dashboard</h2>
+    <p>Overview of all club activities at a glance.</p>`,
+  recent:`<h2 style="color:var(--neon)">Recent Activity</h2>
+    <p>No recent activity right now. Check back later!</p>`,
+  sessions:`<h2 style="color:var(--neon)">Sessions</h2>
+    <p>Here you'll find upcoming and past session details soon.</p>`,
+  other:`<h2 style="color:var(--neon)">Other Info</h2>
+    <p>Additional club-related info will appear here.</p>`,
+  meetings:`<h2 style="color:var(--neon)">Meetings Schedule</h2>
+    <p>Stay tuned! Meeting schedules coming soon.</p>`,
+  resources:`<h2 style="color:var(--neon)">Resources</h2>
+    <p>Access to all guides, documentation, and materials.</p>`
+};
+
+// Show section & highlight menu
+function showSection(key){
+  document.getElementById('dynamic-content').innerHTML = content[key] || '';
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a=>{
+    if(a.textContent.toLowerCase().includes(key.split(' ')[0])) a.classList.add('active');
+  });
+}
 </script>
 </body>
 </html>
