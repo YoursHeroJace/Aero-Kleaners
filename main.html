@@ -14,6 +14,7 @@ body{
   height:100vh;
   background:#0c0e16;
   color:#e4e4e4;
+  overflow:hidden;
 }
 .sidebar{
   width:230px;
@@ -28,6 +29,10 @@ body{
   color:#00e0ff;
   font-size:1.4rem;
   margin-bottom:40px;
+  transition: transform 0.3s;
+}
+.sidebar h2:hover{
+  transform: scale(1.05);
 }
 .sidebar a{
   display:block;
@@ -36,7 +41,7 @@ body{
   padding:12px 0;
   font-weight:500;
   border-left:3px solid transparent;
-  transition:0.2s;
+  transition:0.3s;
   cursor:pointer;
 }
 .sidebar a:hover,
@@ -53,9 +58,12 @@ body{
   border-radius:6px;
   font-weight:600;
   cursor:pointer;
-  transition:background 0.2s;
+  transition: all 0.3s;
 }
-.logout-btn:hover{background:#00aacc;}
+.logout-btn:hover{
+  background:#00aacc;
+  transform: scale(1.05);
+}
 
 .main{
   flex:1;
@@ -65,7 +73,14 @@ body{
 .main h1{
   color:#00e0ff;
   margin-top:0;
+  opacity:0;
+  animation: fadeInDown 0.6s forwards;
 }
+#sub-text{
+  opacity:0;
+  animation: fadeInDown 0.6s 0.2s forwards;
+}
+
 .cards{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
@@ -77,13 +92,49 @@ body{
   border-radius:10px;
   padding:20px;
   box-shadow:0 4px 12px rgba(0,0,0,0.25);
+  transform: translateY(20px);
+  opacity:0;
+  animation: cardFadeIn 0.5s forwards;
 }
+.card:nth-child(1){animation-delay:0.2s;}
+.card:nth-child(2){animation-delay:0.4s;}
+.card:nth-child(3){animation-delay:0.6s;}
+.card:nth-child(4){animation-delay:0.8s;}
 .card h3{
   margin-top:0;
   color:#00e0ff;
+  transition: transform 0.3s;
 }
-.tab-content{display:none;}
-.tab-content.active{display:block;}
+.card:hover h3{
+  transform: scale(1.05);
+}
+.card:hover{
+  transform: translateY(-5px);
+  box-shadow:0 8px 16px rgba(0,0,0,0.4);
+}
+
+.tab-content{
+  display:none;
+  opacity:0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+.tab-content.active{
+  display:block;
+  opacity:1;
+  transform: translateY(0);
+}
+
+/* ---------- Animations ---------- */
+@keyframes fadeInDown {
+  from {opacity:0; transform: translateY(-20px);}
+  to {opacity:1; transform: translateY(0);}
+}
+
+@keyframes cardFadeIn {
+  from {opacity:0; transform: translateY(20px);}
+  to {opacity:1; transform: translateY(0);}
+}
 </style>
 </head>
 <body>
