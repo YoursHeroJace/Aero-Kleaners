@@ -1,107 +1,388 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Club Panel — Members</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-<style>
-/* (Keep all your existing main.html styles here, unchanged) */
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Club Panel — Members</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --accent: #00e0ff;
+      --accent-2: #0072ff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: #111;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .app {
+      display: flex;
+      width: 100%;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      background: #1a1a1a;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .brand .logo {
+      width: 50px;
+      height: 50px;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      font-weight: 700;
+      color: #001;
+      margin-right: 12px;
+    }
+
+    .brand h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      background: #333;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      font-weight: 700;
+    }
+
+    .nav button {
+      display: block;
+      width: 100%;
+      padding: 10px 12px;
+      margin: 6px 0;
+      border: none;
+      background: none;
+      color: #ccc;
+      text-align: left;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .nav button.active,
+    .nav button:hover {
+      background: rgba(0, 224, 255, 0.2);
+      color: #00e0ff;
+    }
+
+    .side-footer button {
+      width: 100%;
+      padding: 10px;
+      margin: 4px 0;
+      border: none;
+      border-radius: 8px;
+      background: #222;
+      color: #ccc;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .side-footer button:hover {
+      background: rgba(0, 224, 255, 0.2);
+      color: #00e0ff;
+    }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      padding: 25px;
+      overflow-y: auto;
+    }
+
+    section {
+      display: none;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    button.primary {
+      padding: 8px 14px;
+      background: var(--accent);
+      color: #001;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button.primary:hover {
+      background: var(--accent-2);
+    }
+
+    .card {
+      background: #222;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0;
+      border: none;
+      border-radius: 8px;
+      background: #1f1f1f;
+      color: #eee;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #001;
+      font-weight: 700;
+      display: none;
+      z-index: 999;
+    }
+  </style>
 </head>
+
 <body>
-<div class="app">
-  <!-- SIDEBAR -->
-  <aside class="sidebar" aria-label="Main sidebar">
-    <div>
-      <div class="brand">
-        <div class="logo">AK</div>
-        <div>
-          <h3>Aero Kleaners</h3>
-          <p class="small">Member portal</p>
+  <div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div>
+        <!-- Brand -->
+        <div class="brand">
+          <div class="logo">AK</div>
+          <div>
+            <h3>Aero Kleaners</h3>
+            <p class="small">Member portal</p>
+          </div>
         </div>
-      </div>
 
-      <div class="profile" title="Logged in user">
-        <div class="avatar" id="avatar">SS</div>
-        <div class="meta">
-          <div class="name" id="profileName">Shahil Shivam</div>
-          <div class="small">Member since 2023</div>
+        <!-- Profile -->
+        <div class="profile">
+          <div class="avatar" id="avatar">SS</div>
+          <div class="meta">
+            <div class="name" id="profileName">Member</div>
+            <div class="small">Member since 2023</div>
+          </div>
         </div>
+
+        <!-- Navigation -->
+        <nav class="nav">
+          <button class="active" data-target="dashboard">Dashboard</button>
+          <button data-target="meetings">Meetings</button>
+          <button data-target="recent">Recent Activity</button>
+          <button data-target="sessions">Sessions</button>
+          <button data-target="resources">Resources</button>
+          <button data-target="other">Other Info</button>
+        </nav>
       </div>
 
-      <div class="search">
-        <input id="searchInput" placeholder="Search meetings, sessions..." aria-label="search">
+      <!-- Footer -->
+      <div class="side-footer">
+        <button onclick="showToast('Help & Support clicked')">Help & Support</button>
+        <button onclick="showToast('Settings clicked')">Settings</button>
+        <button onclick="logout()">Logout</button>
       </div>
+    </aside>
 
-      <nav class="nav">
-        <button class="active" data-target="dashboard">Dashboard</button>
-        <button data-target="meetings">Meetings</button>
-        <button data-target="recent">Recent Activity</button>
-        <button data-target="sessions">Sessions</button>
-        <button data-target="resources">Resources</button>
-        <button data-target="other">Other Info</button>
-      </nav>
-    </div>
+    <!-- Main Content -->
+    <main class="main">
 
-    <div class="side-footer">
-      <button class="btn-ghost" onclick="openHelp()">Help & Support</button>
-      <button class="btn-ghost" onclick="openSettings()">Settings</button>
-      <button class="btn-ghost" onclick="logout()" style="background: linear-gradient(90deg, var(--accent), var(--accent-2)); color:#001;">Logout</button>
-    </div>
-  </aside>
+      <!-- Dashboard -->
+      <section id="dashboard" class="active">
+        <h1>Dashboard</h1>
+        <div class="card">Welcome, <span id="user-name">Member</span>!</div>
+        <div class="card">Quick Stats (Demo)</div>
+      </section>
 
-  <!-- MAIN -->
-  <main class="main">
-    <!-- (Keep your existing main.html content here) -->
-  </main>
-</div>
+      <!-- Meetings -->
+      <section id="meetings">
+        <h1>Meetings</h1>
+        <button class="primary" onclick="openCreateMeeting()">Create Meeting</button>
+        <div id="meetingsList"></div>
+      </section>
 
-<div id="modalRoot" style="display:none"></div>
-<div id="toast" style="position:fixed;right:20px;bottom:20px;z-index:9999;display:none">
-  <div style="background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#001;padding:12px 16px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.6);font-weight:700">Hello</div>
-</div>
+      <!-- Recent Activity -->
+      <section id="recent">
+        <h1>Recent Activity</h1>
+        <div class="card">No recent activity yet.</div>
+      </section>
 
-<script>
-const ADMIN_USERS = ["Dhruv", "Harshit Panwar", "Shahil Shivam"];
-function isAdmin(){ return sessionStorage.getItem('isAdmin') === 'true'; }
+      <!-- Sessions -->
+      <section id="sessions">
+        <h1>Sessions</h1>
+        <button class="primary" onclick="openCreateSession()">Create Session</button>
+        <div id="sessionsList"></div>
+      </section>
 
-function updatePrivileges(){
-  document.querySelectorAll('[onclick^="openCreateMeeting"]').forEach(btn => btn.style.display = isAdmin() ? '' : 'none');
-  document.querySelectorAll('[onclick^="openCreateSession"]').forEach(btn => btn.style.display = isAdmin() ? '' : 'none');
-  document.querySelectorAll('[onclick*="Upload Resource"]').forEach(btn => btn.style.display = isAdmin() ? '' : 'none');
-}
+      <!-- Resources -->
+      <section id="resources">
+        <h1>Resources</h1>
+        <button class="primary" onclick="uploadResource()">Upload Resource</button>
+        <div id="resourcesList"></div>
+      </section>
 
-function openCreateMeeting(){
-  if(!isAdmin()){ showToast('Access denied: Admins only'); return; }
-  // original create meeting code here
-}
+      <!-- Other Info -->
+      <section id="other">
+        <h1>Other Info</h1>
+        <div class="card">Miscellaneous info goes here.</div>
+      </section>
 
-function openCreateSession(){
-  if(!isAdmin()){ showToast('Access denied: Admins only'); return; }
-  // original create session code here
-}
+    </main>
 
-function createMeeting(){
-  if(!isAdmin()){ showToast('Access denied: Admins only'); return; }
-  // original code to create meeting
-}
+  </div>
 
-// keep all other functions same as before, including renderMeetings(), navigate(), logout(), showToast(), etc.
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
 
-(function init(){
-  if(sessionStorage.getItem('loggedIn')!=='true'){ window.location.href='login.html'; return; }
+  <!-- Script -->
+  <script>
+    // Admin users list
+    const ADMIN_USERS = ["Dhruv", "Harshit Panwar", "Shahil Shivam"];
 
-  const name = sessionStorage.getItem('name') || 'Member';
-  document.querySelector('#user-name').textContent = name;
-  document.querySelector('#profileName').textContent = name;
-  document.querySelector('#avatar').textContent = name.split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase();
+    // Check if logged-in user is admin
+    function isAdmin() {
+      return sessionStorage.getItem('isAdmin') === 'true';
+    }
 
-  updatePrivileges(); // enforce role-based visibility
-  // populate demo data and initialize
-  createDemoData();
-  navigate('dashboard');
-})();
-</script>
+    // Toast message function
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => t.style.display = 'none', 3000);
+    }
+
+    // Logout function
+    function logout() {
+      sessionStorage.clear();
+      window.location.href = 'login.html';
+    }
+
+    // Sidebar navigation
+    function navigate(target) {
+      document.querySelectorAll('main section').forEach(s => s.classList.remove('active'));
+      document.getElementById(target).classList.add('active');
+    }
+
+    document.querySelectorAll('.nav button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        navigate(btn.dataset.target);
+        document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    // Demo data
+    let meetings = [], sessions = [], resources = [];
+
+    function createDemoData() {
+      meetings = [{ title: "Team Meeting 1", date: "2025-09-25" }];
+      sessions = [{ title: "Session A", date: "2025-09-26" }];
+      resources = [{ title: "Resource PDF", link: "#" }];
+      renderMeetings();
+      renderSessions();
+      renderResources();
+    }
+
+    // Admin-only actions
+    function openCreateMeeting() {
+      if (!isAdmin()) { showToast('Access denied: Admins only'); return; }
+      const title = prompt("Meeting Title:");
+      if (title) { meetings.push({ title, date: new Date().toLocaleDateString() }); renderMeetings(); }
+    }
+
+    function openCreateSession() {
+      if (!isAdmin()) { showToast('Access denied: Admins only'); return; }
+      const title = prompt("Session Title:");
+      if (title) { sessions.push({ title, date: new Date().toLocaleDateString() }); renderSessions(); }
+    }
+
+    function uploadResource() {
+      if (!isAdmin()) { showToast('Access denied: Admins only'); return; }
+      const title = prompt("Resource Name:");
+      if (title) { resources.push({ title, link: '#' }); renderResources(); }
+    }
+
+    // Render lists
+    function renderMeetings() {
+      const el = document.getElementById('meetingsList');
+      el.innerHTML = meetings.map(m => `<div class="card">${m.title} — ${m.date}</div>`).join('');
+    }
+
+    function renderSessions() {
+      const el = document.getElementById('sessionsList');
+      el.innerHTML = sessions.map(s => `<div class="card">${s.title} — ${s.date}</div>`).join('');
+    }
+
+    function renderResources() {
+      const el = document.getElementById('resourcesList');
+      el.innerHTML = resources.map(r => `<div class="card"><a href="${r.link}" style="color:#00e0ff">${r.title}</a></div>`).join('');
+    }
+
+    // Initialize page
+    (function init() {
+      if (sessionStorage.getItem('loggedIn') !== 'true') { window.location.href = 'login.html'; return; }
+
+      const name = sessionStorage.getItem('name') || 'Member';
+      document.getElementById('user-name').textContent = name;
+      document.getElementById('profileName').textContent = name;
+
+      document.getElementById('avatar').textContent =
+        name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
+
+      createDemoData();
+    })();
+  </script>
+
 </body>
+
 </html>
