@@ -1,489 +1,332 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Club Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Club Panel — Members</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-/* ---------------- RESET ---------------- */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
-}
+  :root {
+    --bg-dark: #0d0d0d;
+    --bg-panel: #111;
+    --accent: #00e0ff;
+    --accent-dark: #0072ff;
+    --text-light: #e0e0e0;
+    --muted: #aaa;
+    --radius: 14px;
+  }
 
-body {
-    background: #f4f7fb;
-    color: #333;
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
-}
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: radial-gradient(circle at top left,#0d0d0d,#1a1a1a 70%);
+    color: var(--text-light);
+    min-height:100vh;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+  }
 
-button {
-    cursor: pointer;
-    transition: 0.3s;
-}
+  .app {
+    display:flex;
+    gap:20px;
+    width:100%;
+    max-width:1400px;
+    padding:20px;
+  }
 
-button:hover {
-    opacity: 0.85;
-}
+  /* Sidebar */
+  .sidebar {
+    width:260px;
+    background: var(--bg-panel);
+    border-radius: calc(var(--radius)+4px);
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
 
-/* ---------------- SIDEBAR ---------------- */
-.sidebar {
-    width: 250px;
-    background: #1e1e2f;
-    color: #fff;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-}
+  .brand {
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-bottom:20px;
+  }
 
-.sidebar h2 {
-    margin-bottom: 20px;
-    text-align: center;
-    color: #0ff;
-}
+  .logo {
+    width:44px; height:44px;
+    border-radius:10px;
+    background: linear-gradient(135deg,var(--accent),var(--accent-dark));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    color:#002;
+  }
 
-.sidebar button {
-    background: #2a2a40;
-    color: #fff;
-    border: none;
-    padding: 12px 10px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    text-align: left;
-    font-weight: 500;
-}
+  .brand h3 { color: var(--accent); font-size:1.1rem; margin:0; }
+  .brand p { font-size:0.8rem; color: var(--muted); margin:0; }
 
-.sidebar button.logout {
-    margin-top: auto;
-    background: #ff3864;
-    color: #fff;
-    font-weight: 700;
-}
+  .profile {
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-bottom:20px;
+  }
 
-.sidebar button.logout:hover {
-    background: #ff1f4b;
-}
+  .avatar {
+    width:56px; height:56px;
+    border-radius:12px;
+    background: linear-gradient(135deg,#062026, #002b3a);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--accent);
+    font-weight:700;
+    font-size:1rem;
+  }
 
-/* ---------------- MAIN CONTENT ---------------- */
-.main {
-    flex: 1;
-    overflow-y: auto;
-    padding: 25px;
-    background: #f4f7fb;
-}
+  .profile .meta .name { font-weight:600; color:#fff; }
+  .profile .meta .small { font-size:0.8rem; color:var(--muted); }
 
-.main h1 {
-    margin-bottom: 20px;
-    color: #1e1e2f;
-}
+  .nav { display:flex; flex-direction:column; gap:6px; }
+  .nav button {
+    background:none; border:none; color:var(--muted); text-align:left;
+    padding:10px; border-radius:8px; cursor:pointer; font-weight:600;
+    transition: all 0.2s;
+  }
+  .nav button.active { background: rgba(0,224,255,0.05); color:var(--accent); }
+  .nav button:hover { color:#fff; transform: translateX(5px); }
 
-.section {
-    display: none;
-}
+  .side-footer { display:flex; flex-direction:column; gap:10px; }
+  .btn-ghost {
+    border:1px dashed rgba(255,255,255,0.05);
+    padding:10px;
+    border-radius:10px;
+    background:transparent;
+    color:var(--muted);
+    font-weight:600;
+    cursor:pointer;
+  }
+  .btn-ghost.logout { background: linear-gradient(90deg,var(--accent),var(--accent-dark)); color:#001; }
 
-/* ---------------- CARDS ---------------- */
-.card {
-    background: #fff;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-}
+  /* Main */
+  .main { flex:1; display:flex; flex-direction:column; gap:15px; }
 
-.card h3 {
-    margin-bottom: 15px;
-    color: #0aa;
-}
+  .topbar {
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+  }
+  .page-title { font-size:1.45rem; font-weight:700; color:var(--accent); }
+  .page-sub { font-size:0.9rem; color:var(--muted); margin-top:2px; }
 
-/* ---------------- LISTS ---------------- */
-.item-list {
-    list-style: none;
-    max-height: 300px;
-    overflow-y: auto;
-    padding-right: 5px;
-}
+  .controls button {
+    background: rgba(255,255,255,0.03); border:none; border-radius:10px; padding:8px 10px; cursor:pointer;
+    color:var(--muted); font-weight:700;
+  }
 
-.item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid #eee;
-}
+  .content { display:grid; grid-template-columns:1fr 380px; gap:20px; }
 
-.item span {
-    flex: 1;
-    word-break: break-word;
-}
+  .primary { display:flex; flex-direction:column; gap:18px; }
 
-.item a {
-    margin-left: 10px;
-    color: #0aa;
-    text-decoration: none;
-}
+  .card-row { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:14px; }
 
-.item a:hover {
-    text-decoration: underline;
-}
+  .card {
+    background: rgba(255,255,255,0.01); padding:18px; border-radius:12px; border:1px solid rgba(255,255,255,0.02);
+    transition: all 0.2s; cursor:pointer;
+  }
+  .card:hover { transform: translateY(-5px); box-shadow:0 10px 30px rgba(0,0,0,0.5); }
 
-/* ---------------- BUTTONS ---------------- */
-.icon-btn {
-    background: #ff3864;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 6px;
-    font-weight: 500;
-}
+  .card h3 { margin-bottom:8px; color:var(--accent); }
+  .card p { margin:0; color:var(--muted); font-size:0.9rem; line-height:1.4; }
 
-.icon-btn:hover {
-    background: #ff1f4b;
-}
+  .panel {
+    background: rgba(255,255,255,0.01);
+    border-radius:12px;
+    padding:16px;
+    border:1px solid rgba(255,255,255,0.02);
+  }
 
-.add-btn {
-    background: #0aa;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-    margin-top: 5px;
-}
+  .item-list { list-style:none; display:flex; flex-direction:column; gap:10px; padding:0; }
+  .item { display:flex; justify-content:space-between; background: rgba(255,255,255,0.02); padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.01); }
+  .item .left { display:flex; flex-direction:column; }
+  .item .actions button { margin-left:5px; }
 
-.add-btn:hover {
-    background: #078;
-}
+  .badge {
+    padding:5px 10px; border-radius:999px; font-weight:700;
+    color:#001; background: linear-gradient(90deg,#bff7ff,#80d3ff);
+    text-decoration:none;
+  }
 
-/* ---------------- FORMS ---------------- */
-input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-}
+  /* modal */
+  .modal-backdrop {
+    position:fixed; inset:0; background: rgba(2,6,10,0.6); display:flex; align-items:center; justify-content:center; z-index:9999;
+  }
+  .modal {
+    width:720px; max-width:95%; background:var(--bg-panel); border-radius:12px; padding:18px;
+  }
 
-input:focus, textarea:focus {
-    outline: none;
-    border-color: #0aa;
-    box-shadow: 0 0 5px rgba(0,170,255,0.3);
-}
+  /* toast */
+  #toast { position:fixed; right:20px; bottom:20px; z-index:9999; display:none; }
+  #toast div { background: linear-gradient(90deg,var(--accent),var(--accent-dark)); color:#001; padding:12px 16px; border-radius:10px; font-weight:700; }
+
 </style>
 </head>
 <body>
+<div class="app">
 
-<!-- ---------------- SIDEBAR ---------------- -->
-<div class="sidebar">
-    <h2>Club Panel</h2>
-    <button onclick="showSection('dashboard')">Dashboard</button>
-    <button onclick="showSection('meetings')">Meetings</button>
-    <button onclick="showSection('sessions')">Sessions</button>
-    <button onclick="showSection('documents')">Documents</button>
-    <button onclick="showSection('recent')">Recent Activity</button>
-    <button onclick="showSection('other')">Other Info</button>
-    <button onclick="showSection('members')">Add Members</button>
-    <button class="logout" onclick="logout()">Logout</button>
-</div>
-
-<!-- ---------------- MAIN CONTENT ---------------- -->
-<div class="main">
-
-    <h1>Welcome, <span id="userName">Member</span>!</h1>
-
-    <!-- ---------------- DASHBOARD ---------------- -->
-    <div class="section" id="dashboard">
-        <div class="card">
-            <h3>Quick Stats</h3>
-            <p>Total Members: <span id="totalMembers">0</span></p>
-            <p>Upcoming Meetings: <span id="totalMeetings">0</span></p>
-            <p>Active Sessions: <span id="totalSessions">0</span></p>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div>
+      <div class="brand">
+        <div class="logo">AK</div>
+        <div>
+          <h3>Aero Kleaners</h3>
+          <p>Member portal</p>
         </div>
+      </div>
+
+      <div class="profile">
+        <div class="avatar" id="avatar">SS</div>
+        <div class="meta">
+          <div class="name" id="profileName">Shahil Shivam</div>
+          <div class="small">Member since 2023</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="active" data-target="dashboard">Dashboard</button>
+        <button data-target="meetings">Meetings</button>
+        <button data-target="recent">Recent Activity</button>
+        <button data-target="sessions">Sessions</button>
+        <button data-target="resources">Resources</button>
+        <button data-target="other">Other Info</button>
+        <button data-target="members">Members</button>
+      </nav>
     </div>
 
-    <!-- ---------------- MEETINGS ---------------- -->
-    <div class="section" id="meetings">
-        <div class="card">
+    <div class="side-footer">
+      <button class="btn-ghost" onclick="openHelp()">Help & Support</button>
+      <button class="btn-ghost" onclick="openSettings()">Settings</button>
+      <button class="btn-ghost logout" onclick="logout()">Logout</button>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Welcome, <span id="user-name">Shahil Shivam</span>!</div>
+        <div class="page-sub">Refresh or click Logout to end your session</div>
+      </div>
+      <div class="controls">
+        <button title="Notifications" onclick="showToast('No new notifications')">🔔</button>
+        <button title="Profile" onclick="openProfile()">👤</button>
+      </div>
+    </div>
+
+    <section class="content">
+      <!-- Left column -->
+      <div class="primary">
+        <div class="card-row">
+          <div class="card" onclick="navigate('meetings')">
             <h3>Meetings</h3>
-            <ul class="item-list" id="meetingsList">
-                <!-- Injected meeting items -->
-            </ul>
-
-            <!-- Admin create meeting -->
-            <div id="adminMeetingForm">
-                <input type="text" id="meetingTitle" placeholder="Meeting Title">
-                <input type="date" id="meetingDate">
-                <input type="time" id="meetingTime">
-                <input type="text" id="meetingLocation" placeholder="Location">
-                <input type="text" id="meetingLink" placeholder="Meeting Link">
-                <textarea id="meetingDesc" placeholder="Description"></textarea>
-                <button class="add-btn" onclick="addMeeting()">Add Meeting</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ---------------- SESSIONS ---------------- -->
-    <div class="section" id="sessions">
-        <div class="card">
-            <h3>Sessions</h3>
-            <ul class="item-list" id="sessionsList">
-                <!-- Injected sessions -->
-            </ul>
-
-            <!-- Admin create session -->
-            <div id="adminSessionForm">
-                <input type="text" id="sessionName" placeholder="Session Name">
-                <input type="date" id="sessionDate">
-                <input type="text" id="sessionHost" placeholder="Host">
-                <button class="add-btn" onclick="addSession()">Add Session</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ---------------- DOCUMENTS ---------------- -->
-    <div class="section" id="documents">
-        <div class="card">
-            <h3>Documents</h3>
-            <ul class="item-list" id="documentsList">
-                <!-- Injected documents -->
-            </ul>
-
-            <!-- Admin post document -->
-            <div id="adminDocForm">
-                <input type="text" id="docTitle" placeholder="Document Title">
-                <input type="url" id="docLink" placeholder="Document Link">
-                <button class="add-btn" onclick="addDocument()">Post Document</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ---------------- RECENT ACTIVITY ---------------- -->
-    <div class="section" id="recent">
-        <div class="card">
+            <p>Upcoming meetings and links. Click to view or join.</p>
+          </div>
+          <div class="card" onclick="navigate('recent')">
             <h3>Recent Activity</h3>
-            <ul class="item-list" id="recentList">
-                <!-- Injected recent activity -->
-            </ul>
-
-            <div id="adminRecentForm">
-                <input type="text" id="recentText" placeholder="Activity text">
-                <button class="add-btn" onclick="addRecent()">Add Activity</button>
-            </div>
+            <p>Latest announcements and updates.</p>
+          </div>
+          <div class="card" onclick="navigate('sessions')">
+            <h3>Sessions</h3>
+            <p>Session library and recordings (admins can add new).</p>
+          </div>
+          <div class="card" onclick="navigate('resources')">
+            <h3>Resources</h3>
+            <p>Documents, guides and files (admins can post).</p>
+          </div>
+          <div class="card" onclick="navigate('other')">
+            <h3>Other Info</h3>
+            <p>Announcements, policies, contact info (admins can post).</p>
+          </div>
+          <div class="card" onclick="navigate('members')">
+            <h3>Members</h3>
+            <p>View all club members (admins can add new).</p>
+          </div>
         </div>
-    </div>
 
-    <!-- ---------------- OTHER INFO ---------------- -->
-    <div class="section" id="other">
-        <div class="card">
-            <h3>Other Information</h3>
-            <ul class="item-list" id="otherList">
-                <!-- Injected items -->
-            </ul>
+        <!-- Dynamic panels -->
+        <div id="dashboard" class="panel"></div>
+        <div id="meetings" class="panel"></div>
+        <div id="recent" class="panel"></div>
+        <div id="sessions" class="panel"></div>
+        <div id="resources" class="panel"></div>
+        <div id="other" class="panel"></div>
+        <div id="members" class="panel"></div>
+      </div>
 
-            <div id="adminOtherForm">
-                <input type="text" id="otherText" placeholder="Info text">
-                <button class="add-btn" onclick="addOther()">Post Info</button>
-            </div>
+      <!-- Right column -->
+      <aside class="secondary">
+        <div class="panel">
+          <h3>Quick Info</h3>
+          <ul class="item-list">
+            <li class="item"><span>Server Status:</span> <span class="badge">Online</span></li>
+            <li class="item"><span>Pending Tasks:</span> <span class="badge">3</span></li>
+            <li class="item"><span>New Members:</span> <span class="badge">1</span></li>
+          </ul>
         </div>
-    </div>
-
-    <!-- ---------------- MEMBERS ---------------- -->
-    <div class="section" id="members">
-        <div class="card">
-            <h3>Add Members (Admin Only)</h3>
-            <input type="text" id="newMemberName" placeholder="Member Name">
-            <input type="text" id="newMemberPhone" placeholder="Phone Number">
-            <button class="add-btn" onclick="addMember()">Add Member</button>
-        </div>
-    </div>
-
+      </aside>
+    </section>
+  </main>
 </div>
+
+<!-- Toast -->
+<div id="toast"><div id="toast-msg"></div></div>
 
 <script>
-/* ---------------- USERS ---------------- */
-const users = [
-    {username:"9818523773", password:"69125", name:"Dhruv"},
-    {username:"9461738616", password:"10382", name:"Harshit Panwar"},
-    {username:"8368992775", password:"93517", name:"Shahil Shivam"},
-    {username:"9654579176", password:"37591", name:"Nirvan Sharma"},
-];
+  // User info
+  const users = [
+    { username: "9818523773", password: "69125", name: "Dhruv" },
+    { username: "9461738616", password: "10382", name: "Harshit Panwar" },
+    { username: "8368992775", password: "93517", name: "Shahil Shivam" },
+    { username: "9654579176", password: "37591", name: "Nirvan Sharma" },
+    { username: "8521883562", password: "81320", name: "Vivek Kumar" },
+    { username: "8521883563", password: "33864", name: "Piyush Kumar Sah" },
+    { username: "7678629433", password: "11847", name: "Shivkant" },
+    { username: "9953539648", password: "29101", name: "Naitik Shekhar Mahajan" },
+    { username: "9000000000", password: "48357", name: "Monu Rekrot" },
+    { username: "8826584503", password: "62389", name: "Prabhesh Swesh" },
+    { username: "9971890335", password: "19291", name: "Kushant Kumar" },
+  ];
 
-let currentUser = sessionStorage.getItem('name') || "Guest";
-const admins = ["Dhruv","Harshit Panwar","Shahil Shivam"];
+  let currentUser = JSON.parse(localStorage.getItem('currentUser')) || users[2]; // default logged-in
+  const admins = ["Dhruv","Harshit Panwar","Shahil Shivam"];
 
-/* ---------------- INIT ---------------- */
-document.getElementById('userName').innerText = currentUser;
+  document.getElementById("user-name").textContent = currentUser.name;
+  document.getElementById("profileName").textContent = currentUser.name;
+  document.getElementById("avatar").textContent = currentUser.name.split(" ").map(n=>n[0]).join("");
 
-/* ---------------- SECTIONS ---------------- */
-function showSection(id){
-    document.querySelectorAll('.section').forEach(sec => sec.style.display='none');
-    document.getElementById(id).style.display='block';
+  function navigate(target) {
+    document.querySelectorAll(".panel").forEach(p=>p.style.display='none');
+    document.getElementById(target).style.display='block';
+  }
 
-    // Admin forms visibility
-    const isAdmin = admins.includes(currentUser);
-    document.querySelectorAll('#adminMeetingForm, #adminSessionForm, #adminDocForm, #adminRecentForm, #adminOtherForm, #members').forEach(f=>{
-        f.style.display = isAdmin ? 'block' : 'none';
-    });
-}
+  function showToast(msg) {
+    const toast = document.getElementById("toast");
+    document.getElementById("toast-msg").textContent = msg;
+    toast.style.display='block';
+    setTimeout(()=>toast.style.display='none',2000);
+  }
 
-/* ---------------- LOGOUT ---------------- */
-function logout(){
-    sessionStorage.removeItem('loggedIn');
-    sessionStorage.removeItem('name');
-    window.location.href = 'login.html';
-}
+  function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = "login.html";
+  }
 
-/* ---------------- DUMMY DATA ---------------- */
-let meetings = [];
-let sessions = [];
-let documents = [];
-let recentActivity = [];
-let otherInfo = [];
-let members = [];
+  function openHelp(){ showToast('Help clicked!'); }
+  function openSettings(){ showToast('Settings clicked!'); }
+  function openProfile(){ showToast('Profile clicked!'); }
 
-/* ---------------- ADD FUNCTIONS ---------------- */
-function addMeeting(){
-    const title = document.getElementById('meetingTitle').value;
-    const date = document.getElementById('meetingDate').value;
-    const time = document.getElementById('meetingTime').value;
-    const loc = document.getElementById('meetingLocation').value;
-    const link = document.getElementById('meetingLink').value;
-    const desc = document.getElementById('meetingDesc').value;
-
-    meetings.push({title,date,time,loc,link,desc});
-    renderMeetings();
-}
-
-function renderMeetings(){
-    const list = document.getElementById('meetingsList');
-    list.innerHTML = "";
-    meetings.forEach((m,i)=>{
-        const li = document.createElement('li');
-        li.className="item";
-        li.innerHTML = `<span>${m.title} (${m.date} ${m.time}) - <a href="${m.link}" target="_blank">${m.link}</a></span>`;
-        if(admins.includes(currentUser)){
-            const delBtn = document.createElement('button');
-            delBtn.className="icon-btn";
-            delBtn.innerText="Delete";
-            delBtn.onclick = ()=>{ meetings.splice(i,1); renderMeetings(); };
-            li.appendChild(delBtn);
-        }
-        list.appendChild(li);
-    });
-}
-
-/* ---------------- SIMILAR FUNCTIONS FOR SESSIONS, DOCUMENTS, RECENT, OTHER, MEMBERS ---------------- */
-function addSession(){
-    const name = document.getElementById('sessionName').value;
-    const date = document.getElementById('sessionDate').value;
-    const host = document.getElementById('sessionHost').value;
-    sessions.push({name,date,host});
-    renderSessions();
-}
-
-function renderSessions(){
-    const list = document.getElementById('sessionsList');
-    list.innerHTML="";
-    sessions.forEach((s,i)=>{
-        const li = document.createElement('li');
-        li.className="item";
-        li.innerText = `${s.name} (${s.date}) by ${s.host}`;
-        if(admins.includes(currentUser)){
-            const delBtn = document.createElement('button');
-            delBtn.className="icon-btn";
-            delBtn.innerText="Delete";
-            delBtn.onclick = ()=>{ sessions.splice(i,1); renderSessions(); };
-            li.appendChild(delBtn);
-        }
-        list.appendChild(li);
-    });
-}
-
-function addDocument(){
-    const title = document.getElementById('docTitle').value;
-    const link = document.getElementById('docLink').value;
-    documents.push({title,link});
-    renderDocuments();
-}
-
-function renderDocuments(){
-    const list = document.getElementById('documentsList');
-    list.innerHTML="";
-    documents.forEach((d,i)=>{
-        const li = document.createElement('li');
-        li.className="item";
-        li.innerHTML=`<a href="${d.link}" target="_blank">${d.title}</a>`;
-        if(admins.includes(currentUser)){
-            const delBtn = document.createElement('button');
-            delBtn.className="icon-btn";
-            delBtn.innerText="Delete";
-            delBtn.onclick = ()=>{ documents.splice(i,1); renderDocuments(); };
-            li.appendChild(delBtn);
-        }
-        list.appendChild(li);
-    });
-}
-
-function addRecent(){
-    const text = document.getElementById('recentText').value;
-    recentActivity.push(text);
-    renderRecent();
-}
-
-function renderRecent(){
-    const list = document.getElementById('recentList');
-    list.innerHTML="";
-    recentActivity.forEach((r,i)=>{
-        const li=document.createElement('li');
-        li.className="item";
-        li.innerText = r;
-        if(admins.includes(currentUser)){
-            const delBtn = document.createElement('button');
-            delBtn.className="icon-btn";
-            delBtn.innerText="Delete";
-            delBtn.onclick = ()=>{ recentActivity.splice(i,1); renderRecent(); };
-            li.appendChild(delBtn);
-        }
-        list.appendChild(li);
-    });
-}
-
-function addOther(){
-    const text = document.getElementById('otherText').value;
-    otherInfo.push(text);
-    renderOther();
-}
-
-function renderOther(){
-    const list = document.getElementById('otherList');
-    list.innerHTML="";
-    otherInfo.forEach((o,i)=>{
-        const li=document.createElement('li');
-        li.className="item";
-        li.innerText=o;
-        if(admins.includes(currentUser)){
-            const delBtn=document.createElement('button');
-            delBtn.className="icon-btn";
-            delBtn.innerText="Delete";
-            delBtn.onclick=()=>{otherInfo.splice(i,1);renderOther();}
-            li.appendChild(delBtn);
-        }
-        list.appendChild(li);
-    });
-}
-
-function addMember(){
-    const name = document.getElementById('newMemberName').value;
-    const phone = document.getElementById('newMemberPhone').value;
-    members.push({name,phone});
-    alert(`Member ${name} added!`);
-}
-
-/* ---------------- INITIAL DISPLAY ---------------- */
-showSection('dashboard');
+  navigate('dashboard');
 
 </script>
 </body>
