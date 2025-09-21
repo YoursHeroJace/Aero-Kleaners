@@ -201,19 +201,19 @@ body{
   <!-- Dashboard -->
   <div id="dashboard" class="tab-content active">
     <div class="cards">
-      <div class="card">
+      <div class="card dash-link" data-target="meetings">
         <h3>Meetings</h3>
         <p>Stay tuned for upcoming schedules.<br><strong>Coming Soon…</strong></p>
       </div>
-      <div class="card">
+      <div class="card dash-link" data-target="recent">
         <h3>Recent Activity</h3>
         <p>No new updates yet. Check back later.</p>
       </div>
-      <div class="card">
+      <div class="card dash-link" data-target="sessions">
         <h3>Sessions</h3>
         <p>Track all previous and upcoming sessions from here.</p>
       </div>
-      <div class="card">
+      <div class="card dash-link" data-target="resources">
         <h3>Resources</h3>
         <p>Access guides, documentation and club assets anytime.</p>
       </div>
@@ -295,6 +295,15 @@ document.querySelectorAll('.tab-link').forEach(link=>{
     document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
     link.classList.add('active');
     document.getElementById(link.dataset.target).classList.add('active');
+  });
+});
+
+// dashboard cards -> switch tabs
+document.querySelectorAll('.dash-link').forEach(card=>{
+  card.style.cursor = 'pointer';
+  card.addEventListener('click',()=>{
+    const target = card.dataset.target;
+    document.querySelector(`.tab-link[data-target="${target}"]`).click();
   });
 });
 
