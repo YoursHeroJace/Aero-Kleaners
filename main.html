@@ -18,7 +18,6 @@ body{
   background:#0c0e16;
   color:#e4e4e4;
   overflow:hidden;
-  /* page intro */
   animation: pageFade 1s ease forwards;
 }
 
@@ -31,7 +30,6 @@ body{
   display:flex;
   flex-direction:column;
   justify-content:space-between;
-  /* slide in */
   transform: translateX(-250px);
   animation: slideInLeft 0.8s 0.2s ease forwards;
 }
@@ -56,7 +54,6 @@ body{
   cursor:pointer;
   transition:0.3s;
 }
-/* ripple effect */
 .sidebar a::after{
   content:"";
   position:absolute;
@@ -130,10 +127,6 @@ body{
   opacity:0;
   animation: cardFloat 0.8s forwards;
 }
-.card:nth-child(1){animation-delay:1s;}
-.card:nth-child(2){animation-delay:1.2s;}
-.card:nth-child(3){animation-delay:1.4s;}
-.card:nth-child(4){animation-delay:1.6s;}
 .card h3{
   margin-top:0;
   color:#00e0ff;
@@ -229,68 +222,58 @@ body{
 
   <!-- Meetings -->
   <div id="meetings" class="tab-content">
-    <h2>Meetings</h2>
-    <ul>
-      <li>
-        <strong>Meeting #1</strong> – Date: 21 Sept 2025 – 
-        <a href="https://example.com/meeting1" target="_blank">Join Link</a>
-      </li>
-    </ul>
+    <div class="cards">
+      <div class="card">
+        <h3>Meetings</h3>
+        <p><strong>Meeting #1</strong> – Date: 21 Sept 2025 – 
+        <a href="https://example.com/meeting1" target="_blank">Join Link</a></p>
+      </div>
+    </div>
   </div>
 
-  <!-- Recent -->
+  <!-- Recent Activity -->
   <div id="recent" class="tab-content">
-    <h2>Recent Activity</h2>
-    <ul>
-      <li>
-        <strong>Quiz Competition</strong> – Date: 20 Sept 2025 – 
-        <a href="https://drive.google.com/dummyquizlink" target="_blank">Drive Link</a>
-      </li>
-    </ul>
+    <div class="cards">
+      <div class="card">
+        <h3>Recent Activity</h3>
+        <p><strong>Quiz Competition</strong> – Date: 20 Sept 2025 – 
+        <a href="https://drive.google.com/dummyquizlink" target="_blank">Drive Link</a></p>
+      </div>
+    </div>
   </div>
 
   <!-- Sessions -->
   <div id="sessions" class="tab-content">
-    <h2>Sessions</h2>
-    <ul>
-      <li>
-        <strong>Interview</strong> – Date: 22 Sept 2025
-      </li>
-    </ul>
+    <div class="cards">
+      <div class="card">
+        <h3>Sessions</h3>
+        <p><strong>Interview</strong> – Date: 22 Sept 2025</p>
+      </div>
+    </div>
   </div>
 
   <!-- Resources -->
   <div id="resources" class="tab-content">
-    <h2>Resources</h2>
-    <ul>
-      <li>
-        <strong>NGO Team Members</strong> – Posted: 21 Sept 2025 – 
-        <a href="https://drive.google.com/dummyngoteamlink" target="_blank">Drive Link</a>
-      </li>
-    </ul>
+    <div class="cards">
+      <div class="card">
+        <h3>Resources</h3>
+        <p><strong>NGO Team Members</strong> – Posted: 21 Sept 2025 – 
+        <a href="https://drive.google.com/dummyngoteamlink" target="_blank">Drive Link</a></p>
+      </div>
+    </div>
   </div>
 
   <!-- Other Info -->
   <div id="other" class="tab-content">
-    <h2>Other Info</h2>
-    <p>Extra club details and announcements.</p>
+    <div class="cards">
+      <div class="card">
+        <h3>Other Info</h3>
+        <p>Extra club details and announcements.</p>
+      </div>
+    </div>
   </div>
 </div>
-<script>
-document.querySelectorAll('.tab-link').forEach(link=>{
-  link.addEventListener('click',()=>{
-    document.querySelectorAll('.tab-link').forEach(l=>l.classList.remove('active'));
-    link.classList.add('active');
 
-    document.querySelectorAll('.tab-content').forEach(c=>{
-      c.classList.remove('active');
-      // force reflow for smooth re-entry
-      void c.offsetWidth;
-    });
-    document.getElementById(link.dataset.target).classList.add('active');
-  });
-});
-</script>
 <script>
 // login guard
 if(sessionStorage.getItem("loggedIn")!=="true"){
