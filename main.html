@@ -20,6 +20,19 @@ body{
   overflow:hidden;
   animation: pageFade 1s ease forwards;
 }
+ /* Prevent text selection and copying */
+body {
+  -webkit-user-select: none; /* Chrome, Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* IE/Edge */
+  user-select: none;         /* Standard */
+}
+input, textarea {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
 
 /* =============== Sidebar =============== */
 .sidebar{
