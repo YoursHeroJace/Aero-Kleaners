@@ -6,93 +6,116 @@
 <title>NGO Panel</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-/* ================= Global ================= */
-*{margin:0;padding:0;box-sizing:border-box;}
+/* =============== Global =============== */
+*{box-sizing:border-box;margin:0;padding:0;}
 body{
   font-family:'Inter',sans-serif;
   display:flex;
-  min-height:100vh;
+  height:100vh;
   background:#0c0e16;
   color:#e4e4e4;
   overflow:hidden;
-  animation: fadePage 0.8s ease forwards;
+  animation: pageFade 1s ease forwards;
+  -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
 }
-/* Prevent selection and dragging */
-body, a, img { user-select: none; -webkit-user-drag: none; -moz-user-drag:none; pointer-events:auto; }
-input, textarea { user-select: text; }
+input, textarea { -webkit-user-select:text; -moz-user-select:text; -ms-user-select:text; user-select:text; }
+a,img { -webkit-user-drag:none; user-drag:none; pointer-events:auto; }
 
-/* ================= Sidebar ================= */
+/* =============== Sidebar =============== */
 .sidebar{
-  width:220px;
+  width:230px;
   background:#0f121b;
-  padding:20px;
+  border-right:1px solid rgba(255,255,255,0.07);
+  padding:30px 20px;
   display:flex;
   flex-direction:column;
-  transition: width 0.4s ease;
-  overflow:hidden;
+  justify-content:flex-start;
+  overflow-y:auto;
+  height:100vh;
+  transition: width 0.3s;
 }
-.sidebar.collapsed { width:60px; }
+.sidebar.collapsed{ width:60px; padding:20px 8px; }
 .sidebar h2{
   color:#00e0ff;
   font-size:1.4rem;
   margin-bottom:30px;
-  transition: transform 0.3s, opacity 0.3s;
+  transition: transform 0.3s;
 }
-.sidebar.collapsed h2{opacity:0;}
+.sidebar h2:hover{ transform:scale(1.05);}
 .sidebar a{
-  display:flex;
-  align-items:center;
+  position:relative;
+  display:block;
   color:#e4e4e4;
   text-decoration:none;
-  padding:10px 8px;
+  padding:12px 0;
   font-weight:500;
   border-left:3px solid transparent;
-  margin-bottom:6px;
+  overflow:hidden;
+  transition:0.3s;
   cursor:pointer;
-  transition: all 0.3s;
-  white-space:nowrap;
 }
-.sidebar a:hover,
-.sidebar a.active{
-  color:#00e0ff;
-  border-left:3px solid #00e0ff;
-  padding-left:12px;
+.sidebar a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:0%;
+  height:100%;
+  background:rgba(0,224,255,0.08);
+  transition:width 0.4s;
+  z-index:-1;
 }
-.sidebar a i{
-  margin-right:10px;
-  font-style:normal;
-}
-.sidebar.collapsed a span{display:none;}
+.sidebar a:hover::after{ width:100%; }
+.sidebar a:hover,.sidebar a.active{ color:#00e0ff; border-left:3px solid #00e0ff; padding-left:8px; }
 .logout-btn{
+  background:#00e0ff;
+  border:none;
+  color:#000;
+  padding:10px;
+  border-radius:6px;
+  font-weight:600;
+  cursor:pointer;
   margin-top:auto;
+  transition: all 0.3s;
+}
+.logout-btn:hover{
+  background:#00aacc;
+  transform: scale(1.05) rotate(1deg);
+  box-shadow:0 0 20px #00e0ff;
+}
+
+/* Toggle button */
+.toggle-btn{
+  display:none;
+  margin-bottom:20px;
   background:#00e0ff;
   border:none;
   color:#000;
   padding:8px;
   border-radius:6px;
-  font-weight:600;
   cursor:pointer;
-  transition: all 0.3s;
+  font-weight:600;
 }
-.logout-btn:hover{
-  background:#00aacc;
-  transform: scale(1.05);
-  box-shadow:0 0 15px #00e0ff;
+@media(max-width:768px){
+  .sidebar{ width:60px; padding:20px 8px; }
+  .sidebar.collapsed{ width:0; padding:0; }
+  .sidebar h2, .sidebar a span{ display:inline-block; font-size:0; }
+  .toggle-btn{ display:block; }
 }
 
-/* ================= Main ================= */
+/* =============== Main Area =============== */
 .main{
   flex:1;
   padding:40px;
   overflow-y:auto;
   opacity:0;
-  animation: fadeUp 0.8s 0.4s ease forwards;
+  animation: fadeUp 0.9s 0.4s ease forwards;
 }
 .main h1{
   color:#00e0ff;
-  margin-bottom:10px;
-  opacity:0;
+  margin-top:0;
   transform:translateY(-20px);
+  opacity:0;
   animation: fadeDown 0.8s 0.6s forwards;
 }
 #sub-text{
@@ -101,7 +124,7 @@ input, textarea { user-select: text; }
   animation: fadeDown 0.8s 0.8s forwards;
 }
 
-/* ================= Cards ================= */
+/* =============== Cards =============== */
 .cards{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
@@ -131,7 +154,7 @@ input, textarea { user-select: text; }
   text-shadow:0 0 10px #00e0ff;
 }
 
-/* ================= Tabs ================= */
+/* =============== Tabs =============== */
 .tab-content{
   display:none;
   opacity:0;
@@ -144,79 +167,76 @@ input, textarea { user-select: text; }
   transform: translateX(0);
 }
 
-/* ================= Keyframes ================= */
-@keyframes fadePage{from{opacity:0;}to{opacity:1;}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
-@keyframes fadeDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
-@keyframes cardFloat{from{opacity:0;transform:translateY(40px) scale(0.95);}to{opacity:1;transform:translateY(0) scale(1);}}
+/* =============== Notification =============== */
+#notification{
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:rgba(0,224,255,0.9);
+  color:#000;
+  padding:12px 20px;
+  border-radius:10px;
+  font-weight:600;
+  font-size:0.95rem;
+  opacity:0;
+  pointer-events:none;
+  transition:all 0.3s ease;
+}
+
+/* =============== Animations =============== */
+@keyframes pageFade{ from{opacity:0;} to{opacity:1;} }
+@keyframes fadeUp{ from{opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);} }
+@keyframes fadeDown{ from{opacity:0; transform:translateY(-20px);} to{opacity:1; transform:translateY(0);} }
+@keyframes cardFloat{ from{opacity:0; transform:translateY(40px) scale(0.95);} to{opacity:1; transform:translateY(0) scale(1);} }
 </style>
 </head>
 <body>
 
+<div id="notification"></div>
+
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
+  <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
   <h2>NGO Panel</h2>
-  <a class="tab-link active" data-target="dashboard"><i>🏠</i><span>Dashboard</span></a>
-  <a class="tab-link" data-target="meetings"><i>📅</i><span>Meetings</span></a>
-  <a class="tab-link" data-target="recent"><i>📝</i><span>Recent</span></a>
-  <a class="tab-link" data-target="sessions"><i>🎓</i><span>Sessions</span></a>
-  <a class="tab-link" data-target="resources"><i>📚</i><span>Resources</span></a>
-  <a class="tab-link" data-target="updates"><i>🔔</i><span>Updates</span></a>
+  <a class="tab-link active" data-target="dashboard">Dashboard</a>
+  <a class="tab-link" data-target="meetings">Meetings</a>
+  <a class="tab-link" data-target="recent">Recent Activity</a>
+  <a class="tab-link" data-target="sessions">Sessions</a>
+  <a class="tab-link" data-target="resources">Resources</a>
+  <a class="tab-link" data-target="updates">Updates</a>
+  <a class="tab-link" data-target="other">Other Info</a>
   <button class="logout-btn" onclick="logout()">Logout</button>
-  <button onclick="toggleSidebar()" style="margin-top:15px;background:#333;color:#fff;border:none;padding:6px;border-radius:6px;cursor:pointer;">⇔</button>
 </div>
 
 <!-- Main Content -->
 <div class="main">
   <h1>Welcome, <span id="user-name"></span>!</h1>
-  <p id="sub-text">Here’s what’s happening in your NGO panel.</p>
+  <p id="sub-text">Here’s what’s happening in your NGO right now.</p>
 
   <!-- Dashboard -->
   <div id="dashboard" class="tab-content active">
     <div class="cards">
-      <div class="card"><h3>Meetings</h3><p>Stay tuned for schedules.</p></div>
-      <div class="card"><h3>Recent Activity</h3><p>All recent updates.</p></div>
-      <div class="card"><h3>Sessions</h3><p>Track your sessions here.</p></div>
-      <div class="card"><h3>Resources</h3><p>Access guides & documents.</p></div>
-      <div class="card"><h3>Updates</h3><p>Latest announcements for members.</p></div>
+      <div class="card dash-link" data-target="meetings"><h3>Meetings</h3><p>Upcoming schedules.</p></div>
+      <div class="card dash-link" data-target="recent"><h3>Recent Activity</h3><p>Latest updates.</p></div>
+      <div class="card dash-link" data-target="sessions"><h3>Sessions</h3><p>Track sessions here.</p></div>
+      <div class="card dash-link" data-target="resources"><h3>Resources</h3><p>Access guides & docs.</p></div>
+      <div class="card dash-link" data-target="updates"><h3>Updates</h3><p>Important announcements.</p></div>
+      <div class="card dash-link" data-target="other"><h3>Other Info</h3><p>Extra details.</p></div>
     </div>
   </div>
 
   <!-- Meetings -->
-  <div id="meetings" class="tab-content">
-    <div class="cards">
-      <div class="card"><h3>Meeting #1</h3><p>Date: TBD – <a href="" class="delayed-link" data-msg="Joining meeting">Join Link</a></p></div>
-    </div>
-  </div>
-
-  <!-- Recent -->
-  <div id="recent" class="tab-content">
-    <div class="cards">
-      <div class="card"><h3>Quiz Competition</h3><p>Date: TBD – <a href="" class="delayed-link" data-msg="Opening file">Drive Link</a></p></div>
-    </div>
-  </div>
-
+  <div id="meetings" class="tab-content"><h2>Meetings</h2><p>No meetings yet.</p></div>
+  <!-- Recent Activity -->
+  <div id="recent" class="tab-content"><h2>Recent Activity</h2><p>No recent activity yet.</p></div>
   <!-- Sessions -->
-  <div id="sessions" class="tab-content">
-    <div class="cards">
-      <div class="card"><h3>Interview Session</h3><p>Date: 16 Sep 2025</p></div>
-    </div>
-  </div>
-
+  <div id="sessions" class="tab-content"><h2>Sessions</h2><p>Track all sessions.</p></div>
   <!-- Resources -->
-  <div id="resources" class="tab-content">
-    <div class="cards">
-      <div class="card"><h3>NGO Team</h3><p>Drive Link – <a href="" class="delayed-link" data-msg="Downloading resource">Download</a></p></div>
-    </div>
-  </div>
-
+  <div id="resources" class="tab-content"><h2>Resources</h2><p>Access all documents.</p></div>
   <!-- Updates -->
-  <div id="updates" class="tab-content">
-    <div class="cards">
-      <div class="card"><h3>System Update</h3><p>New features added on 21 Sept 2025.</p></div>
-      <div class="card"><h3>Maintenance Notice</h3><p>Server maintenance on 25 Sept 2025.</p></div>
-    </div>
-  </div>
+  <div id="updates" class="tab-content"><h2>Updates</h2><p>All latest announcements & news.</p></div>
+  <!-- Other Info -->
+  <div id="other" class="tab-content"><h2>Other Info</h2><p>Extra info about NGO.</p></div>
 </div>
 
 <script>
@@ -228,7 +248,7 @@ if(sessionStorage.getItem("loggedIn")!=="true"){
   document.getElementById("user-name").textContent=sessionStorage.getItem("name");
 }
 
-// Tab switching
+// tab switching
 document.querySelectorAll('.tab-link').forEach(link=>{
   link.addEventListener('click',()=>{
     document.querySelectorAll('.tab-link').forEach(l=>l.classList.remove('active'));
@@ -238,65 +258,46 @@ document.querySelectorAll('.tab-link').forEach(link=>{
   });
 });
 
-// Delayed links
-document.querySelectorAll('.delayed-link').forEach(a=>{
-  a.addEventListener('click',function(e){
-    e.preventDefault();
-    const msg=this.dataset.msg||'Opening link';
-    const notif=document.createElement('div');
-    notif.style.position='fixed';
-    notif.style.top='20px';
-    notif.style.right='20px';
-    notif.style.background='#00e0ff';
-    notif.style.color='#000';
-    notif.style.padding='12px 18px';
-    notif.style.borderRadius='8px';
-    notif.style.fontWeight='600';
-    notif.style.boxShadow='0 0 15px #00e0ff';
-    notif.innerText=msg+'...';
-    document.body.appendChild(notif);
-    setTimeout(()=>{
-      notif.remove();
-      window.open(this.href,'_blank');
-    },2000);
+// dashboard card click
+document.querySelectorAll('.dash-link').forEach(card=>{
+  card.style.cursor='pointer';
+  card.addEventListener('click',()=>{ 
+    const target = card.dataset.target;
+    document.querySelector(`.tab-link[data-target="${target}"]`).click();
   });
 });
 
+// Sidebar toggle
+function toggleSidebar(){ 
+  document.getElementById('sidebar').classList.toggle('collapsed');
+}
+
+// Notification
+function notify(msg){
+  const n = document.getElementById('notification');
+  n.textContent = msg;
+  n.style.opacity=1;
+  setTimeout(()=>{ n.style.opacity=0; },2200);
+}
+
 // Logout with delay
 function logout(){
-  const notif=document.createElement('div');
-  notif.style.position='fixed';
-  notif.style.top='20px';
-  notif.style.right='20px';
-  notif.style.background='#00e0ff';
-  notif.style.color='#000';
-  notif.style.padding='12px 18px';
-  notif.style.borderRadius='8px';
-  notif.style.fontWeight='600';
-  notif.style.boxShadow='0 0 15px #00e0ff';
-  notif.innerText='Logging out...';
-  document.body.appendChild(notif);
+  notify('Logging out...');
   setTimeout(()=>{
-    notif.remove();
     sessionStorage.clear();
     window.location.href='login.html';
   },2000);
 }
 
-// Dashboard card clicks (optional navigation)
-document.querySelectorAll('.card').forEach(card=>{
-  card.style.cursor='pointer';
-  card.addEventListener('click',()=>{
-    const target=card.querySelector('h3').innerText.toLowerCase().replace(/ /g,'');
-    const tab=document.querySelector(`.tab-link[data-target="${target}"]`);
-    if(tab) tab.click();
+// Delay links with notifications
+document.querySelectorAll('a.delayed-link').forEach(a=>{
+  a.addEventListener('click',function(e){
+    e.preventDefault();
+    const msg=this.dataset.msg||'Opening link';
+    notify(msg+'...');
+    setTimeout(()=>{ window.open(this.href,'_blank'); },2000);
   });
 });
-
-// Sidebar toggle
-function toggleSidebar(){
-  document.getElementById('sidebar').classList.toggle('collapsed');
-}
 </script>
 
 </body>
