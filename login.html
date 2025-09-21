@@ -6,105 +6,104 @@
 <title>Member Login</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{
-    min-height:100vh;
-    background: radial-gradient(circle at top left,#0d0d0d,#1a1a1a 70%);
-    font-family:'Inter',sans-serif;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#e0e0e0;
-    overflow:hidden;
-  }
-  /* Disable selection & dragging */
-  body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
-  input, textarea{user-select:text;}
-  a,img{user-drag:none;-webkit-user-drag:none;-moz-user-drag:none;-o-user-drag:none;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  min-height:100vh;
+  background: radial-gradient(circle at top left,#0d0d0d,#1a1a1a 70%);
+  font-family:'Inter',sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#e0e0e0;
+  overflow:hidden;
+}
+/* Disable selection & dragging */
+body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
+input, textarea{user-select:text;}
+a,img{user-drag:none;-webkit-user-drag:none;-moz-user-drag:none;-o-user-drag:none;}
 
-  .login-box{
-    background:#111;
-    border:1px solid rgba(0,255,255,0.15);
-    border-radius:18px;
-    padding:40px 34px;
-    width:360px;
-    box-shadow:0 0 25px rgba(0,255,255,0.15);
-    text-align:center;
-    animation:boxFade 1s ease forwards;
-  }
-  h2{
-    color:#00e0ff;
-    font-weight:600;
-    font-size:1.7rem;
-    margin-bottom:28px;
-    letter-spacing:1px;
-    animation:textPop 0.8s ease forwards;
-  }
-  .field{margin-bottom:20px;text-align:left;}
-  label{display:block;margin-bottom:6px;font-size:0.9rem;color:#aaa;}
-  input[type="text"],input[type="password"]{
-    width:100%;
-    padding:12px 14px;
-    border:none;
-    border-radius:10px;
-    background:#1f1f1f;
-    color:#e0e0e0;
-    font-size:1rem;
-    outline:none;
-    border:1px solid #333;
-    transition: border 0.25s, background 0.25s;
-  }
-  input::placeholder{color:#777;}
-  input:focus{border-color:#00e0ff;background:#262626;}
-  button{
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    background:linear-gradient(90deg,#00c6ff,#0072ff);
-    color:#fff;
-    font-weight:600;
-    font-size:1rem;
-    cursor:pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  button:hover{
-    transform:translateY(-2px);
-    box-shadow:0 8px 18px rgba(0,255,255,0.25);
-  }
-  .links{margin-top:16px;font-size:0.9rem;text-align:center;}
-  .links a{color:#00e0ff;text-decoration:none;transition:color 0.2s;}
-  .links a:hover{color:#66f3ff;}
-  .error{
-    margin-top:14px;
-    display:none;
-    background:rgba(255,0,0,0.2);
-    color:#ff7b7b;
-    padding:8px;
-    border-radius:8px;
-    font-size:0.85rem;
-    text-align:center;
-  }
+.login-box{
+  background:#111;
+  border:1px solid rgba(0,255,255,0.15);
+  border-radius:18px;
+  padding:40px 34px;
+  width:360px;
+  box-shadow:0 0 25px rgba(0,255,255,0.15);
+  text-align:center;
+}
+h2{
+  color:#00e0ff;
+  font-weight:600;
+  font-size:1.7rem;
+  margin-bottom:28px;
+  letter-spacing:1px;
+}
+.field{margin-bottom:20px;text-align:left;}
+label{display:block;margin-bottom:6px;font-size:0.9rem;color:#aaa;}
+input[type="text"],input[type="password"]{
+  width:100%;
+  padding:12px 14px;
+  border:none;
+  border-radius:10px;
+  background:#1f1f1f;
+  color:#e0e0e0;
+  font-size:1rem;
+  outline:none;
+  border:1px solid #333;
+  transition: border 0.25s, background 0.25s;
+}
+input::placeholder{color:#777;}
+input:focus{border-color:#00e0ff;background:#262626;}
+button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(90deg,#00c6ff,#0072ff);
+  color:#fff;
+  font-weight:600;
+  font-size:1rem;
+  cursor:pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 18px rgba(0,255,255,0.25);
+}
+.links{margin-top:16px;font-size:0.9rem;text-align:center;}
+.links a{color:#00e0ff;text-decoration:none;transition:color 0.2s;}
+.links a:hover{color:#66f3ff;}
+.error{
+  margin-top:14px;
+  display:none;
+  background:rgba(255,0,0,0.2);
+  color:#ff7b7b;
+  padding:8px;
+  border-radius:8px;
+  font-size:0.85rem;
+  text-align:center;
+}
 
-  /* Notification */
-  .notification{
-    position:fixed;
-    top:20px;
-    right:20px;
-    background:rgba(0,224,255,0.9);
-    color:#000;
-    padding:14px 20px;
-    border-radius:10px;
-    font-weight:600;
-    box-shadow:0 0 15px rgba(0,224,255,0.6);
-    opacity:0;
-    transform:translateY(-20px);
-    z-index:9999;
-    transition: all 0.3s ease;
-  }
-
-  @keyframes boxFade{from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)}}
-  @keyframes textPop{from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)}}
+/* Notification */
+.notification{
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:rgba(0,224,255,0.95);
+  color:#000;
+  padding:14px 20px;
+  border-radius:10px;
+  font-weight:600;
+  box-shadow:0 0 20px rgba(0,224,255,0.7);
+  opacity:0;
+  transform:translateY(-20px);
+  z-index:9999;
+  transition: all 0.3s ease;
+}
+.notification.show{
+  opacity:1;
+  transform:translateY(0);
+}
 </style>
 </head>
 <body>
@@ -141,30 +140,36 @@ const users = [
 const ADMIN_USERS = ["Dhruv","Harshit Panwar","Shahil Shivam"];
 
 function showNotification(msg){
-  const n=document.getElementById("notification");
-  n.innerText=msg;
-  n.style.opacity="1";
-  n.style.transform="translateY(0)";
-  setTimeout(()=>{
-    n.style.opacity="0";
-    n.style.transform="translateY(-20px)";
-  },1800);
+  const n = document.getElementById("notification");
+  n.innerText = msg;
+  n.classList.add("show");
+  setTimeout(()=> n.classList.remove("show"), 2000);
 }
 
 function login(){
-  const user=document.getElementById('username').value.trim();
-  const pass=document.getElementById('password').value.trim();
-  const found=users.find(u=>u.username===user && u.password===pass);
-  const err=document.getElementById('error');
+  const user = document.getElementById('username').value.trim();
+  const pass = document.getElementById('password').value.trim();
+  const found = users.find(u => u.username===user && u.password===pass);
+  const err = document.getElementById('error');
+
+  if(!user || !pass){
+    err.innerText = "Please enter phone and password";
+    err.style.display = 'block';
+    setTimeout(()=> err.style.display='none',3500);
+    return;
+  }
 
   showNotification("Logging in...");
+
+  // 2 second delay before redirect
   setTimeout(()=>{
     if(found){
       sessionStorage.setItem('loggedIn','true');
       sessionStorage.setItem('name',found.name);
       sessionStorage.setItem('isAdmin',ADMIN_USERS.includes(found.name)?'true':'false');
       window.location.href='main.html';
-    }else{
+    } else {
+      err.innerText="Invalid phone or password";
       err.style.display='block';
       setTimeout(()=> err.style.display='none',3500);
     }
