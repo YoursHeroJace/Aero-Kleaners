@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Member Login</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -16,23 +16,12 @@
     justify-content:center;
     color:#e0e0e0;
     overflow:hidden;
-    perspective:1000px;
   }
-
   /* Prevent text selection and dragging */
-  body, a, img { 
-    user-select: none;
-    -webkit-user-select:none;
-    -moz-user-select:none;
-    -ms-user-select:none;
-    -webkit-user-drag: none;
-    -khtml-user-drag: none;
-    -moz-user-drag: none;
-    -o-user-drag: none;
-    user-drag: none;
-  }
-  input, textarea { user-select: text; }
-
+  body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
+  input, textarea{user-select:text;}
+  a,img{user-drag:none;-webkit-user-drag:none;-moz-user-drag:none;-o-user-drag:none;}
+  
   .login-box{
     background:#111;
     border:1px solid rgba(0,255,255,0.15);
@@ -41,9 +30,7 @@
     width:360px;
     box-shadow:0 0 25px rgba(0,255,255,0.15);
     text-align:center;
-    transform: rotateY(-30deg) scale(0.8);
-    opacity:0;
-    animation: boxEnter 1s forwards cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    animation:boxFade 1s ease forwards;
   }
   h2{
     color:#00e0ff;
@@ -51,15 +38,10 @@
     font-size:1.7rem;
     margin-bottom:28px;
     letter-spacing:1px;
-    opacity:0;
-    transform: translateY(-30px);
-    animation: fadeInDown 1s 0.5s forwards;
+    animation:textPop 0.8s ease forwards;
   }
   .field{margin-bottom:20px;text-align:left;}
-  label{display:block;margin-bottom:6px;font-size:0.9rem;color:#aaa;opacity:0; transform:translateX(-30px); animation: slideInLeft 0.6s forwards;}
-  label:nth-of-type(1){animation-delay:0.7s;}
-  label:nth-of-type(2){animation-delay:0.9s;}
-
+  label{display:block;margin-bottom:6px;font-size:0.9rem;color:#aaa;}
   input[type="text"],input[type="password"]{
     width:100%;
     padding:12px 14px;
@@ -69,19 +51,11 @@
     color:#e0e0e0;
     font-size:1rem;
     outline:none;
-    transition: border 0.25s, background 0.25s, transform 0.3s;
     border:1px solid #333;
-    opacity:0;
-    transform: translateX(30px);
-    animation: slideInRight 0.6s forwards;
+    transition: border 0.25s, background 0.25s;
   }
   input::placeholder{color:#777;}
-  input:focus{
-    border-color:#00e0ff;
-    background:#262626;
-    transform: scale(1.02);
-  }
-
+  input:focus{border-color:#00e0ff;background:#262626;}
   button{
     width:100%;
     padding:12px;
@@ -92,21 +66,15 @@
     font-weight:600;
     font-size:1rem;
     cursor:pointer;
-    transition: transform 0.25s, box-shadow 0.25s, background 0.3s;
-    opacity:0;
-    transform: translateY(30px) rotateX(20deg);
-    animation: fadeUpRotate 0.8s 1.2s forwards;
+    transition: transform 0.2s, box-shadow 0.2s;
   }
   button:hover{
-    transform: translateY(-2px) rotateX(0deg) scale(1.05);
-    box-shadow:0 12px 25px rgba(0,255,255,0.35);
-    background:linear-gradient(90deg,#0072ff,#00c6ff);
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(0,255,255,0.25);
   }
-
-  .links{margin-top:16px;font-size:0.9rem;opacity:0; transform: translateY(10px); animation: fadeIn 0.8s 1.4s forwards;}
+  .links{margin-top:16px;font-size:0.9rem;text-align:center;}
   .links a{color:#00e0ff;text-decoration:none;transition:color 0.2s;}
   .links a:hover{color:#66f3ff;}
-
   .error{
     margin-top:14px;
     display:none;
@@ -115,20 +83,14 @@
     padding:8px;
     border-radius:8px;
     font-size:0.85rem;
-    animation: shake 0.6s;
+    text-align:center;
   }
 
-  /* =============== Keyframes =============== */
-  @keyframes boxEnter{0%{opacity:0; transform:rotateY(-30deg) scale(0.8);} 60%{transform:rotateY(10deg) scale(1.05);} 100%{opacity:1; transform:rotateY(0deg) scale(1);}}
-  @keyframes fadeInDown{from{opacity:0; transform:translateY(-30px);}to{opacity:1; transform:translateY(0);}}
-  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-  @keyframes slideInLeft{from{opacity:0; transform:translateX(-30px);}to{opacity:1; transform:translateX(0);}}
-  @keyframes slideInRight{from{opacity:0; transform:translateX(30px);}to{opacity:1; transform:translateX(0);}}
-  @keyframes fadeUpRotate{from{opacity:0; transform:translateY(30px) rotateX(20deg);}to{opacity:1; transform:translateY(0) rotateX(0deg);}}
-  @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-8px);}40%,80%{transform:translateX(8px);}}
+  @keyframes boxFade{from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)}}
+  @keyframes textPop{from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
-<body oncontextmenu="return false;" ondragstart="return false;" onselectstart="return false;" oncopy="return false;" oncut="return false;">
+<body>
 
 <div class="login-box">
   <h2>Member Login</h2>
@@ -143,6 +105,7 @@
     </div>
     <button type="submit">Sign In</button>
   </form>
+
   <div class="links">
     <a href="forgot-password.html">Forgot Password?</a>
   </div>
@@ -158,24 +121,39 @@ const users = [
 ];
 const ADMIN_USERS = ["Dhruv","Harshit Panwar","Shahil Shivam"];
 
-function login(){
-  const user = document.getElementById('username').value.trim();
-  const pass = document.getElementById('password').value.trim();
-  const found = users.find(u => u.username===user && u.password===pass);
-  const err = document.getElementById('error');
+function showNotification(msg){
+  const n=document.createElement("div");
+  n.innerText=msg;
+  n.style.position="fixed"; n.style.top="20px"; n.style.right="20px";
+  n.style.background="rgba(0,224,255,0.9)"; n.style.color="#000";
+  n.style.padding="12px 18px"; n.style.borderRadius="8px";
+  n.style.fontWeight="600"; n.style.boxShadow="0 0 15px rgba(0,224,255,0.5)";
+  n.style.zIndex="9999"; n.style.opacity="0"; n.style.transition="opacity 0.3s";
+  document.body.appendChild(n);
+  setTimeout(()=> n.style.opacity="1",50);
+  setTimeout(()=> n.style.opacity="0",1800);
+  setTimeout(()=> document.body.removeChild(n),2100);
+}
 
-  if(found){
-    sessionStorage.setItem('loggedIn','true');
-    sessionStorage.setItem('name',found.name);
-    sessionStorage.setItem('isAdmin',ADMIN_USERS.includes(found.name)?'true':'false');
-    window.location.href='main.html';
-  } else {
-    err.style.display='block';
-    err.style.animation='shake 0.6s';
-    setTimeout(()=> err.style.display='none',3500);
-  }
+function login(){
+  const user=document.getElementById('username').value.trim();
+  const pass=document.getElementById('password').value.trim();
+  const found=users.find(u=>u.username===user && u.password===pass);
+  const err=document.getElementById('error');
+  
+  showNotification("Logging in...");
+  setTimeout(()=>{
+    if(found){
+      sessionStorage.setItem('loggedIn','true');
+      sessionStorage.setItem('name',found.name);
+      sessionStorage.setItem('isAdmin',ADMIN_USERS.includes(found.name)?'true':'false');
+      window.location.href='main.html';
+    }else{
+      err.style.display='block';
+      setTimeout(()=> err.style.display='none',3500);
+    }
+  },2000);
 }
 </script>
-
 </body>
 </html>
