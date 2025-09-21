@@ -20,6 +20,24 @@ body{
   overflow:hidden;
   animation: pageFade 1s ease forwards;
 }
+/* Prevent text selection everywhere */
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Prevent dragging of links and images */
+a, img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  pointer-events: auto; /* keep them clickable */
+}
+
  /* Prevent text selection and copying */
 body {
   -webkit-user-select: none; /* Chrome, Safari */
@@ -293,23 +311,46 @@ input, textarea {
 </div>
 
 <script>
-// login guard
-if(sessionStorage.getItem("loggedIn")!=="true"){
+// login guard (existing)
+if (sessionStorage.getItem("loggedIn") !== "true") {
   alert("Please log in first.");
-  window.location.href="login.html";
-}else{
-  document.getElementById("user-name").textContent=sessionStorage.getItem("name");
+  window.location.href = "login.html";
+} else {
+  document.getElementById("user-name").textContent = sessionStorage.getItem("name");
 }
 
-// tab switching
-document.querySelectorAll('.tab-link').forEach(link=>{
-  link.addEventListener('click',()=>{
-    document.querySelectorAll('.tab-link').forEach(l=>l.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+// tab switching (existing)
+document.querySelectorAll('.tab-link').forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
     link.classList.add('active');
     document.getElementById(link.dataset.target).classList.add('active');
   });
 });
+
+// ===== NEW CODE =====
+// For any link with class="delayed-link", show message & wait 2s before navigating
+document.querySelectorAll('a.delayed-link').forEach(a => {
+  a.addEventListener('click', function (e) {
+    e.preventDefault();
+    const msg = this.dataset.msg || 'Opening link';
+    alert(msg + '...');             // show custom message
+    setTimeout(() => {
+      window.open(this.href, '_blank');
+    }, 2000);
+  });
+});
+
+// Logout with delay
+function logout() {
+  alert("Logging out...");
+  setTimeout(() => {
+    sessionStorage.removeItem("loggedIn");
+    sessionStorage.removeItem("name");
+    window.location.href = "login.html";
+  }, 2000);
+}
 
 // dashboard cards -> switch tabs
 document.querySelectorAll('.dash-link').forEach(card=>{
