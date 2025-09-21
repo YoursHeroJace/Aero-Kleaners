@@ -6,24 +6,21 @@
 <title>NGO Panel</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-/* =============== Global =============== */
-*{box-sizing:border-box;}
+/* ======= Global ======= */
+* { box-sizing: border-box; margin:0; padding:0; }
 body{
-  margin:0;
   font-family:'Inter',sans-serif;
   display:flex;
   height:100vh;
-  background: radial-gradient(circle at top left,#0c0e16,#1a1a1a 70%);
+  background:#0c0e16;
   color:#e4e4e4;
   overflow:hidden;
-  animation: fadePage 1s ease forwards;
-  perspective:1000px;
+  animation: pageFade 1s ease forwards;
+  -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;
 }
-body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
-input,textarea{user-select:text;}
-a,img{user-drag:none;-webkit-user-drag:none;-moz-user-drag:none;-o-user-drag:none;}
+input, textarea { user-select:text; }
 
-/* Sidebar */
+/* ======= Sidebar ======= */
 .sidebar{
   width:230px;
   background:#0f121b;
@@ -32,19 +29,20 @@ a,img{user-drag:none;-webkit-user-drag:none;-moz-user-drag:none;-o-user-drag:non
   display:flex;
   flex-direction:column;
   justify-content:space-between;
-  transform: translateX(-250px);
-  animation: slideInLeft 0.8s 0.2s cubic-bezier(0.68,-0.55,0.265,1.55) forwards;
+  transform:translateX(-250px);
+  animation: slideInLeft 0.8s 0.2s ease forwards;
 }
 .sidebar h2{
   color:#00e0ff;
-  font-size:1.5rem;
+  font-size:1.4rem;
   margin-bottom:40px;
-  text-shadow:0 0 20px #00e0ff;
-  transition: transform 0.5s, text-shadow 0.5s;
+  transition: transform .4s, text-shadow 0.3s;
 }
-.sidebar h2:hover{transform: rotate(-5deg) scale(1.15);text-shadow:0 0 35px #00ffff;}
+.sidebar h2:hover{
+  transform: rotate(-2deg) scale(1.1);
+  text-shadow:0 0 10px #00e0ff;
+}
 .sidebar a{
-  position:relative;
   display:block;
   color:#e4e4e4;
   text-decoration:none;
@@ -53,28 +51,30 @@ a,img{user-drag:none;-webkit-user-drag:none;-moz-user-drag:none;-o-user-drag:non
   border-left:3px solid transparent;
   overflow:hidden;
   cursor:pointer;
-  transition:0.3s;
+  transition: all 0.3s;
 }
-.sidebar a::after{
-  content:"";
-  position:absolute;
-  left:0; bottom:0;
-  width:0%; height:100%;
-  background:rgba(0,224,255,0.1);
-  transition:width 0.4s;
-  z-index:-1;
+.sidebar a:hover, .sidebar a.active{
+  color:#00e0ff;
+  border-left:3px solid #00e0ff;
+  padding-left:8px;
 }
-.sidebar a:hover::after{width:100%;}
-.sidebar a:hover,
-.sidebar a.active{color:#00e0ff;border-left:3px solid #00e0ff;padding-left:8px;}
 .logout-btn{
-  background:#00e0ff;border:none;color:#000;
-  padding:10px;border-radius:6px;font-weight:600;
-  cursor:pointer;transition: all 0.3s;
+  background:#00e0ff;
+  border:none;
+  color:#000;
+  padding:10px;
+  border-radius:6px;
+  font-weight:600;
+  cursor:pointer;
+  transition: all 0.3s;
 }
-.logout-btn:hover{background:#00aacc;transform: scale(1.2) rotate(2deg);box-shadow:0 0 30px #00e0ff;}
+.logout-btn:hover{
+  background:#00aacc;
+  transform: scale(1.1) rotate(1deg);
+  box-shadow:0 0 20px #00e0ff;
+}
 
-/* Main */
+/* ======= Main Area ======= */
 .main{
   flex:1;
   padding:40px;
@@ -88,54 +88,47 @@ a,img{user-drag:none;-webkit-user-drag:none;-moz-user-drag:none;-o-user-drag:non
   transform:translateY(-20px);
   opacity:0;
   animation: fadeDown 0.8s 0.6s forwards;
-  text-shadow:0 0 15px #00e0ff;
 }
 #sub-text{
   opacity:0;
   transform:translateY(-20px);
   animation: fadeDown 0.8s 0.8s forwards;
-  text-shadow:0 0 10px #00e0ff;
 }
 
-/* Cards */
+/* ======= Cards ======= */
 .cards{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
   gap:20px;
   margin-top:20px;
+  padding-left:10px;
+  padding-right:10px;
 }
 .card{
   background:#161b26;
   border-radius:16px;
-  padding:20px;
+  padding:25px 20px;
   box-shadow:0 4px 12px rgba(0,0,0,0.25);
-  transform: translateY(50px) scale(0.9) rotateX(10deg);
+  transform: translateY(40px) scale(0.95);
   opacity:0;
   animation: cardFloat 0.8s forwards;
-  transition: transform 0.5s, box-shadow 0.5s;
+  transition: transform 0.4s, box-shadow 0.4s;
 }
-.card:nth-child(1){animation-delay:0.2s;}
-.card:nth-child(2){animation-delay:0.4s;}
-.card:nth-child(3){animation-delay:0.6s;}
-.card:nth-child(4){animation-delay:0.8s;}
-.card:nth-child(5){animation-delay:1s;}
-.card:nth-child(6){animation-delay:1.2s;}
 .card h3{
   margin-top:0;
   color:#00e0ff;
-  transition: transform 0.5s, text-shadow 0.5s;
+  transition: transform 0.4s, text-shadow 0.4s;
 }
 .card:hover{
-  transform: translateY(-15px) scale(1.05) rotateX(0deg) rotateY(5deg);
-  box-shadow:0 0 40px rgba(0,224,255,0.6),0 8px 30px rgba(0,0,0,0.6);
+  transform: translateY(-10px) scale(1.05) rotateZ(0.5deg);
+  box-shadow:0 0 25px rgba(0,224,255,0.3),0 6px 20px rgba(0,0,0,0.5);
 }
 .card:hover h3{
-  transform: scale(1.12);
-  text-shadow:0 0 20px #00e0ff;
-  animation: glowPulse 1.2s infinite alternate;
+  transform: scale(1.08);
+  text-shadow:0 0 10px #00e0ff;
 }
 
-/* Tabs */
+/* ======= Tabs ======= */
 .tab-content{
   display:none;
   opacity:0;
@@ -147,32 +140,39 @@ a,img{user-drag:none;-webkit-user-drag:none;-moz-user-drag:none;-o-user-drag:non
   opacity:1;
   transform: translateX(0);
 }
+.tab-content h2{
+  margin-left:10px;
+}
 
-/* Notification */
-.notification{
+/* ======= Notification ======= */
+#notification{
   position:fixed;
   top:20px;
   right:20px;
-  background:rgba(0,224,255,0.95);
+  background:#00e0ff;
   color:#000;
   padding:14px 20px;
   border-radius:10px;
   font-weight:600;
-  box-shadow:0 0 25px rgba(0,224,255,0.8);
   opacity:0;
-  transform:translateY(-20px) scale(0.9);
+  transform: translateY(-30px);
+  pointer-events:none;
+  transition:all 0.5s ease;
   z-index:9999;
-  transition: all 0.3s ease;
 }
-.notification.show{opacity:1;transform:translateY(0) scale(1); animation: bounce 0.6s ease;}
+#notification.show{
+  opacity:1;
+  transform: translateY(0);
+  animation: bounce 0.5s;
+}
 
-@keyframes fadePage{from{opacity:0;}to{opacity:1;}}
-@keyframes slideInLeft{from{transform:translateX(-250px);}to{transform:translateX(0);}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
-@keyframes fadeDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
-@keyframes cardFloat{from{opacity:0;transform:translateY(50px) scale(0.9) rotateX(10deg);}to{opacity:1;transform:translateY(0) scale(1) rotateX(0deg);}}
-@keyframes glowPulse{from{text-shadow:0 0 10px #00e0ff;}to{text-shadow:0 0 25px #00e0ff;}}
-@keyframes bounce{0%{transform:translateY(-20px) scale(0.9);}50%{transform:translateY(0) scale(1.05);}100%{transform:translateY(0) scale(1);}}
+/* ======= Animations ======= */
+@keyframes pageFade{ from{opacity:0;} to{opacity:1;} }
+@keyframes slideInLeft{ from{transform:translateX(-250px);} to{transform:translateX(0);} }
+@keyframes fadeUp{ from{opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);} }
+@keyframes fadeDown{ from{opacity:0; transform:translateY(-20px);} to{opacity:1; transform:translateY(0);} }
+@keyframes cardFloat{ from{opacity:0; transform:translateY(40px) scale(0.95);} to{opacity:1; transform:translateY(0) scale(1);} }
+@keyframes bounce{ 0%{transform:translateY(-30px);}50%{transform:translateY(5px);}100%{transform:translateY(0);} }
 </style>
 </head>
 <body>
@@ -192,33 +192,104 @@ a,img{user-drag:none;-webkit-user-drag:none;-moz-user-drag:none;-o-user-drag:non
   <button class="logout-btn" onclick="logout()">Logout</button>
 </div>
 
-<!-- Main -->
+<!-- Main Content -->
 <div class="main">
   <h1>Welcome, <span id="user-name"></span>!</h1>
-  <p id="sub-text">Here’s what’s happening in your NGO panel.</p>
+  <p id="sub-text">Here’s what’s happening in your club right now.</p>
 
   <!-- Dashboard -->
   <div id="dashboard" class="tab-content active">
     <div class="cards">
-      <div class="card dash-link" data-target="meetings"><h3>Meetings</h3><p>Upcoming schedules & join links.</p></div>
-      <div class="card dash-link" data-target="recent"><h3>Recent Activity</h3><p>Track past events & updates.</p></div>
-      <div class="card dash-link" data-target="sessions"><h3>Sessions</h3><p>All previous and upcoming sessions.</p></div>
-      <div class="card dash-link" data-target="resources"><h3>Resources</h3><p>Guides, documents & assets.</p></div>
-      <div class="card dash-link" data-target="updates"><h3>Updates</h3><p>Latest news and notifications.</p></div>
-      <div class="card dash-link" data-target="other"><h3>Other Info</h3><p>Extra announcements and info.</p></div>
+      <div class="card dash-link" data-target="meetings">
+        <h3>Meetings</h3>
+        <p>Stay tuned for upcoming schedules.<br><strong>Coming Soon…</strong></p>
+      </div>
+      <div class="card dash-link" data-target="recent">
+        <h3>Recent Activity</h3>
+        <p>No new updates yet. Check back later.</p>
+      </div>
+      <div class="card dash-link" data-target="sessions">
+        <h3>Sessions</h3>
+        <p>Track all previous and upcoming sessions from here.</p>
+      </div>
+      <div class="card dash-link" data-target="resources">
+        <h3>Resources</h3>
+        <p>Access guides, documentation and club assets anytime.</p>
+      </div>
+      <div class="card dash-link" data-target="updates">
+        <h3>Updates</h3>
+        <p>All latest club announcements and notifications.</p>
+      </div>
+      <div class="card dash-link" data-target="other">
+        <h3>Other Info</h3>
+        <p>Extra club details and announcements.</p>
+      </div>
     </div>
   </div>
 
-  <!-- Tab contents -->
-  <div id="meetings" class="tab-content"><h2>Meetings</h2></div>
-  <div id="recent" class="tab-content"><h2>Recent Activity</h2></div>
-  <div id="sessions" class="tab-content"><h2>Sessions</h2></div>
-  <div id="resources" class="tab-content"><h2>Resources</h2></div>
-  <div id="updates" class="tab-content"><h2>Updates</h2></div>
-  <div id="other" class="tab-content"><h2>Other Info</h2></div>
+  <!-- Meetings -->
+  <div id="meetings" class="tab-content">
+    <div class="cards">
+      <div class="card">
+        <h3>Meetings</h3>
+        <p><strong>Meeting #1</strong> – Date: To be Decided – <a href="#" class="delayed-link" data-msg="Joining meeting">Join Link</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div id="recent" class="tab-content">
+    <div class="cards">
+      <div class="card">
+        <h3>Recent Activity</h3>
+        <p><strong>Quiz Competition</strong> – Date: To be Decided – <a href="#" class="delayed-link" data-msg="Downloading file">Drive Link</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sessions -->
+  <div id="sessions" class="tab-content">
+    <div class="cards">
+      <div class="card">
+        <h3>Sessions</h3>
+        <p><strong>Interview for NGO heads</strong> – Date: 16 Sep 2025</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resources -->
+  <div id="resources" class="tab-content">
+    <div class="cards">
+      <div class="card">
+        <h3>Resources</h3>
+        <p><strong>NGO Team Members</strong> – Posted: Coming Soon – <a href="#" class="delayed-link" data-msg="Downloading file">Drive Link</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Updates -->
+  <div id="updates" class="tab-content">
+    <div class="cards">
+      <div class="card">
+        <h3>Updates</h3>
+        <p>All the latest club news, changes, and notifications will appear here.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Other Info -->
+  <div id="other" class="tab-content">
+    <div class="cards">
+      <div class="card">
+        <h3>Other Info</h3>
+        <p>Extra club details and announcements.</p>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div id="notification" class="notification"></div>
+<!-- Notification -->
+<div id="notification"></div>
 
 <script>
 // login guard
@@ -246,7 +317,17 @@ document.querySelectorAll('.dash-link').forEach(card=>{
   card.addEventListener('click',()=>document.querySelector(`.tab-link[data-target="${card.dataset.target}"]`).click());
 });
 
-// logout with notification & 2s delay
+// delayed links
+document.querySelectorAll('.delayed-link').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const msg=a.dataset.msg||'Opening link';
+    showNotification(msg + '...');
+    setTimeout(()=>window.open(a.href,'_blank'),2000);
+  });
+});
+
+// logout
 function logout(){
   showNotification("Logging out...");
   setTimeout(()=>{
@@ -255,10 +336,10 @@ function logout(){
   },2000);
 }
 
-// reusable notification
-function showNotification(message){
-  const n = document.getElementById("notification");
-  n.innerText=message;
+// notification helper
+function showNotification(msg){
+  const n=document.getElementById("notification");
+  n.innerText=msg;
   n.classList.add("show");
   setTimeout(()=>n.classList.remove("show"),2000);
 }
