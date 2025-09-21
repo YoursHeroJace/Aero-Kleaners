@@ -16,6 +16,7 @@ body{
   justify-content:center;
   color:#e0e0e0;
   overflow:hidden;
+  animation: fadeInPage 1s ease forwards;
 }
 /* Disable selection & dragging */
 body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
@@ -30,6 +31,9 @@ a,img{user-drag:none;-webkit-user-drag:none;-moz-user-drag:none;-o-user-drag:non
   width:360px;
   box-shadow:0 0 25px rgba(0,255,255,0.15);
   text-align:center;
+  transform: translateY(-50px);
+  opacity:0;
+  animation: slideFadeIn 1s 0.2s forwards;
 }
 h2{
   color:#00e0ff;
@@ -37,9 +41,11 @@ h2{
   font-size:1.7rem;
   margin-bottom:28px;
   letter-spacing:1px;
+  opacity:0;
+  animation: fadeDown 1s 0.4s forwards;
 }
 .field{margin-bottom:20px;text-align:left;}
-label{display:block;margin-bottom:6px;font-size:0.9rem;color:#aaa;}
+label{display:block;margin-bottom:6px;font-size:0.9rem;color:#aaa;opacity:0;animation: fadeDown 1s 0.5s forwards;}
 input[type="text"],input[type="password"]{
   width:100%;
   padding:12px 14px;
@@ -50,10 +56,11 @@ input[type="text"],input[type="password"]{
   font-size:1rem;
   outline:none;
   border:1px solid #333;
-  transition: border 0.25s, background 0.25s;
+  transition: border 0.25s, background 0.25s, transform 0.3s;
+  opacity:0;
+  animation: fadeUp 1s 0.6s forwards;
 }
-input::placeholder{color:#777;}
-input:focus{border-color:#00e0ff;background:#262626;}
+input:focus{border-color:#00e0ff;background:#262626;transform:scale(1.02);}
 button{
   width:100%;
   padding:12px;
@@ -64,13 +71,15 @@ button{
   font-weight:600;
   font-size:1rem;
   cursor:pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.3s, box-shadow 0.3s;
+  opacity:0;
+  animation: fadeUp 1s 0.8s forwards;
 }
 button:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 18px rgba(0,255,255,0.25);
+  transform:translateY(-3px) scale(1.03);
+  box-shadow:0 12px 25px rgba(0,224,255,0.3);
 }
-.links{margin-top:16px;font-size:0.9rem;text-align:center;}
+.links{margin-top:16px;font-size:0.9rem;text-align:center;opacity:0;animation: fadeUp 1s 1s forwards;}
 .links a{color:#00e0ff;text-decoration:none;transition:color 0.2s;}
 .links a:hover{color:#66f3ff;}
 .error{
@@ -104,6 +113,12 @@ button:hover{
   opacity:1;
   transform:translateY(0);
 }
+
+/* Animations */
+@keyframes fadeInPage { from{opacity:0;} to{opacity:1;} }
+@keyframes slideFadeIn { from{opacity:0; transform:translateY(-50px);} to{opacity:1; transform:translateY(0);} }
+@keyframes fadeUp { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+@keyframes fadeDown { from{opacity:0; transform:translateY(-20px);} to{opacity:1; transform:translateY(0);} }
 </style>
 </head>
 <body>
@@ -125,7 +140,7 @@ button:hover{
   <div class="links">
     <a href="forgot-password.html">Forgot Password?</a>
   </div>
-  <div id="error" class="error">Invalid phone or password</div>
+  <div id="error" class="error"></div>
 </div>
 
 <div id="notification" class="notification"></div>
@@ -142,7 +157,7 @@ const users = [
   { username: "9953539648", password: "29101", name: "Naitik Shekhar Mahajan" }, 
   { username: "", password: "48357", name: "Monu Rekrot" }, 
   { username: "8826584503", password: "62389", name: "Prabhesh Swesh" }, 
-  { username: "9971890335", password: "19291", name: "Kushant Kumar" } ];
+  { username: "9971890335", password: "19291", name: "Kushant Kumar" }
 ];
 const ADMIN_USERS = ["Dhruv","Harshit Panwar","Shahil Shivam"];
 
