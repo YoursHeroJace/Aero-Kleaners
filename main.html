@@ -1,372 +1,398 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NGO Panel</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-/* =============== Global =============== */
-*{
-  box-sizing:border-box;
-}
-body{
-  margin:0;
-  font-family:'Inter',sans-serif;
-  display:flex;
-  height:100vh;
-  background:#0c0e16;
-  color:#e4e4e4;
-  overflow:hidden;
-  animation: pageFade 1s ease forwards;
-}
-/* Prevent text selection everywhere */
-body {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NGO Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* =============== Global =============== */
+    * {
+      box-sizing: border-box;
+    }
 
-/* Prevent dragging of links and images */
-a, img {
-  -webkit-user-drag: none;
-  -khtml-user-drag: none;
-  -moz-user-drag: none;
-  -o-user-drag: none;
-  user-drag: none;
-  pointer-events: auto; /* keep them clickable */
-}
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      height: 100vh;
+      background: #0c0e16;
+      color: #e4e4e4;
+      overflow: hidden;
+      animation: pageFade 1s ease forwards;
 
- /* Prevent text selection and copying */
-body {
-  -webkit-user-select: none; /* Chrome, Safari */
-  -moz-user-select: none;    /* Firefox */
-  -ms-user-select: none;     /* IE/Edge */
-  user-select: none;         /* Standard */
-}
-input, textarea {
-  -webkit-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
-  user-select: text;
-}
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
 
-/* =============== Sidebar =============== */
-.sidebar{
-  width:230px;
-  background:#0f121b;
-  border-right:1px solid rgba(255,255,255,0.07);
-  padding:30px 20px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  transform: translateX(-250px);
-  animation: slideInLeft 0.8s 0.2s ease forwards;
-}
-.sidebar h2{
-  color:#00e0ff;
-  font-size:1.4rem;
-  margin-bottom:40px;
-  transition: transform .4s;
-}
-.sidebar h2:hover{
-  transform: rotate(-2deg) scale(1.1);
-}
-.sidebar a{
-  position:relative;
-  display:block;
-  color:#e4e4e4;
-  text-decoration:none;
-  padding:12px 0;
-  font-weight:500;
-  border-left:3px solid transparent;
-  overflow:hidden;
-  cursor:pointer;
-  transition:0.3s;
-}
-.sidebar a::after{
-  content:"";
-  position:absolute;
-  left:0;
-  bottom:0;
-  width:0%;
-  height:100%;
-  background:rgba(0,224,255,0.08);
-  transition:width 0.4s;
-  z-index:-1;
-}
-.sidebar a:hover::after{
-  width:100%;
-}
-.sidebar a:hover,
-.sidebar a.active{
-  color:#00e0ff;
-  border-left:3px solid #00e0ff;
-  padding-left:8px;
-}
-.logout-btn{
-  background:#00e0ff;
-  border:none;
-  color:#000;
-  padding:10px;
-  border-radius:6px;
-  font-weight:600;
-  cursor:pointer;
-  transition: all 0.3s;
-}
-.logout-btn:hover{
-  background:#00aacc;
-  transform: scale(1.1) rotate(1deg);
-  box-shadow:0 0 20px #00e0ff;
-}
+    input,
+    textarea {
+      user-select: text;
+    }
 
-/* =============== Main Area =============== */
-.main{
-  flex:1;
-  padding:40px;
-  overflow-y:auto;
-  opacity:0;
-  animation: fadeUp 0.9s 0.4s ease forwards;
-}
-.main h1{
-  color:#00e0ff;
-  margin-top:0;
-  transform:translateY(-20px);
-  opacity:0;
-  animation: fadeDown 0.8s 0.6s forwards;
-}
-#sub-text{
-  opacity:0;
-  transform:translateY(-20px);
-  animation: fadeDown 0.8s 0.8s forwards;
-}
+    a,
+    img {
+      -webkit-user-drag: none;
+      -khtml-user-drag: none;
+      -moz-user-drag: none;
+      -o-user-drag: none;
+      user-drag: none;
+      pointer-events: auto;
+    }
 
-/* =============== Cards =============== */
-.cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-  gap:20px;
-  margin-top:20px;
-}
-.card{
-  background:#161b26;
-  border-radius:16px;
-  padding:20px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.25);
-  transform: translateY(40px) scale(0.95);
-  opacity:0;
-  animation: cardFloat 0.8s forwards;
-}
-.card h3{
-  margin-top:0;
-  color:#00e0ff;
-  transition: transform 0.4s, text-shadow 0.4s;
-}
-.card:hover{
-  transform: translateY(-10px) scale(1.03);
-  box-shadow:0 0 25px rgba(0,224,255,0.3),0 6px 20px rgba(0,0,0,0.5);
-}
-.card:hover h3{
-  transform: scale(1.08);
-  text-shadow:0 0 10px #00e0ff;
-}
+    /* =============== Sidebar =============== */
+    .sidebar {
+      width: 230px;
+      background: #0f121b;
+      border-right: 1px solid rgba(255, 255, 255, 0.07);
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transform: translateX(-250px);
+      animation: slideInLeft 0.8s 0.2s ease forwards;
+    }
 
-/* =============== Tabs =============== */
-.tab-content{
-  display:none;
-  opacity:0;
-  transform: translateX(40px);
-  transition:opacity 0.6s ease, transform 0.6s ease;
-}
-.tab-content.active{
-  display:block;
-  opacity:1;
-  transform: translateX(0);
-}
+    .sidebar h2 {
+      color: #00e0ff;
+      font-size: 1.4rem;
+      margin-bottom: 40px;
+      transition: transform 0.4s;
+    }
 
-/* =============== Keyframes =============== */
-@keyframes pageFade{
-  from{opacity:0;}
-  to{opacity:1;}
-}
-@keyframes slideInLeft{
-  from{transform:translateX(-250px);}
-  to{transform:translateX(0);}
-}
-@keyframes fadeUp{
-  from{opacity:0; transform:translateY(30px);}
-  to{opacity:1; transform:translateY(0);}
-}
-@keyframes fadeDown{
-  from{opacity:0; transform:translateY(-20px);}
-  to{opacity:1; transform:translateY(0);}
-}
-@keyframes cardFloat{
-  from{opacity:0; transform:translateY(40px) scale(0.95);}
-  to{opacity:1; transform:translateY(0) scale(1);}
-}
-</style>
+    .sidebar h2:hover {
+      transform: rotate(-2deg) scale(1.1);
+    }
+
+    .sidebar a {
+      position: relative;
+      display: block;
+      color: #e4e4e4;
+      text-decoration: none;
+      padding: 12px 0;
+      font-weight: 500;
+      border-left: 3px solid transparent;
+      overflow: hidden;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .sidebar a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0%;
+      height: 100%;
+      background: rgba(0, 224, 255, 0.08);
+      transition: width 0.4s;
+      z-index: -1;
+    }
+
+    .sidebar a:hover::after {
+      width: 100%;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      color: #00e0ff;
+      border-left: 3px solid #00e0ff;
+      padding-left: 8px;
+    }
+
+    .logout-btn {
+      background: #00e0ff;
+      border: none;
+      color: #000;
+      padding: 10px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: #00aacc;
+      transform: scale(1.1) rotate(1deg);
+      box-shadow: 0 0 20px #00e0ff;
+    }
+
+    /* =============== Main Area =============== */
+    .main {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.4s ease forwards;
+    }
+
+    .main h1 {
+      color: #00e0ff;
+      margin-top: 0;
+      transform: translateY(-20px);
+      opacity: 0;
+      animation: fadeDown 0.8s 0.6s forwards;
+    }
+
+    #sub-text {
+      opacity: 0;
+      transform: translateY(-20px);
+      animation: fadeDown 0.8s 0.8s forwards;
+    }
+
+    /* =============== Cards =============== */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #161b26;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      transform: translateY(40px) scale(0.95);
+      opacity: 0;
+      animation: cardFloat 0.8s forwards;
+    }
+
+    .card:nth-child(1) {
+      animation-delay: 1s;
+    }
+
+    .card:nth-child(2) {
+      animation-delay: 1.2s;
+    }
+
+    .card:nth-child(3) {
+      animation-delay: 1.4s;
+    }
+
+    .card:nth-child(4) {
+      animation-delay: 1.6s;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: #00e0ff;
+      transition: transform 0.4s, text-shadow 0.4s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 0 25px rgba(0, 224, 255, 0.3), 0 6px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .card:hover h3 {
+      transform: scale(1.08);
+      text-shadow: 0 0 10px #00e0ff;
+    }
+
+    /* =============== Tabs =============== */
+    .tab-content {
+      display: none;
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* =============== Keyframes =============== */
+    @keyframes pageFade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideInLeft {
+      from { transform: translateX(-250px); }
+      to { transform: translateX(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes cardFloat {
+      from { opacity: 0; transform: translateY(40px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+  </style>
 </head>
 <body>
 
-<!-- Sidebar -->
-<div class="sidebar">
-  <div>
-    <h2>NGO Member Panel</h2>
-    <a class="tab-link active" data-target="dashboard">Dashboard</a>
-    <a class="tab-link" data-target="meetings">Meetings</a>
-    <a class="tab-link" data-target="recent">Recent Activity</a>
-    <a class="tab-link" data-target="sessions">Sessions</a>
-    <a class="tab-link" data-target="resources">Resources</a>
-    <a class="tab-link" data-target="other">Other Info</a>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div>
+      <h2>NGO Member Panel</h2>
+      <a class="tab-link active" data-target="dashboard">Dashboard</a>
+      <a class="tab-link" data-target="meetings">Meetings</a>
+      <a class="tab-link" data-target="recent">Recent Activity</a>
+      <a class="tab-link" data-target="sessions">Sessions</a>
+      <a class="tab-link" data-target="resources">Resources</a>
+      <a class="tab-link" data-target="other">Other Info</a>
+    </div>
+    <button class="logout-btn" onclick="logout()">Logout</button>
   </div>
-  <button class="logout-btn" onclick="logout()">Logout</button>
-</div>
 
-<!-- Main Content -->
-<div class="main">
-  <h1>Welcome, <span id="user-name"></span>!</h1>
-  <p id="sub-text">Here’s what’s happening in your club right now.</p>
+  <!-- Main Content -->
+  <div class="main">
+    <h1>Welcome, <span id="user-name"></span>!</h1>
+    <p id="sub-text">Here’s what’s happening in your club right now.</p>
 
-  <!-- Dashboard -->
-  <div id="dashboard" class="tab-content active">
-    <div class="cards">
-      <div class="card dash-link" data-target="meetings">
-        <h3>Meetings</h3>
-        <p>Stay tuned for upcoming schedules.<br><strong>Coming Soon…</strong></p>
+    <!-- Dashboard -->
+    <div id="dashboard" class="tab-content active">
+      <div class="cards">
+        <div class="card dash-link" data-target="meetings">
+          <h3>Meetings</h3>
+          <p>Stay tuned for upcoming schedules.<br><strong>Coming Soon…</strong></p>
+        </div>
+        <div class="card dash-link" data-target="recent">
+          <h3>Recent Activity</h3>
+          <p>No new updates yet. Check back later.</p>
+        </div>
+        <div class="card dash-link" data-target="sessions">
+          <h3>Sessions</h3>
+          <p>Track all previous and upcoming sessions from here.</p>
+        </div>
+        <div class="card dash-link" data-target="resources">
+          <h3>Resources</h3>
+          <p>Access guides, documentation and club assets anytime.</p>
+        </div>
       </div>
-      <div class="card dash-link" data-target="recent">
-        <h3>Recent Activity</h3>
-        <p>No new updates yet. Check back later.</p>
+    </div>
+
+    <!-- Meetings -->
+    <div id="meetings" class="tab-content">
+      <div class="cards">
+        <div class="card">
+          <h3>Meetings</h3>
+          <p>
+            <strong>Meeting #1</strong> – Date: TBD – 
+            <a href="" target="_blank" class="delayed-link" data-msg="Joining meeting #1">Join Link</a>
+          </p>
+        </div>
+        <div class="card">
+          <h3>Meetings</h3>
+          <p>
+            <strong>Meeting #2</strong> – Date: TBD – 
+            <a href="" target="_blank" class="delayed-link" data-msg="Joining meeting #2">Join Link</a>
+          </p>
+        </div>
       </div>
-      <div class="card dash-link" data-target="sessions">
-        <h3>Sessions</h3>
-        <p>Track all previous and upcoming sessions from here.</p>
+    </div>
+
+    <!-- Recent Activity -->
+    <div id="recent" class="tab-content">
+      <div class="cards">
+        <div class="card">
+          <h3>Recent Activity</h3>
+          <p>
+            <strong>Quiz Competition</strong> – Date: TBD – 
+            <a href="" target="_blank" class="delayed-link" data-msg="Downloading quiz file">Drive Link</a>
+          </p>
+        </div>
       </div>
-      <div class="card dash-link" data-target="resources">
-        <h3>Resources</h3>
-        <p>Access guides, documentation and club assets anytime.</p>
+    </div>
+
+    <!-- Sessions -->
+    <div id="sessions" class="tab-content">
+      <div class="cards">
+        <div class="card">
+          <h3>Sessions</h3>
+          <p><strong>Interview for NGO heads</strong> – Date: 16 Sep 2025</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resources -->
+    <div id="resources" class="tab-content">
+      <div class="cards">
+        <div class="card">
+          <h3>Resources</h3>
+          <p>
+            <strong>NGO Team Members</strong> – Posted: Coming Soon – 
+            <a href="" target="_blank" class="delayed-link" data-msg="Downloading resource file">Drive Link</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other Info -->
+    <div id="other" class="tab-content">
+      <div class="cards">
+        <div class="card">
+          <h3>Other Info</h3>
+          <p>Extra club details and announcements.</p>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Meetings -->
-  <div id="meetings" class="tab-content">
-    <div class="cards">
-      <div class="card">
-        <h3>Meetings</h3>
-        <p><strong>Meeting #1</strong> – Date: To be Decided – 
-        <a href="" target="_blank">Join Link</a></p>
-      </div>
-      <div class="card">
-        <h3>Meetings</h3>
-        <p><strong>Meeting #2</strong> – Date: To be Decided – 
-        <a href="" target="_blank">Join Link</a></p>
-      </div>
-    </div>
-  </div>
+  <!-- Scripts -->
+  <script>
+    // Login guard
+    if (sessionStorage.getItem("loggedIn") !== "true") {
+      alert("Please log in first.");
+      window.location.href = "login.html";
+    } else {
+      document.getElementById("user-name").textContent = sessionStorage.getItem("name");
+    }
 
-  <!-- Recent Activity -->
-  <div id="recent" class="tab-content">
-    <div class="cards">
-      <div class="card">
-        <h3>Recent Activity</h3>
-        <p><strong>Quiz Competition</strong> – Date: To be Decided – 
-        <a href="" target="_blank">Drive Link</a></p>
-      </div>
-    </div>
-  </div>
+    // Tab switching
+    document.querySelectorAll('.tab-link').forEach(link => {
+      link.addEventListener('click', () => {
+        document.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        link.classList.add('active');
+        document.getElementById(link.dataset.target).classList.add('active');
+      });
+    });
 
-  <!-- Sessions -->
-  <div id="sessions" class="tab-content">
-    <div class="cards">
-      <div class="card">
-        <h3>Sessions</h3>
-        <p><strong>Interview for NGO heads</strong> – Date: 16 Sep 2025</p>
-      </div>
-    </div>
-  </div>
+    // Dashboard cards -> switch tabs
+    document.querySelectorAll('.dash-link').forEach(card => {
+      card.addEventListener('click', () => {
+        const target = card.dataset.target;
+        document.querySelector(`.tab-link[data-target="${target}"]`).click();
+      });
+    });
 
-  <!-- Resources -->
-  <div id="resources" class="tab-content">
-    <div class="cards">
-      <div class="card">
-        <h3>Resources</h3>
-        <p><strong>NGO Team Members</strong> – Posted: Coming Soon – 
-        <a href="" target="_blank">Drive Link</a></p>
-      </div>
-    </div>
-  </div>
+    // Delayed link clicks
+    document.querySelectorAll('a.delayed-link').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const msg = a.dataset.msg || 'Opening link';
+        alert(msg + '...');
+        setTimeout(() => {
+          window.open(a.href, '_blank');
+        }, 2000);
+      });
+    });
 
-  <!-- Other Info -->
-  <div id="other" class="tab-content">
-    <div class="cards">
-      <div class="card">
-        <h3>Other Info</h3>
-        <p>Extra club details and announcements.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-// login guard (existing)
-if (sessionStorage.getItem("loggedIn") !== "true") {
-  alert("Please log in first.");
-  window.location.href = "login.html";
-} else {
-  document.getElementById("user-name").textContent = sessionStorage.getItem("name");
-}
-
-// tab switching (existing)
-document.querySelectorAll('.tab-link').forEach(link => {
-  link.addEventListener('click', () => {
-    document.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    link.classList.add('active');
-    document.getElementById(link.dataset.target).classList.add('active');
-  });
-});
-
-// ===== NEW CODE =====
-// For any link with class="delayed-link", show message & wait 2s before navigating
-document.querySelectorAll('a.delayed-link').forEach(a => {
-  a.addEventListener('click', function (e) {
-    e.preventDefault();
-    const msg = this.dataset.msg || 'Opening link';
-    alert(msg + '...');             // show custom message
-    setTimeout(() => {
-      window.open(this.href, '_blank');
-    }, 2000);
-  });
-});
-
-// Logout with delay
-function logout() {
-  alert("Logging out...");
-  setTimeout(() => {
-    sessionStorage.removeItem("loggedIn");
-    sessionStorage.removeItem("name");
-    window.location.href = "login.html";
-  }, 2000);
-}
-
-// dashboard cards -> switch tabs
-document.querySelectorAll('.dash-link').forEach(card=>{
-  card.style.cursor = 'pointer';
-  card.addEventListener('click',()=>{
-    const target = card.dataset.target;
-    document.querySelector(`.tab-link[data-target="${target}"]`).click();
-  });
-});
-
-function logout(){
-  sessionStorage.removeItem("loggedIn");
-  sessionStorage.removeItem("name");
-  window.location.href="login.html";
-}
-</script>
+    // Logout with delay
+    function logout() {
+      alert("Logging out...");
+      setTimeout(() => {
+        sessionStorage.removeItem("loggedIn");
+        sessionStorage.removeItem("name");
+        window.location.href = "login.html";
+      }, 2000);
+    }
+  </script>
 
 </body>
 </html>
