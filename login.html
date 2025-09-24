@@ -15,18 +15,14 @@ body{
   font-family:'Inter',sans-serif;
   color:#e0e0e0;
   overflow:hidden;
-  background: linear-gradient(-45deg,#1e1e1e,#111,#1e1e1e,#111);
-  background-size:400% 400%;
-  animation: bgMove 12s ease infinite;
-}
-/* animated gradient background */
-@keyframes bgMove {
-  0%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-  100%{background-position:0% 50%;}
+  background:#0c0e16;
+  position:relative;
 }
 
-/* Glassmorphism container */
+/* Star/particle background */
+canvas#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}
+
+/* Glassmorphism login container */
 .login-box{
   backdrop-filter: blur(18px);
   background: rgba(20,20,20,0.55);
@@ -35,8 +31,10 @@ body{
   padding:50px 48px;
   width:420px;
   max-width:92%;
-  box-shadow:0 0 40px rgba(0,255,255,0.15);
+  box-shadow:0 0 60px rgba(0,224,255,0.3);
   text-align:center;
+  position:relative;
+  z-index:1;
   animation: float 6s ease-in-out infinite;
 }
 @keyframes float {
@@ -44,6 +42,7 @@ body{
   50%{transform:translateY(-10px);}
 }
 
+/* Heading with neon glow */
 h2{
   font-size:2rem;
   font-weight:600;
@@ -52,6 +51,12 @@ h2{
   -webkit-text-fill-color:transparent;
   margin-bottom:32px;
   letter-spacing:1px;
+  animation: neonPulse 2s infinite alternate;
+}
+@keyframes neonPulse{
+  0%{text-shadow:0 0 5px #00e0ff;}
+  50%{text-shadow:0 0 20px #00e0ff,0 0 40px #00ff95;}
+  100%{text-shadow:0 0 5px #00e0ff;}
 }
 
 .field{margin-bottom:22px;text-align:left;}
@@ -68,13 +73,15 @@ input[type="text"],input[type="password"]{
   outline:none;
   border:1px solid rgba(0,255,255,0.15);
   transition: all 0.3s ease;
+  position:relative;
 }
 input:focus{
   border-color:#00e0ff;
-  box-shadow:0 0 12px rgba(0,224,255,0.5);
+  box-shadow:0 0 15px rgba(0,224,255,0.5);
   background:rgba(255,255,255,0.1);
 }
 
+/* Button */
 button{
   width:100%;
   padding:14px;
@@ -86,13 +93,28 @@ button{
   font-size:1rem;
   cursor:pointer;
   transition:transform 0.3s, box-shadow 0.3s, background 0.3s;
+  position:relative;
+  overflow:hidden;
 }
 button:hover{
   transform:translateY(-3px) scale(1.03);
-  box-shadow:0 0 20px rgba(0,224,255,0.4);
+  box-shadow:0 0 25px rgba(0,224,255,0.5);
   background:linear-gradient(90deg,#00f0ff,#00a2ff);
 }
 
+/* Floating neon line effect on button */
+button::before{
+  content:"";
+  position:absolute;
+  top:-50%; left:-50%;
+  width:200%; height:200%;
+  background:linear-gradient(45deg, rgba(0,224,255,0.25), rgba(0,255,149,0.25), rgba(0,224,255,0.25));
+  transform: rotate(0deg);
+  transition:0.5s;
+}
+button:hover::before{transform: rotate(45deg);}
+
+/* Links */
 .links{
   margin-top:18px;
   font-size:0.9rem;
@@ -101,10 +123,14 @@ button:hover{
 .links a{
   color:#00e0ff;
   text-decoration:none;
-  transition:color 0.2s;
+  transition:color 0.2s, text-shadow 0.3s;
 }
-.links a:hover{color:#66f3ff;}
+.links a:hover{
+  color:#66f3ff;
+  text-shadow:0 0 12px #00e0ff;
+}
 
+/* Error */
 .error{
   margin-top:16px;
   display:none;
@@ -139,6 +165,7 @@ button:hover{
 </style>
 </head>
 <body>
+<canvas id="bgCanvas"></canvas>
 
 <div class="login-box">
   <h2>Member Login</h2>
@@ -153,7 +180,6 @@ button:hover{
     </div>
     <button type="submit">Sign In</button>
   </form>
-
   <div class="links">
     <a href="forgot-password.html">Forgot Password?</a>
   </div>
@@ -163,6 +189,7 @@ button:hover{
 <div id="notification" class="notification"></div>
 
 <script>
+// Users and admins
 const users = [
   { username: "9818523773", password: "69125", name: "Dhruv" },
   { username: "9461738616", password: "10382", name: "Harshit Panwar" },
@@ -213,6 +240,30 @@ function login(){
     }
   },2000);
 }
+
+// Starfield background
+const canvas=document.getElementById("bgCanvas");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+let stars=[];
+for(let i=0;i<300;i++){
+  stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,z:Math.random()*2+0.5});
+}
+function animateStars(){
+  ctx.fillStyle="rgba(12,14,22,0.9)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  stars.forEach(s=>{
+    s.x+=0.3*s.z;
+    if(s.x>canvas.width) s.x=0;
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.z,0,Math.PI*2);
+    ctx.fillStyle="rgba(0,224,255,0.6)";
+    ctx.fill();
+  });
+  requestAnimationFrame(animateStars);
+}
+animateStars();
+window.addEventListener('resize',()=>{ canvas.width=window.innerWidth; canvas.height=window.innerHeight; });
 </script>
 </body>
 </html>
