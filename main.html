@@ -55,16 +55,28 @@ canvas#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;}
 #sub-text{ color:#aaa; margin-bottom:20px; }
 
 /* ===== Cards ===== */
-.cards{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; perspective:1200px; }
-.card{
-  background:#161b26;
-  border-radius:16px;
-  padding:20px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.25);
-  transform: translateY(0px) rotateY(0deg) rotateX(0deg);
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: #161b26;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
   transition: transform 0.5s, box-shadow 0.5s;
-  position:relative;
-  overflow:hidden;
+  position: relative;
+  overflow: hidden;
+  
+  /* Make all cards same height */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 180px; /* adjust based on your tallest card */
+}
+
 }
 .card::before{
   content:"";
