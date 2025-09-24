@@ -69,26 +69,26 @@ canvas#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;}
   transition: transform 0.5s, box-shadow 0.5s;
   position: relative;
   overflow: hidden;
-  
-  /* Make all cards same height */
+
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 180px; /* adjust based on your tallest card */
+  justify-content: flex-start;
+  min-height: 140px;
 }
 
-}
-.card::before{
+.card::before {
   content:"";
   position:absolute;
   top:0; left:0; width:100%; height:100%;
   pointer-events:none;
-  background:linear-gradient(120deg, rgba(0,224,255,0.2), transparent 50%, rgba(0,224,255,0.1));
+  background: linear-gradient(120deg, rgba(0,224,255,0.15), transparent 50%, rgba(0,224,255,0.05));
   transform: translateX(-100%) translateY(-100%);
   animation: cardGlow 5s infinite linear;
 }
+
 .card:hover{ transform: translateY(-10px) scale(1.05) rotateX(5deg) rotateY(5deg); box-shadow:0 0 35px rgba(0,224,255,0.35),0 8px 25px rgba(0,0,0,0.5);}
-.card h3{ color:#00e0ff; margin-bottom:8px; transition: transform 0.3s, text-shadow 0.3s; animation: neonPulse 2s infinite alternate;}
+.card h3{ color:#00e0ff; margin-bottom:6px; transition: transform 0.3s, text-shadow 0.3s; animation: neonPulse 2s infinite alternate;}
+.card p{margin:0;}
 .card p a{color:#00e0ff; text-decoration:none; transition: all 0.3s;}
 .card p a:hover{ text-shadow:0 0 15px #00e0ff; }
 
@@ -179,19 +179,19 @@ canvas#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;}
     </div>
   </div>
 
-<div id="updates" class="tab-content"> 
-  <div class="cards"> 
-    <div class="card"><h3>Update 1</h3><p>Website Created<br>Date: 19.09.2025</p></div> 
-    <div class="card"><h3>Update 2</h3><p>Floating Notification System<br>Date: 21.09.2025</p></div> 
-    <div class="card"><h3>Update 3</h3><p>Improved UI for Mobile<br>Date: 21.09.2025</p></div> 
-    <div class="card"><h3>Update 4</h3><p>Sidebar Collapsing System was created<br>Date: 21.09.2025</p></div> 
-    <div class="card"><h3>Update 5</h3><p>New Session was added<br>Date: 21.09.2025</p></div> 
-    <div class="card"><h3>Update 6</h3><p>New File was added in Resources<br>Date: 21.09.2025</p></div> 
-    <div class="card"><h3>Update 7</h3><p>New Session was added<br>Date: 22.09.2025</p></div> 
-    <div class="card"><h3>Update 8</h3><p>Updated Emails of Members<br>Date: 22.09.2025</p></div> 
-    <div class="card"><h3>Update 9</h3><p>Improves the UI of Member Portal<br>Date: 24.09.2025</p></div> 
-  </div> 
-</div>
+  <div id="updates" class="tab-content"> 
+    <div class="cards"> 
+      <div class="card"><h3>Update 1</h3><p>Website Created<br>Date: 19.09.2025</p></div> 
+      <div class="card"><h3>Update 2</h3><p>Floating Notification System<br>Date: 21.09.2025</p></div> 
+      <div class="card"><h3>Update 3</h3><p>Improved UI for Mobile<br>Date: 21.09.2025</p></div> 
+      <div class="card"><h3>Update 4</h3><p>Sidebar Collapsing System was created<br>Date: 21.09.2025</p></div> 
+      <div class="card"><h3>Update 5</h3><p>New Session was added<br>Date: 21.09.2025</p></div> 
+      <div class="card"><h3>Update 6</h3><p>New File was added in Resources<br>Date: 21.09.2025</p></div> 
+      <div class="card"><h3>Update 7</h3><p>New Session was added<br>Date: 22.09.2025</p></div> 
+      <div class="card"><h3>Update 8</h3><p>Updated Emails of Members<br>Date: 22.09.2025</p></div> 
+      <div class="card"><h3>Update 9</h3><p>Improves the UI of Member Portal<br>Date: 24.09.2025</p></div> 
+    </div> 
+  </div>
 
   <!-- Other Info -->
   <div id="other" class="tab-content">
@@ -226,9 +226,9 @@ document.querySelectorAll('.tab-link').forEach(link=>{
 
 // Dashboard card click
 document.querySelectorAll('.dash-link').forEach(card=>{
-  card.addEventListener('click',()=>{ 
-    const target=card.dataset.target; 
-    document.querySelector(`.tab-link[data-target="${target}"]`).click(); 
+  card.addEventListener('click',()=>{
+    const target=card.dataset.target;
+    document.querySelector(`.tab-link[data-target="${target}"]`).click();
   });
 });
 
@@ -237,37 +237,53 @@ function notify(msg){ const n=document.getElementById('notification'); n.textCon
 
 // Delayed links
 document.querySelectorAll('a.delayed-link').forEach(a=>{
-  a.addEventListener('click',function(e){ 
-    e.preventDefault(); 
-    const msg=this.dataset.msg||"Opening link"; 
-    notify(msg+"..."); 
-    setTimeout(()=>{ window.open(this.href,'_blank'); },2000); 
-  }); 
+  a.addEventListener('click',function(e){
+    e.preventDefault();
+    const msg=this.dataset.msg||"Opening link";
+    notify(msg+"...");
+    setTimeout(()=>{ window.open(this.href,'_blank'); },2000);
+  });
 });
 
 // Logout
 function logout(){ notify("Logging out..."); setTimeout(()=>{ sessionStorage.clear(); window.location.href="login.html"; },2000); }
 
 // Floating card motion
-const cards=document.querySelectorAll('.card'); 
-cards.forEach((c)=>{ 
-  let angle=Math.random()*Math.PI*2, speed=0.002+Math.random()*0.003; 
-  function float(){ angle+=speed; c.style.transform=`translateY(${Math.sin(angle)*8}px) translateX(${Math.cos(angle)*8}px)`; requestAnimationFrame(float);}
+document.querySelectorAll('.card').forEach((c)=>{
+  let angleX=Math.random()*Math.PI*2, angleY=Math.random()*Math.PI*2, speed=0.002+Math.random()*0.003;
+  function float(){ 
+    angleX+=speed; angleY+=speed; 
+    c.style.transform=`translateY(${Math.sin(angleX)*6}px) translateX(${Math.cos(angleY)*6}px)`;
+    requestAnimationFrame(float);
+  }
   float();
 });
 
-// Starfield background
+// Starfield background with faster, variable speed
 const canvas=document.getElementById("bgCanvas");
 const ctx=canvas.getContext("2d");
 canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+
 let stars=[];
-for(let i=0;i<250;i++){ stars.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, z:Math.random()*2+0.5}); }
+for(let i=0;i<300;i++){
+  stars.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    z:Math.random()*2+0.5,
+    speed:0.3 + Math.random()*0.5
+  });
+}
+
 function animateStars(){
   ctx.fillStyle="rgba(12,14,22,0.9)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
   stars.forEach(s=>{
-    s.x+=0.2*s.z; if(s.x>canvas.width) s.x=0;
-    ctx.beginPath(); ctx.arc(s.x,s.y,s.z,0,Math.PI*2); ctx.fillStyle="rgba(0,224,255,0.6)"; ctx.fill();
+    s.x += s.speed * s.z;
+    if(s.x > canvas.width) s.x = 0;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.z, 0, Math.PI*2);
+    ctx.fillStyle="rgba(0,224,255,0.6)";
+    ctx.fill();
   });
   requestAnimationFrame(animateStars);
 }
