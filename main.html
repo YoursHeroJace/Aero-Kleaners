@@ -2,236 +2,269 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NGO Member Panel</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Member Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-/* ===== Global ===== */
-*{box-sizing:border-box;margin:0;padding:0;}
+/* ===== Reset ===== */
+*{margin:0;padding:0;box-sizing:border-box;}
 body{
   font-family:'Inter',sans-serif;
-  display:flex;
-  min-height:100vh;
-  background:#0c0e16;
-  color:#e4e4e4;
-  overflow-x:hidden;
-  animation: pageFade 1s ease forwards;
+  height:100vh;
+  overflow:hidden;
+  color:#e0e0e0;
+  background:#000;
 }
-body,a,img{user-select:none;-webkit-user-drag:none;-moz-user-drag:none;-o-user-drag:none;}
 
-/* ===== Sidebar ===== */
-#sidebar{
-  width:220px;
-  background:#0f121b;
-  border-right:1px solid rgba(255,255,255,0.07);
-  padding:20px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  transition: transform 0.5s ease, opacity 0.5s ease;
+/* ==== Aurora Gradient Background ==== */
+body::before, body::after{
+  content:"";
+  position:fixed;
+  top:0;left:0;
+  width:200%;height:200%;
+  background:radial-gradient(circle at 20% 30%, #00f0ff88 0%, transparent 60%),
+             radial-gradient(circle at 80% 70%, #ff00ff88 0%, transparent 60%),
+             radial-gradient(circle at 50% 50%, #00ff8088 0%, transparent 70%);
+  mix-blend-mode:screen;
+  animation: moveAurora 20s linear infinite alternate;
+  z-index:-2;
 }
-#sidebar.hide{ transform: translateX(-240px); opacity:0.9; }
-#sidebar h2{ color:#00e0ff; font-size:1.6rem; margin-bottom:30px; transition: transform .4s, text-shadow .4s; }
-#sidebar h2:hover{ transform: scale(1.08) rotate(-2deg); text-shadow:0 0 15px #00e0ff; }
-#sidebar .tab-link{ display:block; padding:12px 10px; margin-bottom:5px; font-weight:500; border-left:3px solid transparent; transition:0.3s; }
-#sidebar .tab-link:hover,#sidebar .tab-link.active{ border-left:3px solid #00e0ff; padding-left:14px; color:#00e0ff; }
-#sidebar .logout-btn{ margin-top:10px; background:#00e0ff; border:none; color:#000; padding:10px; border-radius:6px; font-weight:600; cursor:pointer; transition: transform 0.3s, box-shadow 0.3s; }
-#sidebar .logout-btn:hover{ transform: scale(1.05) rotate(1deg); box-shadow:0 0 18px #00e0ff; }
+body::after{
+  animation-direction:alternate-reverse;
+  filter:blur(120px);
+}
+@keyframes moveAurora{
+  0%{transform:translate(0,0) rotate(0deg);}
+  100%{transform:translate(-25%, -25%) rotate(360deg);}
+}
 
-/* ===== Sidebar toggle ===== */
-#toggle-btn{ display:none; position:fixed; top:15px; left:15px; z-index:1000; background:#00e0ff; border:none; color:#000; padding:10px 12px; border-radius:6px; cursor:pointer; }
+/* ==== Floating Particles ==== */
+#spark-canvas{
+  position:fixed;
+  top:0;left:0;width:100%;height:100%;
+  z-index:-1;
+}
 
-/* ===== Main Area ===== */
-.main{ flex:1; padding:40px; overflow-y:auto; animation: fadeUp 1s ease forwards; }
-.main h1{ color:#00e0ff; margin-bottom:10px; opacity:0; transform:translateY(-20px); animation: fadeDown 0.8s 0.2s forwards; }
-.main h1:hover{ text-shadow:0 0 15px #00e0ff,0 0 25px #00e0ff; }
-#sub-text{ color:#aaa; margin-bottom:20px; opacity:0; transform:translateY(-20px); animation: fadeDown 0.8s 0.4s forwards; }
+/* ==== Login Card ==== */
+.login-box{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) translateY(0);
+  width:420px;
+  max-width:90%;
+  padding:50px 40px;
+  background:rgba(20,20,20,0.9);
+  border-radius:20px;
+  border:1px solid rgba(0,255,255,0.25);
+  box-shadow:0 0 40px rgba(0,255,255,0.25),
+             0 0 80px rgba(0,150,255,0.15);
+  text-align:center;
+  animation: floatCard 6s ease-in-out infinite;
+}
+@keyframes floatCard{
+  0%{transform:translate(-50%,-50%) translateY(0);}
+  50%{transform:translate(-50%,-50%) translateY(-20px);}
+  100%{transform:translate(-50%,-50%) translateY(0);}
+}
 
-/* ===== Cards ===== */
-.cards{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; }
-.card{
-  background:#161b26;
-  border-radius:16px;
-  padding:20px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.25);
-  transform: translateY(30px) scale(0.95);
+h2{
+  font-family:'Orbitron',sans-serif;
+  font-size:2rem;
+  color:#00f0ff;
+  text-shadow:0 0 20px #00e0ff;
+  margin-bottom:25px;
+  animation: glowTitle 2s infinite alternate;
+}
+@keyframes glowTitle{
+  from{text-shadow:0 0 10px #00e0ff;}
+  to{text-shadow:0 0 25px #00ffff;}
+}
+
+.field{margin-bottom:22px;text-align:left;}
+label{display:block;margin-bottom:6px;font-size:0.95rem;color:#aaa;}
+input[type="text"],input[type="password"]{
+  width:100%;
+  padding:14px 16px;
+  border:none;
+  border-radius:12px;
+  background:rgba(40,40,40,0.9);
+  color:#e0e0e0;
+  font-size:1rem;
+  outline:none;
+  border:1px solid #333;
+  transition: border 0.25s, background 0.25s, transform 0.3s, box-shadow 0.3s;
+}
+input:focus{
+  border-color:#00e0ff;
+  background:#262626;
+  box-shadow:0 0 20px #00e0ff inset;
+  transform:scale(1.03);
+}
+
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg,#00f0ff,#0066ff);
+  color:#fff;
+  font-weight:600;
+  font-size:1.1rem;
+  cursor:pointer;
+  letter-spacing:0.5px;
+  transition:transform 0.3s, box-shadow 0.3s;
+}
+button:hover{
+  transform:translateY(-4px) scale(1.05);
+  box-shadow:0 10px 30px rgba(0,224,255,0.5);
+}
+
+.links{margin-top:18px;font-size:0.9rem;}
+.links a{color:#00e0ff;text-decoration:none;transition:color 0.25s;}
+.links a:hover{color:#66f3ff;text-shadow:0 0 8px #66f3ff;}
+
+.error{
+  margin-top:14px;
+  display:none;
+  background:rgba(255,0,0,0.2);
+  color:#ff7b7b;
+  padding:8px;
+  border-radius:8px;
+  font-size:0.9rem;
+  text-align:center;
+}
+
+/* Toast Notification */
+.notification{
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:rgba(0,224,255,0.95);
+  color:#000;
+  padding:14px 20px;
+  border-radius:10px;
+  font-weight:600;
+  box-shadow:0 0 20px rgba(0,224,255,0.7);
   opacity:0;
-  animation: cardFloat 0.8s forwards;
-  transition: transform 0.4s, box-shadow 0.4s;
-  perspective:1000px;
+  transform:translateY(-20px);
+  z-index:9999;
+  transition: all 0.4s ease;
 }
-.card:hover{ transform: translateY(-10px) scale(1.05) rotateX(5deg) rotateY(5deg); box-shadow:0 0 35px rgba(0,224,255,0.35),0 8px 25px rgba(0,0,0,0.5);}
-.card h3{ color:#00e0ff; margin-bottom:8px; transition: transform 0.3s, text-shadow 0.3s; }
-.card:hover h3{ transform: scale(1.1); text-shadow:0 0 15px #00e0ff; }
-
-/* ===== Tabs ===== */
-.tab-content{ display:none; opacity:0; transform: translateY(20px); transition: all 0.5s ease; }
-.tab-content.active{ display:block; opacity:1; transform: translateY(0); }
-
-/* ===== Notification ===== */
-#notification{ position:fixed; top:20px; right:20px; background:rgba(0,224,255,0.9); color:#000; padding:10px 16px; border-radius:6px; font-weight:600; opacity:0; pointer-events:none; transition:opacity 0.3s; z-index:9999; }
-
-/* ===== Animations ===== */
-@keyframes pageFade{ from{opacity:0;} to{opacity:1;} }
-@keyframes fadeUp{ from{opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);} }
-@keyframes fadeDown{ from{opacity:0; transform:translateY(-20px);} to{opacity:1; transform:translateY(0);} }
-@keyframes cardFloat{ from{opacity:0; transform:translateY(40px) scale(0.9);} to{opacity:1; transform:translateY(0) scale(1);} }
-
-/* ===== Responsive ===== */
-@media(max-width:768px){
-  #sidebar{ position:fixed; height:100vh; z-index:999; }
-  #toggle-btn{ display:block; }
-  .main{ padding:20px; }
-  #sidebar.hide{ transform: translateX(-240px); }
+.notification.show{
+  opacity:1;
+  transform:translateY(0);
 }
 </style>
 </head>
 <body>
 
-<!-- Sidebar -->
-<div id="sidebar">
-  <div>
-    <h2>NGO Panel</h2>
-    <a class="tab-link active" data-target="dashboard">Dashboard</a>
-    <a class="tab-link" data-target="meetings">Meetings</a>
-    <a class="tab-link" data-target="recent">Recent Activity</a>
-    <a class="tab-link" data-target="sessions">Sessions</a>
-    <a class="tab-link" data-target="resources">Resources</a>
-    <a class="tab-link" data-target="updates">Updates</a>
-    <a class="tab-link" data-target="other">Other Info</a>
+<canvas id="spark-canvas"></canvas>
+
+<div class="login-box">
+  <h2>Member Login</h2>
+  <form onsubmit="event.preventDefault(); login();">
+    <div class="field">
+      <label for="username">Phone Number</label>
+      <input type="text" id="username" placeholder="Enter phone number" inputmode="numeric">
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter password">
+    </div>
+    <button type="submit">Sign In</button>
+  </form>
+  <div class="links">
+    <a href="forgot-password.html">Forgot Password?</a>
   </div>
-  <button class="logout-btn" onclick="logout()">Logout</button>
+  <div id="error" class="error"></div>
 </div>
 
-<button id="toggle-btn" onclick="toggleSidebar()">☰</button>
-
-<!-- Main Content -->
-<div class="main">
-  <h1>Welcome, <span id="user-name"></span>!</h1>
-  <p id="sub-text">Here’s what’s happening in your NGO panel.</p>
-
-  <!-- Dashboard -->
-  <div id="dashboard" class="tab-content active">
-    <div class="cards">
-      <div class="card dash-link" data-target="meetings"><h3>Meetings</h3><p>Check upcoming schedules.</p></div>
-      <div class="card dash-link" data-target="recent"><h3>Recent Activity</h3><p>Latest quizzes and events.</p></div>
-      <div class="card dash-link" data-target="sessions"><h3>Sessions</h3><p>Previous and upcoming sessions.</p></div>
-      <div class="card dash-link" data-target="resources"><h3>Resources</h3><p>Guides, docs, and assets.</p></div>
-      <div class="card dash-link" data-target="updates"><h3>Updates</h3><p>See Updates about the Website.</p></div>
-      <div class="card dash-link" data-target="other"><h3>Other Info</h3><p>Extra NGO information.</p></div>
-    </div>
-  </div>
-
-  <!-- Meetings Tab -->
-  <div id="meetings" class="tab-content">
-    <div class="cards">
-      <div class="card"><h3>Meeting #1</h3><p>Date: TBD – <a href="#" class="delayed-link" data-msg="Joining Meeting #1">Coming Soon...</a></p></div>
-    </div>
-  </div>
-
-  <!-- Recent Activity Tab -->
-  <div id="recent" class="tab-content">
-    <div class="cards">
-      <div class="card"><h3>Quiz Competition</h3><p>Date: TBD – <a href="#" class="delayed-link" data-msg="Opening Drive">Coming Soon...</a></p></div>
-    </div>
-  </div>
-
-  <!-- Sessions Tab -->
-  <div id="sessions" class="tab-content">
-    <div class="cards">
-      <div class="card"><h3>Session 1</h3><p>Website Verification<br>Date: 21.09.2025</p></div>
-      <div class="card"><h3>Session 2</h3><p>Cleanliness Session in School Park<br>Date: 22.09.2025</p></div>
-    </div>
-  </div>
-
-  <!-- Resources Tab -->
-  <div id="resources" class="tab-content">
-    <div class="cards">
-      <div class="card"><h3>NGO Members List</h3><p>Click the link below to see the list of all the heads of NGO<br><a href="https://drive.google.com/file/d/1eQceatiNRdWrTrd7FxS0Z8NSfnXps1f7/view?usp=sharing" class="delayed-link" data-msg="Opening Drive">Drive Link</a></p></div>
-    </div>
-  </div>
-
-  <!-- Updates Tab -->
-  <div id="updates" class="tab-content">
-    <div class="cards">
-      <div class="card"><h3>Update 1</h3><p>Website Created<br>Date: 19.09.2025</p></div>
-      <div class="card"><h3>Update 2</h3><p>Floating Notification System<br>Date: 21.09.2025</p></div>
-      <div class="card"><h3>Update 3</h3><p>Improved UI for Mobile<br>Date: 21.09.2025</p></div>
-      <div class="card"><h3>Update 4</h3><p>Sidebar Collapsing System was created<br>Date: 21.09.2025</p></div>
-      <div class="card"><h3>Update 5</h3><p>New Session was added<br>Date: 21.09.2025</p></div>
-      <div class="card"><h3>Update 6</h3><p>New File was added in Resources<br>Date: 21.09.2025</p></div>
-      <div class="card"><h3>Update 7</h3><p>New Session was added<br>Date: 22.09.2025</p></div>
-      <div class="card"><h3>Update 8</h3><p>Updated the Emails of Members in About section of Website<br>Date: 22.09.2025</p></div>
-    </div>
-  </div>
-
-  <!-- Other Info Tab -->
-  <div id="other" class="tab-content">
-    <div class="cards">
-      <div class="card"><h3>NGO Email Info</h3><p>Email: aerokleaners@gmail.com</p></div>
-      <div class="card"><h3>Contact Website Admin</h3><p>Email: yoursjace@gmail.com</p></div>
-      <div class="card"><h3>View website</h3><p><a href="https://aero-kleaners.weebly.com/" class="delayed-link" data-msg="Opening Website">Open Website</a></p></div>
-    </div>
-  </div>
-
-</div>
-
-<div id="notification"></div>
+<div id="notification" class="notification"></div>
 
 <script>
-// Login guard
-if(sessionStorage.getItem("loggedIn") !== "true"){
-  alert("Please log in first.");
-  window.location.href = "login.html";
-}else{
-  document.getElementById("user-name").textContent = sessionStorage.getItem("name");
+// === Spark Particles ===
+const c=document.getElementById('spark-canvas'),ctx=c.getContext('2d');
+let w,h,particles=[];
+function resize(){
+  w=window.innerWidth; h=window.innerHeight;
+  c.width=w; c.height=h;
+}
+window.addEventListener('resize',resize); resize();
+function createParticles(){
+  particles=[];
+  for(let i=0;i<60;i++){
+    particles.push({
+      x:Math.random()*w,
+      y:Math.random()*h,
+      r:Math.random()*2+1,
+      dx:(Math.random()-0.5)*0.5,
+      dy:(Math.random()-0.5)*0.5
+    });
+  }
+}
+createParticles();
+function animate(){
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle='rgba(0,224,255,0.6)';
+  particles.forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fill();
+    p.x+=p.dx; p.y+=p.dy;
+    if(p.x<0||p.x>w) p.dx*=-1;
+    if(p.y<0||p.y>h) p.dy*=-1;
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+
+// === Login Logic ===
+const users = [
+  { username: "9818523773", password: "69125", name: "Dhruv" },
+  { username: "9461738616", password: "10382", name: "Harshit Panwar" },
+  { username: "8368992775", password: "93517", name: "Shahil Shivam" },
+  { username: "9654579176", password: "37591", name: "Nirvan Sharma" },
+  { username: "8521883562", password: "81320", name: "Vivek Kumar" }, 
+  { username: "8882583977", password: "33864", name: "Piyush Kumar Sah" }, 
+  { username: "7678629433", password: "11847", name: "Shivkant" }, 
+  { username: "9953539648", password: "29101", name: "Naitik Shekhar Mahajan" }, 
+  { username: "8826584503", password: "62389", name: "Prabhesh Swesh" }, 
+  { username: "9971890335", password: "19291", name: "Kushant Kumar" }
+];
+const ADMIN_USERS = ["Dhruv","Harshit Panwar","Shahil Shivam"];
+
+function showNotification(msg){
+  const n = document.getElementById("notification");
+  n.innerText = msg;
+  n.classList.add("show");
+  setTimeout(()=> n.classList.remove("show"), 2200);
 }
 
-// Sidebar toggle
-function toggleSidebar(){ document.getElementById("sidebar").classList.toggle("hide"); }
+function login(){
+  const user = document.getElementById('username').value.trim();
+  const pass = document.getElementById('password').value.trim();
+  const found = users.find(u => u.username===user && u.password===pass);
+  const err = document.getElementById('error');
 
-// Tab switching
-document.querySelectorAll('.tab-link').forEach(link=>{
-  link.addEventListener('click',()=>{
-    document.querySelectorAll('.tab-link').forEach(l=>l.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-    link.classList.add('active');
-    document.getElementById(link.dataset.target).classList.add('active');
-  });
-});
+  if(!user || !pass){
+    err.innerText = "Please enter phone and password";
+    err.style.display = 'block';
+    setTimeout(()=> err.style.display='none',3500);
+    return;
+  }
 
-// Dashboard cards -> switch tab
-document.querySelectorAll('.dash-link').forEach(card=>{
-  card.addEventListener('click',()=>{
-    const target = card.dataset.target;
-    document.querySelector(`.tab-link[data-target="${target}"]`).click();
-  });
-});
-
-// Notifications
-function notify(msg){
-  const n = document.getElementById('notification');
-  n.textContent = msg;
-  n.style.opacity = 1;
-  setTimeout(()=>{ n.style.opacity=0; }, 2200);
-}
-
-// Delayed links
-document.querySelectorAll('a.delayed-link').forEach(a=>{
-  a.addEventListener('click',function(e){
-    e.preventDefault();
-    const msg = this.dataset.msg || "Opening link";
-    notify(msg+"...");
-    setTimeout(()=>{ window.open(this.href,'_blank'); },2000);
-  });
-});
-
-// Logout with delay
-function logout(){
-  notify("Logging out...");
+  showNotification("🔐 Logging in...");
   setTimeout(()=>{
-    sessionStorage.clear();
-    window.location.href="login.html";
+    if(found){
+      sessionStorage.setItem('loggedIn','true');
+      sessionStorage.setItem('name',found.name);
+      sessionStorage.setItem('isAdmin',ADMIN_USERS.includes(found.name)?'true':'false');
+      window.location.href='main.html';
+    } else {
+      err.innerText="Invalid phone or password";
+      err.style.display='block';
+      setTimeout(()=> err.style.display='none',3500);
+    }
   },2000);
 }
 </script>
