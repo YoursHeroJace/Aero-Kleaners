@@ -16,13 +16,13 @@ body{
   color:#e0e0e0;
   overflow:hidden;
   background:#0c0e16;
+  perspective:1200px;
   position:relative;
 }
+body,a,img{user-select:none;-webkit-user-drag:none;-moz-user-drag:none;-o-user-drag:none;}
+canvas#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;}
 
-/* Star/particle background */
-canvas#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}
-
-/* Glassmorphism login container */
+/* Glassmorphism container */
 .login-box{
   backdrop-filter: blur(18px);
   background: rgba(20,20,20,0.55);
@@ -31,18 +31,17 @@ canvas#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}
   padding:50px 48px;
   width:420px;
   max-width:92%;
-  box-shadow:0 0 60px rgba(0,224,255,0.3);
+  box-shadow:0 0 40px rgba(0,255,255,0.15);
   text-align:center;
+  animation: float 6s ease-in-out infinite;
   position:relative;
   z-index:1;
-  animation: float 6s ease-in-out infinite;
 }
 @keyframes float {
   0%,100%{transform:translateY(0);}
   50%{transform:translateY(-10px);}
 }
 
-/* Heading with neon glow */
 h2{
   font-size:2rem;
   font-weight:600;
@@ -52,11 +51,6 @@ h2{
   margin-bottom:32px;
   letter-spacing:1px;
   animation: neonPulse 2s infinite alternate;
-}
-@keyframes neonPulse{
-  0%{text-shadow:0 0 5px #00e0ff;}
-  50%{text-shadow:0 0 20px #00e0ff,0 0 40px #00ff95;}
-  100%{text-shadow:0 0 5px #00e0ff;}
 }
 
 .field{margin-bottom:22px;text-align:left;}
@@ -73,15 +67,13 @@ input[type="text"],input[type="password"]{
   outline:none;
   border:1px solid rgba(0,255,255,0.15);
   transition: all 0.3s ease;
-  position:relative;
 }
 input:focus{
   border-color:#00e0ff;
-  box-shadow:0 0 15px rgba(0,224,255,0.5);
+  box-shadow:0 0 12px rgba(0,224,255,0.5);
   background:rgba(255,255,255,0.1);
 }
 
-/* Button */
 button{
   width:100%;
   padding:14px;
@@ -93,28 +85,13 @@ button{
   font-size:1rem;
   cursor:pointer;
   transition:transform 0.3s, box-shadow 0.3s, background 0.3s;
-  position:relative;
-  overflow:hidden;
 }
 button:hover{
   transform:translateY(-3px) scale(1.03);
-  box-shadow:0 0 25px rgba(0,224,255,0.5);
+  box-shadow:0 0 20px rgba(0,224,255,0.4);
   background:linear-gradient(90deg,#00f0ff,#00a2ff);
 }
 
-/* Floating neon line effect on button */
-button::before{
-  content:"";
-  position:absolute;
-  top:-50%; left:-50%;
-  width:200%; height:200%;
-  background:linear-gradient(45deg, rgba(0,224,255,0.25), rgba(0,255,149,0.25), rgba(0,224,255,0.25));
-  transform: rotate(0deg);
-  transition:0.5s;
-}
-button:hover::before{transform: rotate(45deg);}
-
-/* Links */
 .links{
   margin-top:18px;
   font-size:0.9rem;
@@ -123,14 +100,10 @@ button:hover::before{transform: rotate(45deg);}
 .links a{
   color:#00e0ff;
   text-decoration:none;
-  transition:color 0.2s, text-shadow 0.3s;
+  transition:color 0.2s;
 }
-.links a:hover{
-  color:#66f3ff;
-  text-shadow:0 0 12px #00e0ff;
-}
+.links a:hover{color:#66f3ff;}
 
-/* Error */
 .error{
   margin-top:16px;
   display:none;
@@ -162,9 +135,16 @@ button:hover::before{transform: rotate(45deg);}
   opacity:1;
   transform:translateY(0);
 }
+
+@keyframes neonPulse{
+  0%{text-shadow:0 0 5px #00e0ff;}
+  50%{text-shadow:0 0 25px #00e0ff, 0 0 50px #00e0ff;}
+  100%{text-shadow:0 0 5px #00e0ff;}
+}
 </style>
 </head>
 <body>
+
 <canvas id="bgCanvas"></canvas>
 
 <div class="login-box">
@@ -180,6 +160,7 @@ button:hover::before{transform: rotate(45deg);}
     </div>
     <button type="submit">Sign In</button>
   </form>
+
   <div class="links">
     <a href="forgot-password.html">Forgot Password?</a>
   </div>
@@ -189,7 +170,6 @@ button:hover::before{transform: rotate(45deg);}
 <div id="notification" class="notification"></div>
 
 <script>
-// Users and admins
 const users = [
   { username: "9818523773", password: "69125", name: "Dhruv" },
   { username: "9461738616", password: "10382", name: "Harshit Panwar" },
@@ -241,29 +221,62 @@ function login(){
   },2000);
 }
 
-// Starfield background
-const canvas=document.getElementById("bgCanvas");
-const ctx=canvas.getContext("2d");
-canvas.width=window.innerWidth; canvas.height=window.innerHeight;
-let stars=[];
-for(let i=0;i<300;i++){
-  stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,z:Math.random()*2+0.5});
-}
-function animateStars(){
-  ctx.fillStyle="rgba(12,14,22,0.9)";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-  stars.forEach(s=>{
-    s.x+=0.3*s.z;
-    if(s.x>canvas.width) s.x=0;
+// Geometric shapes animated background
+const canvas = document.getElementById("bgCanvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+class Shape {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = 20 + Math.random() * 40;
+    this.speedX = -0.5 + Math.random();
+    this.speedY = -0.5 + Math.random();
+    this.angle = Math.random() * Math.PI * 2;
+    this.rotationSpeed = (Math.random() - 0.5) * 0.01;
+    this.color = `hsla(${Math.random()*360}, 70%, 50%, 0.3)`;
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    this.angle += this.rotationSpeed;
+    if (this.x - this.size > canvas.width) this.x = -this.size;
+    if (this.x + this.size < 0) this.x = canvas.width + this.size;
+    if (this.y - this.size > canvas.height) this.y = -this.size;
+    if (this.y + this.size < 0) this.y = canvas.height + this.size;
+  }
+  draw() {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angle);
     ctx.beginPath();
-    ctx.arc(s.x,s.y,s.z,0,Math.PI*2);
-    ctx.fillStyle="rgba(0,224,255,0.6)";
+    for(let i=0;i<5;i++){
+      ctx.lineTo(this.size/2*Math.cos(i*2*Math.PI/5), this.size/2*Math.sin(i*2*Math.PI/5));
+    }
+    ctx.closePath();
+    ctx.fillStyle = this.color;
     ctx.fill();
-  });
-  requestAnimationFrame(animateStars);
+    ctx.restore();
+  }
 }
-animateStars();
-window.addEventListener('resize',()=>{ canvas.width=window.innerWidth; canvas.height=window.innerHeight; });
+
+let shapes = [];
+for(let i=0;i<30;i++) shapes.push(new Shape());
+
+function animate() {
+  ctx.fillStyle = "rgba(12,14,22,0.9)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  shapes.forEach(shape => { shape.update(); shape.draw(); });
+  requestAnimationFrame(animate);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
 </script>
 </body>
 </html>
