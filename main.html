@@ -239,88 +239,138 @@ canvas#bgCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z
 
 <script>
 // Login guard
-if(sessionStorage.getItem("loggedIn")!=="true"){ alert("Please log in first."); window.location.href="login.html";}
-else{document.getElementById("user-name").textContent=sessionStorage.getItem("name");}
+if (sessionStorage.getItem("loggedIn") !== "true") {
+    alert("Please log in first.");
+    window.location.href = "login.html";
+} else {
+    document.getElementById("user-name").textContent = sessionStorage.getItem("name");
+}
 
 // Sidebar toggle
-function toggleSidebar(){ document.getElementById("sidebar").classList.toggle("hide"); }
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("hide");
+}
 
 // Tab switching
-document.querySelectorAll('.tab-link').forEach(link=>{
-  link.addEventListener('click',()=>{
-    document.querySelectorAll('.tab-link').forEach(l=>l.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-    link.classList.add('active');
-    document.getElementById(link.dataset.target).classList.add('active');
-  });
+document.querySelectorAll('.tab-link').forEach(link => {
+    link.addEventListener('click', () => {
+        document.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        link.classList.add('active');
+        document.getElementById(link.dataset.target).classList.add('active');
+    });
 });
 
 // Dashboard card click
-document.querySelectorAll('.dash-link').forEach(card=>{
-  card.addEventListener('click',()=>{
-    const target=card.dataset.target;
-    document.querySelector(`.tab-link[data-target="${target}"]`).click();
-  });
+document.querySelectorAll('.dash-link').forEach(card => {
+    card.addEventListener('click', () => {
+        const target = card.dataset.target;
+        document.querySelector(`.tab-link[data-target="${target}"]`).click();
+    });
 });
 
 // Notifications
-function notify(msg){ const n=document.getElementById('notification'); n.textContent=msg; n.style.opacity=1; setTimeout(()=>{ n.style.opacity=0; },2200); }
+function notify(msg) {
+    const n = document.getElementById('notification');
+    n.textContent = msg;
+    n.style.opacity = 1;
+    setTimeout(() => {
+        n.style.opacity = 0;
+    }, 2200);
+}
 
 // Delayed links
-document.querySelectorAll('a.delayed-link').forEach(a=>{
-  a.addEventListener('click',function(e){
-    e.preventDefault();
-    const msg=this.dataset.msg||"Opening link";
-    notify(msg+"...");
-    setTimeout(()=>{ window.open(this.href,'_blank'); },2000);
-  });
+document.querySelectorAll('a.delayed-link').forEach(a => {
+    a.addEventListener('click', function (e) {
+        e.preventDefault();
+        const msg = this.dataset.msg || "Opening link";
+        notify(msg + "...");
+        setTimeout(() => {
+            window.open(this.href, '_blank');
+        }, 2000);
+    });
 });
 
 // Logout
-function logout(){ notify("Logging out..."); setTimeout(()=>{ sessionStorage.clear(); window.location.href="login.html"; },2000); }
+function logout() {
+    notify("Logging out...");
+    setTimeout(() => {
+        sessionStorage.clear();
+        window.location.href = "login.html";
+    }, 2000);
+}
 
-// Floating card motion
-document.querySelectorAll('.card').forEach((c)=>{
-  let angleX=Math.random()*Math.PI*2, angleY=Math.random()*Math.PI*2, speed=0.002+Math.random()*0.003;
-  function float(){ 
-    angleX+=speed; angleY+=speed; 
-    c.style.transform=`translateY(${Math.sin(angleX)*6}px) translateX(${Math.cos(angleY)*6}px)`;
-    requestAnimationFrame(float);
-  }
-  float();
+// Floating card motion + shine effect
+const cards = document.querySelectorAll('.card');
+cards.forEach((c) => {
+    let angle = Math.random() * Math.PI * 2;
+    let speed = 0.004 + Math.random() * 0.004; // increased speed
+    let shine = document.createElement('div');
+    shine.classList.add('card-shine');
+    shine.style.position = 'absolute';
+    shine.style.top = '0';
+    shine.style.left = '-75%';
+    shine.style.width = '50%';
+    shine.style.height = '100%';
+    shine.style.background = 'linear-gradient(120deg, rgba(255,255,255,0.25), rgba(255,255,255,0))';
+    shine.style.transform = 'skewX(-25deg)';
+    shine.style.pointerEvents = 'none';
+    shine.style.transition = 'none';
+    shine.style.animation = 'shineMove 3s linear infinite';
+    c.appendChild(shine);
+
+    function float() {
+        angle += speed;
+        c.style.transform = `translateY(${Math.sin(angle) * 6}px) translateX(${Math.cos(angle) * 6}px)`; 
+        requestAnimationFrame(float);
+    }
+    float();
 });
 
-// Starfield background with faster, variable speed
-const canvas=document.getElementById("bgCanvas");
-const ctx=canvas.getContext("2d");
-canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+// Starfield background
+const canvas = document.getElementById("bgCanvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-let stars=[];
-for(let i=0;i<300;i++){
-  stars.push({
-    x:Math.random()*canvas.width,
-    y:Math.random()*canvas.height,
-    z:Math.random()*2+0.5,
-    speed:0.3 + Math.random()*0.5
-  });
+let stars = [];
+for (let i = 0; i < 250; i++) {
+    stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        z: Math.random() * 2 + 0.5
+    });
 }
 
-function animateStars(){
-  ctx.fillStyle="rgba(12,14,22,0.9)";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-  stars.forEach(s=>{
-    s.x += s.speed * s.z;
-    if(s.x > canvas.width) s.x = 0;
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, s.z, 0, Math.PI*2);
-    ctx.fillStyle="rgba(0,224,255,0.6)";
-    ctx.fill();
-  });
-  requestAnimationFrame(animateStars);
+function animateStars() {
+    ctx.fillStyle = "rgba(12,14,22,0.9)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(s => {
+        s.x += 0.6 * s.z; // increased speed
+        if (s.x > canvas.width) s.x = 0;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.z, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(0,224,255,0.6)";
+        ctx.fill();
+    });
+    requestAnimationFrame(animateStars);
 }
 animateStars();
-window.addEventListener('resize',()=>{ canvas.width=window.innerWidth; canvas.height=window.innerHeight; });
 
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+// Add shine animation keyframes dynamically
+const style = document.createElement('style');
+style.innerHTML = `
+@keyframes shineMove {
+  0% { left: -75%; }
+  50% { left: 100%; }
+  100% { left: -75%; }
+}`;
+document.head.appendChild(style);
 </script>
 </body>
 </html>
