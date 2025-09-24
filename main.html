@@ -2,271 +2,257 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Member Login</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Main Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-/* ===== Reset ===== */
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-  font-family:'Inter',sans-serif;
-  height:100vh;
-  overflow:hidden;
-  color:#e0e0e0;
-  background:#000;
+/* ===== Global ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(120deg, #0d0d0d, #1c1c1c, #0d0d0d);
+  background-size: 400% 400%;
+  animation: bgMove 18s ease infinite;
+  color: #e0e0e0;
+  display: flex;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* ==== Aurora Gradient Background ==== */
-body::before, body::after{
-  content:"";
-  position:fixed;
-  top:0;left:0;
-  width:200%;height:200%;
-  background:radial-gradient(circle at 20% 30%, #00f0ff88 0%, transparent 60%),
-             radial-gradient(circle at 80% 70%, #ff00ff88 0%, transparent 60%),
-             radial-gradient(circle at 50% 50%, #00ff8088 0%, transparent 70%);
-  mix-blend-mode:screen;
-  animation: moveAurora 20s linear infinite alternate;
-  z-index:-2;
-}
-body::after{
-  animation-direction:alternate-reverse;
-  filter:blur(120px);
-}
-@keyframes moveAurora{
-  0%{transform:translate(0,0) rotate(0deg);}
-  100%{transform:translate(-25%, -25%) rotate(360deg);}
+/* ===== Moving Background Animation ===== */
+@keyframes bgMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-/* ==== Floating Particles ==== */
-#spark-canvas{
-  position:fixed;
-  top:0;left:0;width:100%;height:100%;
-  z-index:-1;
+/* ===== Sidebar ===== */
+.sidebar {
+  width: 240px;
+  background: rgba(20,20,20,0.95);
+  backdrop-filter: blur(8px);
+  padding-top: 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  transition: width 0.3s;
+  overflow-y: auto;
+}
+.sidebar.collapsed {
+  width: 70px;
+}
+.sidebar h2 {
+  color: #00e0ff;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 700;
+  transition: opacity 0.3s;
+}
+.sidebar.collapsed h2 { opacity: 0; }
+
+.sidebar a {
+  display: block;
+  color: #e0e0e0;
+  padding: 14px 25px;
+  text-decoration: none;
+  transition: background 0.3s;
+  white-space: nowrap;
+}
+.sidebar a:hover {
+  background: rgba(0,224,255,0.1);
+}
+.logout-btn {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  padding: 12px;
+  background: linear-gradient(90deg,#ff4e50,#f9d423);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.logout-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255,78,80,0.4);
+}
+.toggle-btn {
+  position: absolute;
+  top: 15px;
+  right: -25px;
+  background: #00e0ff;
+  color: #000;
+  padding: 6px 10px;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+  font-weight: 700;
+  transition: background 0.3s;
+}
+.toggle-btn:hover {
+  background: #00b3cc;
 }
 
-/* ==== Login Card ==== */
-.login-box{
-  position:absolute;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%) translateY(0);
-  width:420px;
-  max-width:90%;
-  padding:50px 40px;
-  background:rgba(20,20,20,0.9);
-  border-radius:20px;
-  border:1px solid rgba(0,255,255,0.25);
-  box-shadow:0 0 40px rgba(0,255,255,0.25),
-             0 0 80px rgba(0,150,255,0.15);
-  text-align:center;
-  animation: floatCard 6s ease-in-out infinite;
+/* ===== Content ===== */
+.content {
+  flex: 1;
+  margin-left: 240px;
+  padding: 30px;
+  transition: margin-left 0.3s;
 }
-@keyframes floatCard{
-  0%{transform:translate(-50%,-50%) translateY(0);}
-  50%{transform:translate(-50%,-50%) translateY(-20px);}
-  100%{transform:translate(-50%,-50%) translateY(0);}
+.sidebar.collapsed + .content {
+  margin-left: 70px;
 }
-
-h2{
-  font-family:'Orbitron',sans-serif;
-  font-size:2rem;
-  color:#00f0ff;
-  text-shadow:0 0 20px #00e0ff;
-  margin-bottom:25px;
-  animation: glowTitle 2s infinite alternate;
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 25px;
 }
-@keyframes glowTitle{
-  from{text-shadow:0 0 10px #00e0ff;}
-  to{text-shadow:0 0 25px #00ffff;}
+.tab {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 10px 18px;
+  border-radius: 25px;
+  cursor: pointer;
+  color: #fff;
+  transition: background 0.3s, transform 0.2s;
+}
+.tab:hover {
+  background: rgba(0,224,255,0.15);
+  transform: translateY(-2px);
+}
+.tab.active {
+  background: linear-gradient(90deg,#00c6ff,#0072ff);
 }
 
-.field{margin-bottom:22px;text-align:left;}
-label{display:block;margin-bottom:6px;font-size:0.95rem;color:#aaa;}
-input[type="text"],input[type="password"]{
-  width:100%;
-  padding:14px 16px;
-  border:none;
-  border-radius:12px;
-  background:rgba(40,40,40,0.9);
-  color:#e0e0e0;
-  font-size:1rem;
-  outline:none;
-  border:1px solid #333;
-  transition: border 0.25s, background 0.25s, transform 0.3s, box-shadow 0.3s;
-}
-input:focus{
-  border-color:#00e0ff;
-  background:#262626;
-  box-shadow:0 0 20px #00e0ff inset;
-  transform:scale(1.03);
+/* ===== Card Grid ===== */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
 }
 
-button{
-  width:100%;
-  padding:14px;
-  border:none;
-  border-radius:12px;
-  background:linear-gradient(135deg,#00f0ff,#0066ff);
-  color:#fff;
-  font-weight:600;
-  font-size:1.1rem;
-  cursor:pointer;
-  letter-spacing:0.5px;
-  transition:transform 0.3s, box-shadow 0.3s;
+/* ===== Floating Cards ===== */
+.card {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 20px;
+  color: #e0e0e0;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+  text-align: center;
+  backdrop-filter: blur(6px);
+  position: relative;
+  animation: floaty 6s ease-in-out infinite;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
-button:hover{
-  transform:translateY(-4px) scale(1.05);
-  box-shadow:0 10px 30px rgba(0,224,255,0.5);
+.card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 20px 40px rgba(0,224,255,0.3);
+}
+@keyframes floaty {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
+.card h3 {
+  margin-bottom: 10px;
+  color: #00e0ff;
+}
+.card p {
+  color: #ccc;
+  font-size: 0.95rem;
 }
 
-.links{margin-top:18px;font-size:0.9rem;}
-.links a{color:#00e0ff;text-decoration:none;transition:color 0.25s;}
-.links a:hover{color:#66f3ff;text-shadow:0 0 8px #66f3ff;}
-
-.error{
-  margin-top:14px;
-  display:none;
-  background:rgba(255,0,0,0.2);
-  color:#ff7b7b;
-  padding:8px;
-  border-radius:8px;
-  font-size:0.9rem;
-  text-align:center;
-}
-
-/* Toast Notification */
-.notification{
-  position:fixed;
-  top:20px;
-  right:20px;
-  background:rgba(0,224,255,0.95);
-  color:#000;
-  padding:14px 20px;
-  border-radius:10px;
-  font-weight:600;
-  box-shadow:0 0 20px rgba(0,224,255,0.7);
-  opacity:0;
-  transform:translateY(-20px);
-  z-index:9999;
-  transition: all 0.4s ease;
-}
-.notification.show{
-  opacity:1;
-  transform:translateY(0);
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .sidebar { width: 70px; }
+  .sidebar h2 { display: none; }
+  .content { margin-left: 70px; }
+  .toggle-btn { right: -20px; }
 }
 </style>
 </head>
 <body>
 
-<canvas id="spark-canvas"></canvas>
-
-<div class="login-box">
-  <h2>Member Login</h2>
-  <form onsubmit="event.preventDefault(); login();">
-    <div class="field">
-      <label for="username">Phone Number</label>
-      <input type="text" id="username" placeholder="Enter phone number" inputmode="numeric">
-    </div>
-    <div class="field">
-      <label for="password">Password</label>
-      <input type="password" id="password" placeholder="Enter password">
-    </div>
-    <button type="submit">Sign In</button>
-  </form>
-  <div class="links">
-    <a href="forgot-password.html">Forgot Password?</a>
-  </div>
-  <div id="error" class="error"></div>
+<!-- ===== Sidebar ===== -->
+<div class="sidebar" id="sidebar">
+  <div class="toggle-btn" onclick="toggleSidebar()">☰</div>
+  <h2>My Panel</h2>
+  <a href="#" class="tab-btn" data-tab="dashboard">Dashboard</a>
+  <a href="#" class="tab-btn" data-tab="updates">Updates</a>
+  <a href="#" class="tab-btn" data-tab="info">Info</a>
+  <button class="logout-btn" onclick="logout()">Logout</button>
 </div>
 
-<div id="notification" class="notification"></div>
+<!-- ===== Content ===== -->
+<div class="content">
+  <div class="tabs">
+    <div class="tab active" data-tab="dashboard">Dashboard</div>
+    <div class="tab" data-tab="updates">Updates</div>
+    <div class="tab" data-tab="info">Info</div>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="tab-content" id="dashboard" style="display:block;">
+    <h2>Dashboard</h2>
+    <div class="card-grid">
+      <div class="card"><h3>Welcome</h3><p>Your portal overview with cool floating cards.</p></div>
+      <div class="card"><h3>Analytics</h3><p>Real-time stats and insights.</p></div>
+      <div class="card"><h3>Messages</h3><p>Quick communication with teachers or admins.</p></div>
+    </div>
+  </div>
+
+  <!-- Updates -->
+  <div class="tab-content" id="updates" style="display:none;">
+    <h2>Updates</h2>
+    <div class="card-grid">
+      <div class="card"><h3>New Policy</h3><p>School timing updates effective from next week.</p></div>
+      <div class="card"><h3>Events</h3><p>Annual fest details released, check schedules.</p></div>
+    </div>
+  </div>
+
+  <!-- Info -->
+  <div class="tab-content" id="info" style="display:none;">
+    <h2>Info</h2>
+    <div class="card-grid">
+      <div class="card"><h3>Contact</h3><p>Reach admin for any issues or feedback.</p></div>
+      <div class="card"><h3>Help</h3><p>FAQ and guidelines for portal usage.</p></div>
+    </div>
+  </div>
+</div>
 
 <script>
-// === Spark Particles ===
-const c=document.getElementById('spark-canvas'),ctx=c.getContext('2d');
-let w,h,particles=[];
-function resize(){
-  w=window.innerWidth; h=window.innerHeight;
-  c.width=w; c.height=h;
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('collapsed');
 }
-window.addEventListener('resize',resize); resize();
-function createParticles(){
-  particles=[];
-  for(let i=0;i<60;i++){
-    particles.push({
-      x:Math.random()*w,
-      y:Math.random()*h,
-      r:Math.random()*2+1,
-      dx:(Math.random()-0.5)*0.5,
-      dy:(Math.random()-0.5)*0.5
+
+function logout() {
+  alert("You have logged out!");
+  window.location.href = "login.html";
+}
+
+// Tab switching
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const target = tab.getAttribute('data-tab');
+    document.querySelectorAll('.tab-content').forEach(content => {
+      content.style.display = content.id === target ? 'block' : 'none';
     });
-  }
-}
-createParticles();
-function animate(){
-  ctx.clearRect(0,0,w,h);
-  ctx.fillStyle='rgba(0,224,255,0.6)';
-  particles.forEach(p=>{
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fill();
-    p.x+=p.dx; p.y+=p.dy;
-    if(p.x<0||p.x>w) p.dx*=-1;
-    if(p.y<0||p.y>h) p.dy*=-1;
   });
-  requestAnimationFrame(animate);
-}
-animate();
-
-// === Login Logic ===
-const users = [
-  { username: "9818523773", password: "69125", name: "Dhruv" },
-  { username: "9461738616", password: "10382", name: "Harshit Panwar" },
-  { username: "8368992775", password: "93517", name: "Shahil Shivam" },
-  { username: "9654579176", password: "37591", name: "Nirvan Sharma" },
-  { username: "8521883562", password: "81320", name: "Vivek Kumar" }, 
-  { username: "8882583977", password: "33864", name: "Piyush Kumar Sah" }, 
-  { username: "7678629433", password: "11847", name: "Shivkant" }, 
-  { username: "9953539648", password: "29101", name: "Naitik Shekhar Mahajan" }, 
-  { username: "8826584503", password: "62389", name: "Prabhesh Swesh" }, 
-  { username: "9971890335", password: "19291", name: "Kushant Kumar" }
-];
-const ADMIN_USERS = ["Dhruv","Harshit Panwar","Shahil Shivam"];
-
-function showNotification(msg){
-  const n = document.getElementById("notification");
-  n.innerText = msg;
-  n.classList.add("show");
-  setTimeout(()=> n.classList.remove("show"), 2200);
-}
-
-function login(){
-  const user = document.getElementById('username').value.trim();
-  const pass = document.getElementById('password').value.trim();
-  const found = users.find(u => u.username===user && u.password===pass);
-  const err = document.getElementById('error');
-
-  if(!user || !pass){
-    err.innerText = "Please enter phone and password";
-    err.style.display = 'block';
-    setTimeout(()=> err.style.display='none',3500);
-    return;
-  }
-
-  showNotification("🔐 Logging in...");
-  setTimeout(()=>{
-    if(found){
-      sessionStorage.setItem('loggedIn','true');
-      sessionStorage.setItem('name',found.name);
-      sessionStorage.setItem('isAdmin',ADMIN_USERS.includes(found.name)?'true':'false');
-      window.location.href='main.html';
-    } else {
-      err.innerText="Invalid phone or password";
-      err.style.display='block';
-      setTimeout(()=> err.style.display='none',3500);
-    }
-  },2000);
-}
+});
 </script>
 </body>
 </html>
