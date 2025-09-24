@@ -167,19 +167,26 @@ canvas#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;}
     </div>
   </div>
 
-  <!-- Updates -->
-  <div id="updates" class="tab-content">
-    <div class="cards">
-      <!-- 20 update cards added dynamically in script -->
-    </div>
-  </div>
+<div id="updates" class="tab-content"> 
+  <div class="cards"> 
+    <div class="card"><h3>Update 1</h3><p>Website Created<br>Date: 19.09.2025</p></div> 
+    <div class="card"><h3>Update 2</h3><p>Floating Notification System<br>Date: 21.09.2025</p></div> 
+    <div class="card"><h3>Update 3</h3><p>Improved UI for Mobile<br>Date: 21.09.2025</p></div> 
+    <div class="card"><h3>Update 4</h3><p>Sidebar Collapsing System was created<br>Date: 21.09.2025</p></div> 
+    <div class="card"><h3>Update 5</h3><p>New Session was added<br>Date: 21.09.2025</p></div> 
+    <div class="card"><h3>Update 6</h3><p>New File was added in Resources<br>Date: 21.09.2025</p></div> 
+    <div class="card"><h3>Update 7</h3><p>New Session was added<br>Date: 22.09.2025</p></div> 
+    <div class="card"><h3>Update 8</h3><p>Updated Emails of Members<br>Date: 22.09.2025</p></div> 
+    <div class="card"><h3>Update 9</h3><p>Improves the UI of Member Portal<br>Date: 24.09.2025</p></div> 
+  </div> 
+</div>
 
   <!-- Other Info -->
   <div id="other" class="tab-content">
     <div class="cards">
       <div class="card"><h3>NGO Email Info</h3><p>Email: aerokleaners@gmail.com</p></div>
       <div class="card"><h3>Contact Website Admin</h3><p>Email: yoursjace@gmail.com</p></div>
-      <div class="card"><h3>View Website</h3><p><a href="https://aero-kleaners.weebly.com/" class="delayed-link" data-msg="Opening Website">Open Website</a></p></div>
+      <div class="card"><h3>View Website</h3><p><a href="https://schoolngo.wixsite.com/aero-kleaners" class="delayed-link" data-msg="Opening Website">Open Website</a></p></div>
     </div>
   </div>
 
@@ -255,14 +262,6 @@ function animateStars(){
 animateStars();
 window.addEventListener('resize',()=>{ canvas.width=window.innerWidth; canvas.height=window.innerHeight; });
 
-// Generate 20 Updates dynamically
-const updatesContainer=document.querySelector("#updates .cards");
-for(let i=1;i<=20;i++){
-  const card=document.createElement("div");
-  card.className="card";
-  card.innerHTML=`<h3>Update ${i}</h3><p>Description of update ${i} with <span style="color:#00e0ff;">interactive effect</span>.<br>Date: ${String(18+i).padStart(2,'0')}.09.2025</p>`;
-  updatesContainer.appendChild(card);
-}
 </script>
 </body>
 </html>
